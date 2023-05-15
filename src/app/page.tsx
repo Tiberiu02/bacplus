@@ -1,34 +1,36 @@
-import LinkButton from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 import { Navbar } from "@/components/Navbar";
 
 import Image from "next/image";
 import Link from "next/link";
 
+import backgoundImg from '../../public/hero-bg.jpg';
+
 export default function Home() {
   return (
     <main>
       <Navbar />
-      <div className="min-w-full min-h-screen flex flex-row justify-center items-center">
-        <div className="max-w-prose flex flex-col gap-2">
-          <h1 className="font-extrabold text-center text-5xl">
-            TRANSPARENȚĂ LA&nbsp;BAC
-          </h1>
-          <h5 className="text-xl text-center">
-            Sporim transparența examenului de bacalaureat prin statistici la
-            nivel de liceu, județ sau țară, precum și clasamente ale liceelor și
-            județelor.
-          </h5>
-          <div className="flex flex-row gap-2 justify-center">
-            <LinkButton></LinkButton>
-            <Link
-              className="text-xl text-blue-500 rounded-md hover:bg-blue-500 hover:text-white px-2 border-2 border-blue-500 transition duration-200"
-              href={"/"}
-            >
-              Licee
-            </Link>
+
+      <div className="min-w-full min-h-screen relative">
+        <Image src={backgoundImg} alt="background" className="absolute top-0 left-0 object-cover overflow-hidden h-screen w-screen z-0"/>
+        <div className="min-w-full min-h-screen absolute flex flex-row justify-center items-center z-10 bg-white/60">
+          <div className="max-w-prose flex flex-col gap-2">
+            <h1 className="font-extrabold text-center text-5xl">
+              TRANSPARENȚĂ LA&nbsp;BAC
+            </h1>
+            <h5 className="text-xl text-center">
+              Sporim transparența examenului de bacalaureat prin statistici la
+              nivel de liceu, județ sau țară, precum și clasamente ale liceelor și
+              județelor.
+            </h5>
+            <div className="flex flex-row gap-2 justify-center">
+              <LinkButton>Licee</LinkButton>
+              <LinkButton>Judete</LinkButton>
+            </div>
           </div>
         </div>
       </div>
+
       <section id="about" className="mt-5">
         <div className="container">
           <h2 className="mb-4">
