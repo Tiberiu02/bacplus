@@ -1,6 +1,9 @@
+"use client";
+
 import LinkButton from "@/components/LinkButton";
 import { Navbar } from "@/components/Navbar";
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useState, useEffect } from 'react'
+import { FaUser, FaSchool, FaCity, FaBriefcase } from 'react-icons/fa'
 
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +16,30 @@ function Section( { children, className }: PropsWithChildren<{ className?: strin
       <div className="container flex flex-col gap-6">
         {children}
       </div>
+    </div>
+  )
+}
+
+function CountUp( { children, finalNumber, caption, duration, className }: PropsWithChildren<{ finalNumber: number, caption?: string, duration: number, className?: string }> ){
+  const [value, setValue] = useState( '0' );
+  const [start, setStart] = useState( +(new Date()) );
+
+  function update(){
+    let x = Math.min( 1, (+(new Date()) - start) / duration );
+
+    setValue( Math.floor( finalNumber * x ).toLocaleString() );
+
+    if( x < 1 )
+      setTimeout( update, 25 );
+  }
+
+  useEffect( update, [] );
+
+  return (
+    <div className={"flex flex-col gap-3 items-center bg-white rounded-lg p-4 " + (className ? className : '')}>
+      {children}
+      <span className="text-3xl font-mono">{value}</span>
+      <span className="text-md">{caption}</span>
     </div>
   )
 }
@@ -46,6 +73,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold">
           De Ce?
         </h2>
+
         <blockquote className="">
           <p className="text-xl">
             Investiția în educație plătește mereu cea mai bună dobândă.
@@ -57,12 +85,14 @@ export default function Home() {
             </cite>
           </footer>
         </blockquote>
+
         <p>
           Bacalaureatul este cel mai important examen din sistemul educațional
           românesc. Totodată, rezultatele la bac reprezintă singurele date
           numerice disponibile care reflectă situația învățământului la nivel
           național.
         </p>
+
         <p>
           Anual, pe <a className="text-blue-500 hover:underline" href="http://bacalaureat.edu.ro">site-ul</a> oferit de
           Ministerul Educației sunt disponibile listele cu rezultatele
@@ -73,6 +103,7 @@ export default function Home() {
           date statistice precum clasamentele județelor și ale liceelor, dar
           și informații detaliate despre fiecare județ și liceu.
         </p>
+
         <p>
           Pe acest site, ne-am dorit să oferim o perspectivă amplă asupra
           educației în România prin grafice și tabele interactive care
@@ -82,77 +113,37 @@ export default function Home() {
       </Section>
 
       <Section className="bg-gray-200">
-        <div className="row">
-          <div className="col">
-            <h2>
-              <b>Datele Noastre</b>
-            </h2>
-            <p>Statisticile noastre au fost compilate folosind date despre</p>
-          </div>
-        </div>
-        <div className="row text-center mb-3">
-          <div className="col-sm-6 col-lg-3 mb-3">
-            <div className="counter">
-              <i className="fa fa-user fa-2x"></i>
-              <h2
-                className="timer count-title count-number"
-                data-to="1287870"
-                data-speed="2500"
-              >
-                0
-              </h2>
-              <p className="count-text ">Candidați</p>
-            </div>
-          </div>
-          <div className="col-sm-6 col-lg-3 mb-3">
-            <div className="counter">
-              <i className="fa fa-school fa-2x"></i>
-              <h2
-                className="timer count-title count-number"
-                data-to="1467"
-                data-speed="3000"
-              >
-                0
-              </h2>
-              <p className="count-text ">Licee</p>
-            </div>
-          </div>
-          <div className="col-sm-6 col-lg-3 mb-3">
-            <div className="counter">
-              <i className="fa fa-city fa-2x"></i>
-              <h2
-                className="timer count-title count-number"
-                data-to="42"
-                data-speed="3500"
-              >
-                0
-              </h2>
-              <p className="count-text ">Județe</p>
-            </div>
-          </div>
-          <div className="col-sm-6 col-lg-3 mb-3">
-            <div className="counter">
-              <i className="fa fa-briefcase fa-2x"></i>
-              <h2
-                className="timer count-title count-number"
-                data-to="70"
-                data-speed="4000"
-              >
-                0
-              </h2>
-              <p className="count-text ">Specializări</p>
-            </div>
-          </div>
+        <h2 className="text-3xl font-bold">
+          Datele Noastre
+        </h2>
+
+        <p>Statisticile noastre au fost compilate folosind date despre</p>
+
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+          <CountUp caption="Candidați" finalNumber={1287870} duration={2500} className="basis-1/4">
+            <FaUser className="text-4xl text-blue-500"/>
+          </CountUp>
+          <CountUp caption="Licee" finalNumber={1467} duration={3000} className="basis-1/4">
+            <FaSchool className="text-4xl text-blue-500"/>
+          </CountUp>
+          <CountUp caption="Județe" finalNumber={42} duration={3500} className="basis-1/4">
+            <FaCity className="text-4xl text-blue-500"/>
+          </CountUp>
+          <CountUp caption="Specializări" finalNumber={70} duration={4000} className="basis-1/4">
+            <FaBriefcase className="text-4xl text-blue-500"/>
+          </CountUp>
         </div>
       </Section>
       <Section id="about" className="">
         <h2 className="text-3xl font-bold">
           Câteva Cuvinte Despre Noi
         </h2>
+
         <p>
           După ani petrecuți în sistemul educațional, am ajuns să îl cunoaștem
           îndeaproape, cu bune și cu rele.
         </p>
+
         <p>
           Suntem o echipă de tineri programatori dornici să aducă o schimbare
           pozitivă asupra sistemului în care s-au format. Credem în tehnologie
@@ -161,6 +152,7 @@ export default function Home() {
           infinite, dar am ales să începem cu transparentizarea examenului de
           bacalaureat.
         </p>
+
         <p>
           Suntem conștienți că publicarea acestor statistici reprezintă doar
           un pas mic. De aceea, ne dorim să extindem platforma și în alte arii
