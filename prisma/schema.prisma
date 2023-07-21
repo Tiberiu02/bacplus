@@ -8,7 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model elevi {
+model licee {
+  id_liceu   String  @id
+  nume_liceu String
+  address    String?
+  website    String?
+  facebook   String?
+  instagram  String?
+  wikipedia  String?
+  bac        bac[]
+}
+
+model bac {
   an                     Int
   cod_candidat           String
   id_judet               String?
@@ -18,6 +29,7 @@ model elevi {
   lr_init                Float?
   lr_cont                Float?
   lr_final               Float?
+  limba_materna          String?
   lm_init                Float?
   lm_cont                Float?
   lm_final               Float?
@@ -33,11 +45,31 @@ model elevi {
   medie                  Float?
   my_medie               Float?
   rezultat               String
+  licee                  licee?  @relation(fields: [id_liceu], references: [id_liceu], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([an, cod_candidat])
 }
 
-model licee {
-  id_liceu   String @id
-  nume_liceu String
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model en {
+  an                      Int
+  cod_candidat            String
+  id_judet                String
+  id_scoala               String
+  lr_final                Decimal?
+  ma_final                Decimal?
+  limba_materna           String?
+  lm_final                Decimal?
+  medie_en                Decimal?
+  medie_abs               Decimal?
+  repartizat_id_liceu     String?
+  repartizat_specializare String?
+
+  @@ignore
+}
+
+model scoli {
+  id_scoala   String  @id
+  nume_scoala String
+  cod_siiir   String?
 }

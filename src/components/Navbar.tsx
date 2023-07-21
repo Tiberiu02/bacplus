@@ -38,26 +38,26 @@ export function Navbar({ activePage }: { activePage?: keyof typeof PAGES }) {
 
   return (
     <nav
-      className="bg-gray-200 flex flex-col items-center drop-shadow-lg"
+      className="z-50 flex flex-col items-center bg-gray-200 drop-shadow-lg"
       ref={animationParent}
     >
       <div
         className={
-          "flex flex-col max-w-6xl w-full p-4 bg-gray-200 " +
+          "flex w-full max-w-6xl flex-col bg-gray-200 p-4 " +
           (isMenuOpen && "shadow-lg")
         }
       >
-        <div className="flex w-full justify-between items-center">
+        <div className="flex w-full items-center justify-between">
           <Link href={HOME_PATH}>
             <img className="w-20" src="/logo-text.svg" alt="Logo" />
           </Link>
           <button
-            className="text-4xl sm:hidden text-gray-700"
+            className="text-4xl text-gray-700 sm:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <MdOutlineClose /> : <MdMenu />}
           </button>
-          <div className="sm:flex flex-row gap-4 text-gray-500 hidden">
+          <div className="hidden flex-row gap-4 text-gray-500 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
                 href={path}
@@ -73,7 +73,7 @@ export function Navbar({ activePage }: { activePage?: keyof typeof PAGES }) {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="flex sm:flex-row flex-col gap-4 text-gray-500 text-xl items-center p-4">
+        <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-500 sm:flex-row">
           {Object.entries(PAGES).map(([key, { name, path }]) => (
             <Link
               href={path}

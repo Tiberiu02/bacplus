@@ -1,11 +1,10 @@
-"use client";
-
-import LinkButton from "@/components/LinkButton";
-import { PropsWithChildren, useState, useEffect } from "react";
+import LinkButton from "~/components/LinkButton";
+import { PropsWithChildren } from "react";
 import { FaUser, FaSchool, FaCity, FaBriefcase } from "react-icons/fa";
+import { LinkText } from "~/components/LinkText";
+import { CountUp } from "~/components/CountUp";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import backgoundImg from "../../public/hero-bg.jpg";
 
@@ -16,7 +15,7 @@ function Section({
   return (
     <div
       className={
-        "py-12 px-10 flex flex-col justify-center items-center " +
+        "flex flex-col items-center justify-center px-10 py-12 " +
         (className ? className : "")
       }
     >
@@ -25,7 +24,7 @@ function Section({
   );
 }
 
-function CountUp({
+function CountUpCard({
   children,
   finalNumber,
   caption,
@@ -37,28 +36,17 @@ function CountUp({
   duration: number;
   className?: string;
 }>) {
-  const [value, setValue] = useState("0");
-  const [start, setStart] = useState(+new Date());
-
-  function update() {
-    let x = Math.min(1, (+new Date() - start) / duration);
-
-    setValue(Math.floor(finalNumber * x).toLocaleString());
-
-    if (x < 1) setTimeout(update, 25);
-  }
-
-  useEffect(update, []);
-
   return (
     <div
       className={
-        "flex flex-col gap-3 items-center bg-white rounded-lg p-4 " +
+        "flex flex-col items-center gap-3 rounded-lg bg-white p-4 " +
         (className ? className : "")
       }
     >
       {children}
-      <span className="text-3xl font-mono">{value}</span>
+      <span className="font-mono text-3xl">
+        <CountUp maxValue={finalNumber} duration={duration} />
+      </span>
       <span className="text-md">{caption}</span>
     </div>
   );
@@ -67,31 +55,31 @@ function CountUp({
 export default function Home() {
   return (
     <main>
-      <div className="min-w-full min-h-screen relative">
+      <div className="relative min-h-screen min-w-full">
         <Image
           src={backgoundImg}
           alt="background"
-          className="absolute top-0 left-0 object-cover overflow-hidden h-screen w-screen z-0"
+          className="absolute left-0 top-0 z-0 h-screen w-screen overflow-hidden object-cover"
         />
-        <div className="min-w-full min-h-screen absolute flex flex-row justify-center items-center z-10 bg-white/60">
-          <div className="max-w-prose flex flex-col gap-2">
-            <h1 className="font-extrabold text-center text-5xl">
+        <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/60">
+          <div className="flex max-w-3xl flex-col gap-8">
+            <h1 className="text-center text-5xl font-extrabold">
               TRANSPARENȚĂ LA&nbsp;BAC
             </h1>
-            <h5 className="text-xl text-center">
+            <h5 className="text-center text-xl">
               Sporim transparența examenului de bacalaureat prin statistici la
               nivel de liceu, județ sau țară, precum și clasamente ale liceelor
               și județelor.
             </h5>
-            <div className="flex flex-row gap-2 justify-center">
+            <div className="flex flex-row justify-center gap-2">
               <LinkButton>Licee</LinkButton>
-              <LinkButton>Judete</LinkButton>
+              <LinkButton>Județe</LinkButton>
             </div>
           </div>
         </div>
       </div>
 
-      <Section id="about">
+      <Section>
         <h2 className="text-3xl font-bold">De Ce?</h2>
 
         <blockquote className="">
@@ -115,13 +103,8 @@ export default function Home() {
 
         <p>
           Anual, pe{" "}
-          <a
-            className="text-blue-500 hover:underline"
-            href="http://bacalaureat.edu.ro"
-          >
-            site-ul
-          </a>{" "}
-          oferit de Ministerul Educației sunt disponibile listele cu rezultatele
+          <LinkText href="http://bacalaureat.edu.ro">site-ul</LinkText> oferit
+          de Ministerul Educației sunt disponibile listele cu rezultatele
           fiecărui candidat. Se mai publică și un raport care analizează aceste
           rezultate. Publicarea rezultatelor online a constituit un pas
           important în procesul de digitalizare. Noi ne-am propus să ducem
@@ -142,42 +125,42 @@ export default function Home() {
 
         <p>Statisticile noastre au fost compilate folosind date despre</p>
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-          <CountUp
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <CountUpCard
             caption="Candidați"
             finalNumber={1287870}
             duration={2500}
             className="basis-1/4"
           >
             <FaUser className="text-4xl text-blue-500" />
-          </CountUp>
-          <CountUp
+          </CountUpCard>
+          <CountUpCard
             caption="Licee"
             finalNumber={1467}
             duration={3000}
             className="basis-1/4"
           >
             <FaSchool className="text-4xl text-blue-500" />
-          </CountUp>
-          <CountUp
+          </CountUpCard>
+          <CountUpCard
             caption="Județe"
             finalNumber={42}
             duration={3500}
             className="basis-1/4"
           >
             <FaCity className="text-4xl text-blue-500" />
-          </CountUp>
-          <CountUp
+          </CountUpCard>
+          <CountUpCard
             caption="Specializări"
             finalNumber={70}
             duration={4000}
             className="basis-1/4"
           >
             <FaBriefcase className="text-4xl text-blue-500" />
-          </CountUp>
+          </CountUpCard>
         </div>
       </Section>
-      <Section id="about" className="">
+      <Section className="">
         <h2 className="text-3xl font-bold">Câteva Cuvinte Despre Noi</h2>
 
         <p>

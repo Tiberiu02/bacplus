@@ -1,14 +1,10 @@
-import { Prisma } from "@prisma/client";
-import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import { prisma } from "~/server/db";
 
-export const getStaticProps: GetStaticProps<{
-  top_licee: any[];
-}> = async () => {
-  const judete = {} as any;
+async function getTopLicee() {
+  const licee = {} as any;
 
   (
-    await prisma.elevi.groupBy({
+    await prisma.bac.groupBy({
       by: ["id_judet", "an"],
       _count: {
         my_medie: true,
@@ -20,12 +16,12 @@ export const getStaticProps: GetStaticProps<{
   ).forEach((result) => {
     if (result.id_judet === null) return;
 
-    if (judete[result.an] === undefined) {
-      judete[result.an] = {};
+    if (licee[result.an] === undefined) {
+      licee[result.an] = {};
     }
 
-    if (judete[result.an][result.id_judet] === undefined) {
-      judete[result.an][result.id_judet] = {
+    if (licee[result.an][result.id_judet] === undefined) {
+      licee[result.an][result.id_judet] = {
         medie: result._avg.my_medie,
         candidati: result._count.my_medie,
         promovati: 0,
@@ -34,7 +30,7 @@ export const getStaticProps: GetStaticProps<{
   });
 
   (
-    await prisma.elevi.groupBy({
+    await prisma.bac.groupBy({
       by: ["id_judet", "an"],
       _count: {
         _all: true,
@@ -46,19 +42,15 @@ export const getStaticProps: GetStaticProps<{
   ).forEach((result) => {
     if (result.id_judet === null) return;
 
-    judete[result.an][result.id_judet].promovati = result._count._all;
+    licee[result.an][result.id_judet].promovati = result._count._all;
   });
 
-  return {
-    props: {
-      top_licee: judete,
-    },
-  };
-};
+  return licee;
+}
 
-export default function Page({
-  top_licee,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default async function Page() {
+  const top_licee = await getTopLicee();
+
   return (
     <div className="p-4">
       {Object.entries(top_licee[2023]).map(
