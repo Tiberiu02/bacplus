@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export function CountUp({
   maxValue,
@@ -9,32 +9,29 @@ export function CountUp({
   maxValue: number;
   duration: number;
 }) {
-  const [currentValue, setCurrentValue] = useState(maxValue);
   const ref = useRef<HTMLDivElement>(null);
 
-  function startAnimationLoop() {
+  useEffect(() => {
     let startTime: number;
     let inView = false;
     let running = true;
 
     function loop() {
-      // console.log("loop", maxValue, inView, ref.current);
-
-      if (!inView) {
-        if (ref.current) {
+      if (ref.current) {
+        if (!inView) {
           const rect = ref.current.getBoundingClientRect();
-          // console.log(rect.top, rect.bottom, window.innerHeight);
+
           if (rect.top < window.innerHeight && rect.bottom >= 0) {
             inView = true;
             startTime = +new Date();
           }
         }
-      }
 
-      if (inView) {
-        const x = Math.min(1, (+new Date() - startTime) / duration);
-        const value = Math.floor(x * maxValue);
-        setCurrentValue(value);
+        if (inView) {
+          const x = Math.min(1, (+new Date() - startTime) / duration);
+          const value = Math.floor(x * maxValue);
+          ref.current.innerHTML = value.toLocaleString("ro-RO");
+        }
       }
 
       if (running) {
@@ -47,11 +44,7 @@ export function CountUp({
     return () => {
       running = false;
     };
-  }
+  }, [ref, duration, maxValue]);
 
-  useEffect(() => {
-    return startAnimationLoop();
-  }, [ref]);
-
-  return <div ref={ref}>{currentValue.toLocaleString("ro-RO")}</div>;
+  return <div ref={ref}>{maxValue}</div>;
 }

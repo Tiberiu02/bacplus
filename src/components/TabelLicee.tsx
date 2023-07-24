@@ -2,22 +2,24 @@
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { FilterMatchMode, FilterOperator } from "primereact/api";
+import { FilterMatchMode } from "primereact/api";
 import { InputText } from "primereact/inputtext";
-import { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import type { ChangeEventHandler } from "react";
 import { LinkText } from "~/components/LinkText";
 import unidecode from "unidecode";
-import { Liceu, decompressLicee } from "~/data/licee";
+import { liceuFromDataArray } from "~/data/licee";
+import type { Liceu, LiceuDataArray } from "~/data/licee";
 import { PercentageBar } from "./ProgressBar";
-import { formtaNumber } from "~/app/utils/formatNumber";
+import { formtaNumber } from "~/data/formatNumber";
 import { JUDETE_MAP } from "~/data/coduriJudete";
 
 export function TabelLicee({
-  data: dataCompressed,
-  coloanaJudet,
+  data,
+  anAdmitere,
 }: {
-  data: any[];
-  coloanaJudet?: boolean;
+  data: LiceuDataArray[];
+  anAdmitere?: number;
 }) {
   const [sortField, setSortField] = useState<keyof Liceu>("medieBac");
   const [sortOrder, setSortOrder] = useState<1 | -1>(-1);
@@ -32,15 +34,25 @@ export function TabelLicee({
     setGlobalFilterValue(value);
   };
 
-  const data = decompressLicee(dataCompressed)
+  const licee = data
+    .map(liceuFromDataArray)
     .sort((a, b) => {
       const aVal = a[sortField];
       const bVal = b[sortField];
+      const aNull = aVal === undefined;
+      const bNull = bVal === undefined;
 
-      return (
-        sortOrder *
-        (!bVal || (aVal && aVal < bVal) ? -1 : !aVal || aVal > bVal ? 1 : 0)
-      );
+      return sortOrder == 1
+        ? bNull || (!aNull && aVal < bVal)
+          ? -1
+          : aNull || aVal > bVal
+          ? 1
+          : 0
+        : bNull || (!aNull && aVal > bVal)
+        ? -1
+        : aNull || aVal > bVal
+        ? 1
+        : 0;
     })
     .map((row, ix) => ({
       ...row,
@@ -48,26 +60,32 @@ export function TabelLicee({
       key: unidecode(row.numeLiceu).toLowerCase(),
     }));
 
-  const renderHeader = () => {
-    return (
-      <div className="justify-content-end flex">
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-            placeholder="Caută liceu"
-          />
-        </span>
-      </div>
-    );
-  };
+  const doarUnJudet = licee.every(
+    (liceu) => liceu.codJudet == licee[0]?.codJudet
+  );
 
-  const header = renderHeader();
+  const header = (
+    <div className="justify-content-end flex">
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          onChange={onGlobalFilterChange}
+          placeholder="Caută liceu"
+        />
+      </span>
+    </div>
+  );
+
+  const colStyle: React.CSSProperties = {
+    textAlign: "center",
+    width: "0px",
+    padding: "0.5rem 1rem",
+  };
 
   return (
     <DataTable
-      value={data}
+      value={licee}
       paginator
       rows={10}
       rowsPerPageOptions={[10, 25, 50, 100]}
@@ -91,26 +109,20 @@ export function TabelLicee({
     >
       <Column
         header="Loc"
-        style={{
-          textAlign: "center",
-          width: "10px",
-          padding: "0.5rem 1rem",
-        }}
-        body={(rowData) => rowData["rowIndex"]}
+        style={colStyle}
+        body={({ rowIndex }: { rowIndex: number }) => rowIndex}
       />
       <Column
         field="numeLiceu"
         header="Nume liceu"
-        body={(rowData) => (
-          <LinkText href={`/liceu/${rowData["id"]}`}>
-            {rowData["numeLiceu"]}
-          </LinkText>
+        body={({ id, numeLiceu }: Liceu) => (
+          <LinkText href={`/liceu/${id}`}>{numeLiceu}</LinkText>
         )}
         style={{
           padding: "0.5rem 1rem",
         }}
       />
-      {coloanaJudet && (
+      {!doarUnJudet && (
         <Column
           field="codJudet"
           header={
@@ -118,56 +130,48 @@ export function TabelLicee({
               Județ
             </div>
           }
-          body={(rowData) => (
-            <LinkText href={`/judet/${JUDETE_MAP[rowData["codJudet"]]?.nume}`}>
-              {JUDETE_MAP[rowData["codJudet"]]?.numeIntreg}
+          body={({ codJudet }: Liceu) => (
+            <LinkText href={`/judet/${JUDETE_MAP[codJudet]?.nume ?? ""}`}>
+              {JUDETE_MAP[codJudet]?.numeIntreg}
             </LinkText>
           )}
-          style={{
-            width: "10px",
-            padding: "0.5rem 1rem",
-          }}
+          style={colStyle}
         />
       )}
       <Column
-        field="numCandidati"
+        field="medieBac"
         sortable
-        header="Elevi"
-        style={{
-          textAlign: "center",
-          width: "10px",
-          padding: "0.5rem 1rem",
-        }}
+        header="Medie"
+        style={colStyle}
+        body={(rowData: Liceu) => formtaNumber(rowData["medieBac"], 2)}
       />
       <Column
         sortable
         field="rataPromovare"
         header={
-          <span>
+          <>
             Rata de
             <br />
             promovare
-          </span>
+          </>
         }
-        style={{
-          textAlign: "center",
-          width: "100px",
-          padding: "0.5rem 1rem",
-        }}
-        body={(rowData) => (
+        style={colStyle}
+        body={(rowData: Liceu) => (
           <PercentageBar value={rowData["rataPromovare"] * 100} />
         )}
       />
       <Column
-        field="medieBac"
+        field="numCandidati"
         sortable
-        header="Medie"
-        style={{
-          textAlign: "center",
-          width: "10px",
-          padding: "0.5rem 1rem",
-        }}
-        body={(rowData) => formtaNumber(rowData["medieBac"], 2)}
+        header="Absolvenți"
+        style={colStyle}
+      />
+      <Column
+        field="medieAdm"
+        sortable
+        header={`Medie admitere ${anAdmitere ?? ""}`}
+        style={colStyle}
+        body={(rowData: Liceu) => formtaNumber(rowData["medieAdm"], 2)}
       />
     </DataTable>
   );

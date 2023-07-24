@@ -16,7 +16,7 @@ export default function contact() {
         </p>
         <p>Orice feedback este binevenit!</p>
         <Title>Autori</Title>
-        <p>La acest proiect au lucradasdst:</p>
+        <p>La acest proiect au lucrat:</p>
         <ul className="mb-2 list-disc pl-10">
           <li>
             <LinkText href="https://people.epfl.ch/tiberiu.musat">

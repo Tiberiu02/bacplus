@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 export function Title({
   children,
@@ -8,12 +8,12 @@ export function Title({
     <div>
       <h1
         className={
-          "mb-4 mt-12 text-4xl font-semibold " + (className ? className : "")
+          "mt-12 text-4xl font-semibold " + (className ? className : "")
         }
       >
         {children}
       </h1>
-      <hr className="my-4" />
+      <hr className="my-2" />
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import LinkButton from "~/components/LinkButton";
-import { PropsWithChildren } from "react";
-import { FaUser, FaSchool, FaCity, FaBriefcase } from "react-icons/fa";
+import type { PropsWithChildren } from "react";
+import {
+  FaSchool as FaSchool2,
+  FaBriefcase,
+  FaUserGraduate,
+} from "react-icons/fa";
+import { FaSchool } from "react-icons/fa6";
 import { LinkText } from "~/components/LinkText";
 import { CountUp } from "~/components/CountUp";
 
@@ -19,35 +24,36 @@ function Section({
         (className ? className : "")
       }
     >
-      <div className="container flex flex-col gap-6">{children}</div>
+      <div className="container flex flex-col gap-4">{children}</div>
     </div>
   );
 }
 
 function CountUpCard({
-  children,
   finalNumber,
   caption,
   duration,
   className,
+  Icon,
 }: PropsWithChildren<{
   finalNumber: number;
   caption?: string;
   duration: number;
   className?: string;
+  Icon: React.ComponentType<{ className?: string }>;
 }>) {
   return (
     <div
       className={
-        "flex flex-col items-center gap-3 rounded-lg bg-white p-4 " +
+        "flex flex-col items-center rounded-lg bg-white p-4 " +
         (className ? className : "")
       }
     >
-      {children}
-      <span className="font-mono text-3xl">
+      <Icon className="text-6xl text-blue-500" />
+      <span className="mt-3 font-mono text-3xl">
         <CountUp maxValue={finalNumber} duration={duration} />
       </span>
-      <span className="text-md">{caption}</span>
+      <span className="text-lg">{caption}</span>
     </div>
   );
 }
@@ -123,41 +129,37 @@ export default function Home() {
       <Section className="bg-gray-200">
         <h2 className="text-3xl font-bold">Datele Noastre</h2>
 
-        <p>Statisticile noastre au fost compilate folosind date despre</p>
+        <p>Statisticile noastre au fost sintetizate folosind date despre</p>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <CountUpCard
             caption="Candidați"
-            finalNumber={1287870}
+            finalNumber={1636920}
             duration={2500}
             className="basis-1/4"
-          >
-            <FaUser className="text-4xl text-blue-500" />
-          </CountUpCard>
+            Icon={FaUserGraduate}
+          />
           <CountUpCard
             caption="Licee"
-            finalNumber={1467}
+            finalNumber={1664}
             duration={3000}
             className="basis-1/4"
-          >
-            <FaSchool className="text-4xl text-blue-500" />
-          </CountUpCard>
+            Icon={FaSchool}
+          />
           <CountUpCard
-            caption="Județe"
-            finalNumber={42}
+            caption="Școli generale"
+            finalNumber={6195}
             duration={3500}
             className="basis-1/4"
-          >
-            <FaCity className="text-4xl text-blue-500" />
-          </CountUpCard>
+            Icon={FaSchool2}
+          />
           <CountUpCard
             caption="Specializări"
             finalNumber={70}
             duration={4000}
             className="basis-1/4"
-          >
-            <FaBriefcase className="text-4xl text-blue-500" />
-          </CountUpCard>
+            Icon={FaBriefcase}
+          />
         </div>
       </Section>
       <Section className="">

@@ -50,22 +50,22 @@ model bac {
   @@id([an, cod_candidat])
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model en {
   an                      Int
   cod_candidat            String
   id_judet                String
   id_scoala               String
-  lr_final                Decimal?
-  ma_final                Decimal?
+  lr_final                Float?
+  ma_final                Float?
   limba_materna           String?
-  lm_final                Decimal?
-  medie_en                Decimal?
-  medie_abs               Decimal?
+  lm_final                Float?
+  medie_en                Float?
+  medie_abs               Float?
+  medie_adm               Float?
   repartizat_id_liceu     String?
   repartizat_specializare String?
 
-  @@ignore
+  @@id([an, cod_candidat])
 }
 
 model scoli {

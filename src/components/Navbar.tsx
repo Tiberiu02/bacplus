@@ -7,10 +7,16 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import { MdMenu, MdOutlineClose } from "react-icons/md";
 
+import { twMerge } from "tailwind-merge";
+
 const PAGES = {
   highshools: {
     name: "Licee",
-    path: "/licee",
+    path: "/top_licee/${ultimulAnBac}",
+  },
+  schools: {
+    name: "Școli",
+    path: "/top_scoli/${ultimulAnEn}",
   },
   counties: {
     name: "Județe",
@@ -32,7 +38,15 @@ const PAGES = {
 
 const HOME_PATH = "/";
 
-export function Navbar({ activePage }: { activePage?: keyof typeof PAGES }) {
+export function Navbar({
+  activePage,
+  ultimulAnBac,
+  ultimulAnEn,
+}: {
+  activePage?: keyof typeof PAGES;
+  ultimulAnBac: number;
+  ultimulAnEn: number;
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [animationParent] = useAutoAnimate();
 
@@ -42,10 +56,10 @@ export function Navbar({ activePage }: { activePage?: keyof typeof PAGES }) {
       ref={animationParent}
     >
       <div
-        className={
-          "flex w-full max-w-6xl flex-col bg-gray-200 p-4 " +
-          (isMenuOpen && "shadow-lg")
-        }
+        className={twMerge(
+          "flex w-full max-w-6xl flex-col bg-gray-200 p-4 ",
+          isMenuOpen && "shadow-lg"
+        )}
       >
         <div className="flex w-full items-center justify-between">
           <Link href={HOME_PATH}>
@@ -60,7 +74,9 @@ export function Navbar({ activePage }: { activePage?: keyof typeof PAGES }) {
           <div className="hidden flex-row gap-4 text-gray-500 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
-                href={path}
+                href={path
+                  .replace("${ultimulAnBac}", ultimulAnBac.toString())
+                  .replace("${ultimulAnEn}", ultimulAnEn.toString())}
                 className={
                   key == activePage ? "text-gray-800" : "hover:text-gray-800"
                 }

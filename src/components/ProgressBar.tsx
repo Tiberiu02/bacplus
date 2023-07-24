@@ -1,14 +1,14 @@
-import { formtaNumber } from "~/app/utils/formatNumber";
+import { formtaNumber } from "~/data/formatNumber";
 
 type RGB = [number, number, number];
 
 function h2r(hex: string): RGB {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return [0, 0, 0];
+  if (!result || !result[1] || !result[2] || !result[3]) return [0, 0, 0];
   return [
-    parseInt(result[1]!, 16)!,
-    parseInt(result[2]!, 16)!,
-    parseInt(result[3]!, 16)!,
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16),
   ];
 }
 
@@ -18,17 +18,6 @@ function r2h(rgb: RGB) {
     "#" +
     ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)
   );
-}
-
-// Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
-// Taken from the awesome ROT.js roguelike dev library at
-// https://github.com/ondras/rot.js
-function _interpolateColor(color1: RGB, color2: RGB, factor = 0.5) {
-  let result = color1.slice();
-  for (var i = 0; i < 3; i++) {
-    result[i] = Math.round(result[i]! + factor * (color2[i]! - color1[i]!));
-  }
-  return result;
 }
 
 function rgb2hsl(color: RGB): RGB {
@@ -85,18 +74,18 @@ function hsl2rgb(color: RGB): RGB {
   }
 }
 
-function _interpolateHSL(color1: RGB, color2: RGB, factor: number = 0.5) {
+function _interpolateHSL(color1: RGB, color2: RGB, factor = 0.5) {
   const hsl1 = rgb2hsl(color1);
   const hsl2 = rgb2hsl(color2);
-  for (let i = 0; i < 3; i++) {
-    hsl1[i] += factor * (hsl2[i]! - hsl1[i]!);
-  }
+  hsl1[0] += factor * (hsl2[0] - hsl1[0]);
+  hsl1[1] += factor * (hsl2[1] - hsl1[1]);
+  hsl1[2] += factor * (hsl2[2] - hsl1[2]);
   return hsl2rgb(hsl1);
 }
 
 export function PercentageBar({ value }: { value: number }) {
-  const color1 = h2r("#ff3333")!;
-  const color2 = h2r("#88ee88")!;
+  const color1 = h2r("#ff3333");
+  const color2 = h2r("#88ee88");
 
   const color = _interpolateHSL(color1, color2, value / 100);
 
