@@ -11,6 +11,13 @@ export const queryBac = await prisma.bac.groupBy({
   },
 });
 
+export const queryGender = await prisma.bac.groupBy({
+  by: ["id_liceu", "sex"],
+  _count: {
+    _all: true,
+  },
+});
+
 export const queryPromovatiBac = await prisma.bac.groupBy({
   by: ["id_liceu", "an", "id_judet"],
   _count: {
@@ -18,6 +25,27 @@ export const queryPromovatiBac = await prisma.bac.groupBy({
   },
   where: {
     rezultat: "REUSIT",
+  },
+});
+
+export const queryLimbiMaterneBac = await prisma.bac.groupBy({
+  by: ["an", "id_liceu", "limba_materna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const queryLimbiStraineBac = await prisma.bac.groupBy({
+  by: ["an", "id_liceu", "limba_moderna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const querySpecializariBac = await prisma.bac.groupBy({
+  by: ["an", "id_liceu", "specializare"],
+  _count: {
+    _all: true,
   },
 });
 
@@ -32,6 +60,8 @@ export const queryLicee = await prisma.licee.findMany({
   select: {
     id_liceu: true,
     nume_liceu: true,
+    website: true,
+    address: true,
   },
 });
 

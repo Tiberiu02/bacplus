@@ -5,7 +5,8 @@ export function LinkText({
   children,
   href,
   className,
-}: PropsWithChildren<{ href?: string; className?: string }>) {
+  target,
+}: PropsWithChildren<{ href?: string; className?: string; target?: string }>) {
   return (
     <a
       className={twMerge(
@@ -13,6 +14,7 @@ export function LinkText({
         className
       )}
       href={href ? href : "/"}
+      target={target}
     >
       {children}
     </a>

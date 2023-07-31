@@ -24,6 +24,7 @@ model bac {
   cod_candidat           String
   id_judet               String?
   id_liceu               String?
+  sex                    String?
   promotie_anterioara    String
   specializare           String
   lr_init                Float?
