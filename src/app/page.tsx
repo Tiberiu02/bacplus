@@ -12,6 +12,7 @@ import { CountUp } from "~/components/CountUp";
 import Image from "next/image";
 
 import backgoundImg from "../../public/hero-bg.jpg";
+import { Authors } from "~/components/Authors";
 
 function Section({
   children,
@@ -171,12 +172,11 @@ export default function Home() {
         </p>
 
         <p>
-          Suntem o echipă de tineri programatori dornici să aducă o schimbare
-          pozitivă asupra sistemului în care s-au format. Credem în tehnologie
-          și în potențialul acesteia de a revoluționa actul educațional.
-          Modurile în care tehnologia poate îmbunătăți sistemul actual sunt
-          infinite, dar am ales să începem cu transparentizarea examenului de
-          bacalaureat.
+          Suntem doi tineri programatori dornici să aducă o schimbare pozitivă
+          asupra sistemului în care s-au format. Credem în tehnologie și în
+          potențialul acesteia de a revoluționa actul educațional. Modurile în
+          care tehnologia poate îmbunătăți sistemul actual sunt infinite, dar am
+          ales să începem cu transparentizarea examenului de bacalaureat.
         </p>
 
         <p>
@@ -185,6 +185,8 @@ export default function Home() {
           examenului de bacalaureat (pe termen scurt) sau ale educației (pe
           termen lung).
         </p>
+
+        <Authors />
       </Section>
     </main>
   );

@@ -11,10 +11,12 @@ import "primeflex/primeflex.css"; // css utility
 import { aniBac, aniEn } from "~/data/dbQuery";
 import Script from "next/script";
 import { env } from "~/env.mjs";
+import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://bacplus.ro"),
   title: "BacPlus",
   icons: ["/favicon.ico"],
   viewport: {
@@ -23,6 +25,11 @@ export const metadata = {
     initialScale: 1,
     maximumScale: 1,
     minimumScale: 1,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Bac Plus",
+    images: ["/og-banner.jpg"],
   },
 };
 

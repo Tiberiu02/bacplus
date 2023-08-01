@@ -29,12 +29,12 @@ export function generateMetadata({
 
   return numeIntregJudet
     ? {
-        title: `BAC Plus — Top licee ${numeIntregJudet} ${an}`,
-        description: `Classamentul liceelor din ${numeIntregJudet} ${an}`,
+        title: `Top licee ${numeIntregJudet} ${an} | Bac Plus`,
+        description: `Descoperă cele mai bune licee din ${numeIntregJudet} ${an}`,
       }
     : {
-        title: `BAC Plus — Top licee ${an}`,
-        description: `Classamentul liceelor din România ${an}`,
+        title: `Top licee ${an} | Bac Plus`,
+        description: `Descoperă cele mai bune licee din România ${an}`,
       };
 }
 

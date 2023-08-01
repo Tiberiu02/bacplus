@@ -48,7 +48,7 @@ export function generateMetadata({
   if (!numeLiceu) return {};
 
   return {
-    title: `${numeLiceu} | BAC Plus`,
+    title: `${numeLiceu} | Bac Plus`,
     description: `Vezi informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,
   };
 }

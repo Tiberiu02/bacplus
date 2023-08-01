@@ -50,8 +50,6 @@ export function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [animationParent] = useAutoAnimate();
 
-  console.log("Ultimul an bac", ultimulAnBac);
-
   return (
     <nav
       className="z-50 flex flex-col items-center bg-gray-200 drop-shadow-lg"
