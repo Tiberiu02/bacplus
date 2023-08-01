@@ -10,7 +10,6 @@ export type Liceu = {
 };
 
 export type LiceuDataArray = [
-  string, // id
   number | undefined, // medieBac
   number, // numCandidati
   number, // rataPromovare
@@ -19,10 +18,23 @@ export type LiceuDataArray = [
   number | undefined // medieAdm
 ];
 
+function getId(numeLiceu: string, codJudet: string) {
+  return (
+    numeLiceu
+      .normalize("NFD")
+      .toUpperCase()
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^A-Z0-9]/g, " ")
+      .trim()
+      .replace(/ +/g, "_") +
+    "_" +
+    codJudet
+  );
+}
+
 export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
   return [
-    liceu.id,
-    liceu.medieBac,
+    liceu.medieBac ? Math.round(liceu.medieBac * 1000) / 1000 : undefined,
     liceu.numCandidati,
     liceu.rataPromovare,
     liceu.numeLiceu,
@@ -33,12 +45,12 @@ export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
 
 export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
   return {
-    id: dataArray[0],
-    medieBac: dataArray[1],
-    numCandidati: dataArray[2],
-    rataPromovare: dataArray[3],
-    numeLiceu: dataArray[4],
-    codJudet: dataArray[5],
-    medieAdm: dataArray[6],
+    id: getId(dataArray[3], dataArray[4]),
+    medieBac: dataArray[0],
+    numCandidati: dataArray[1],
+    rataPromovare: dataArray[2],
+    numeLiceu: dataArray[3],
+    codJudet: dataArray[4],
+    medieAdm: dataArray[5],
   };
 }
