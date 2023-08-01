@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* For some reason, column headers in PrimeReact DataTable can prevent propagation of pointer events, forbidding the user from clicking on the column header. This is a workaround. */
 .p-column-header-content {
     pointer-events: none;
 }

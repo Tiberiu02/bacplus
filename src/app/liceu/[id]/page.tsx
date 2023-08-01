@@ -25,9 +25,10 @@ import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
 import { JUDETE_MAP } from "~/data/coduriJudete";
 import { LinkText } from "~/components/LinkText";
-import { colorFromStr } from "~/data/colorFromStr";
 import { twMerge } from "tailwind-merge";
 import type { PropsWithChildren } from "react";
+import type { Metadata } from "next";
+import { PieChart } from "~/components/PieChart";
 
 export function generateStaticParams() {
   return queryLicee.map((e) => ({
@@ -35,6 +36,21 @@ export function generateStaticParams() {
       id: e.id_liceu,
     },
   }));
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Metadata {
+  const numeLiceu = queryLicee.find((e) => e.id_liceu == params.id)?.nume_liceu;
+
+  if (!numeLiceu) return {};
+
+  return {
+    title: `${numeLiceu} | BAC Plus`,
+    description: `Vezi informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,
+  };
 }
 
 function Card({
@@ -114,9 +130,9 @@ export default function PaginaLiceu({
       <Title>{numeLiceu}</Title>
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
-        {JUDETE_MAP[codJudet]?.numeIntreg}, sintetizate folosind rezultatele de
-        la examenele de Bacalaureat și Evaluare Națională publicate de
-        Ministerul Educației.
+        {JUDETE_MAP[codJudet]?.numeIntreg}, bazate pe rezultatele la examenele
+        de Bacalaureat și Evaluare Națională publicate de Ministerul Educației
+        Naționale.
       </p>
       {(website || adresa) && (
         <p>
@@ -138,11 +154,12 @@ export default function PaginaLiceu({
           .
         </p>
       )}
-      <div className="flex justify-end">
+      <div className="my-4 flex justify-end">
         <ShareButtons />
       </div>
-      <div className="flex w-full gap-4">
-        <div className="flex w-fit flex-col gap-4">
+
+      <div className="flex w-full flex-col items-center gap-4 xl:flex-row">
+        <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:w-fit xl:flex-col">
           <SnippetCard
             title={`Medie Bac ${dataBac[0]}`}
             value={formtaNumber(dataBac[1].medie, 3)}
@@ -167,39 +184,35 @@ export default function PaginaLiceu({
           )}
         </div>
 
-        <Card className="flex w-full flex-col justify-center self-stretch">
-          <MainChart rezultateBac={rezultateBac} admitere={admitere} />
+        <Card className="relative flex w-full flex-col justify-center self-stretch">
+          <div className="hidden lg:block">
+            <MainChart
+              rezultateBac={rezultateBac}
+              admitere={admitere}
+              aspectRatio={1.87}
+            />
+          </div>
+          <div className="lg:hidden">
+            <MainChart
+              rezultateBac={rezultateBac}
+              admitere={admitere}
+              aspectRatio={1}
+            />
+          </div>
         </Card>
       </div>
 
-      <div className="mt-1 grid w-full grid-cols-2 gap-4 self-center">
+      <div className="mt-1 grid w-full gap-4 self-center lg:grid-cols-2">
         <ChartCard
           title={`Distribuție limbi străine ${dataBac[0]}`}
           Icon={IoLanguage}
         >
-          <Chart
-            type="pie"
-            data={{
-              labels: Object.keys(dataBac[1].limbiStraine),
-              datasets: [
-                {
-                  data: Object.values(dataBac[1].limbiStraine).map(
-                    (e) => e.candidati
-                  ),
-                  backgroundColor: Object.keys(dataBac[1].limbiStraine).map(
-                    colorFromStr
-                  ),
-                },
-              ],
-            }}
-            options={{
-              aspectRatio: 3,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                },
-              },
-            }}
+          <PieChart
+            data={Object.entries(dataBac[1].limbiStraine).map(([limba, e]) => ({
+              name: limba,
+              value: e.candidati,
+            }))}
+            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -207,29 +220,14 @@ export default function PaginaLiceu({
           title={`Distribuție specializări ${dataBac[0]}`}
           Icon={FaSuitcase}
         >
-          <Chart
-            type="pie"
-            data={{
-              labels: Object.keys(dataBac[1].specializari),
-              datasets: [
-                {
-                  data: Object.values(dataBac[1].specializari).map(
-                    (e) => e.candidati
-                  ),
-                  backgroundColor: Object.keys(dataBac[1].specializari).map(
-                    colorFromStr
-                  ),
-                },
-              ],
-            }}
-            options={{
-              aspectRatio: 3,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                },
-              },
-            }}
+          <PieChart
+            data={Object.entries(dataBac[1].specializari).map(
+              ([specializare, e]) => ({
+                name: specializare,
+                value: e.candidati,
+              })
+            )}
+            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -237,60 +235,32 @@ export default function PaginaLiceu({
           title={`Distribuție limbi materne ${dataBac[0]}`}
           Icon={TbMessageLanguage}
         >
-          <Chart
-            type="pie"
-            data={{
-              labels: Object.keys(dataBac[1].limbiMaterne),
-              datasets: [
-                {
-                  data: Object.values(dataBac[1].limbiMaterne).map(
-                    (e) => e.candidati
-                  ),
-                  backgroundColor: Object.keys(dataBac[1].limbiMaterne).map(
-                    colorFromStr
-                  ),
-                },
-              ],
-            }}
-            options={{
-              aspectRatio: 3,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                },
-              },
-            }}
+          <PieChart
+            data={Object.entries(dataBac[1].limbiMaterne).map(([limba, e]) => ({
+              name: limba,
+              value: e.candidati,
+            }))}
+            aspectRatio={1.7}
           />
         </ChartCard>
 
         {genderData && (
           <ChartCard title="Distribuție demografică elevi" Icon={FaUserFriends}>
-            <Chart
-              type="pie"
-              data={{
-                labels: ["M", "F"],
-                datasets: [
-                  {
-                    data: [
-                      (genderData.males /
-                        (genderData.males + genderData.females)) *
-                        100,
-                      (genderData.females /
-                        (genderData.males + genderData.females)) *
-                        100,
-                    ],
-                    backgroundColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)"],
-                  },
-                ],
-              }}
-              options={{
-                aspectRatio: 3,
-                plugins: {
-                  legend: {
-                    position: "bottom",
-                  },
+            <PieChart
+              data={[
+                {
+                  name: "M",
+                  value: genderData.males,
+                  color: "rgb(54, 162, 235)",
                 },
-              }}
+                {
+                  name: "F",
+                  value: genderData.females,
+                  color: "rgb(255, 99, 132)",
+                },
+              ]}
+              aspectRatio={1.7}
+              convertToPercentages
             />
           </ChartCard>
         )}
@@ -434,6 +404,7 @@ function getInfoLiceu(id: string) {
 function MainChart({
   rezultateBac: data,
   admitere: dataAdm,
+  aspectRatio,
 }: {
   rezultateBac: {
     [an: string]: {
@@ -446,6 +417,7 @@ function MainChart({
   admitere: {
     [an: string]: number | null;
   };
+  aspectRatio: number;
 }) {
   const entries = Object.entries(data).sort();
 
@@ -498,7 +470,7 @@ function MainChart({
         },
       },
     },
-    aspectRatio: 1.85,
+    aspectRatio: aspectRatio,
     interaction: {
       mode: "index",
       intersect: false,

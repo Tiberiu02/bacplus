@@ -9,7 +9,7 @@ import {
   queryPromovatiBac,
 } from "~/data/dbQuery";
 
-import { TabelLicee } from "~/components/TabelLicee";
+import { TabelLicee } from "~/app/top_licee/[...query]/TabelLicee";
 import { MainContainer } from "~/components/MainContainer";
 import { liceuToDataArray } from "~/data/licee";
 import type { Liceu } from "~/data/licee";
@@ -27,14 +27,15 @@ export function generateMetadata({
 
   if (!an) return {};
 
-  return {
-    title: `BAC Plus — Top licee${numeIntregJudet ? " " : ""}${
-      numeIntregJudet ?? ""
-    } ${an}`,
-    description: `Classamentul liceelor din ${
-      numeIntregJudet ?? "România"
-    } ${an}`,
-  };
+  return numeIntregJudet
+    ? {
+        title: `BAC Plus — Top licee ${numeIntregJudet} ${an}`,
+        description: `Classamentul liceelor din ${numeIntregJudet} ${an}`,
+      }
+    : {
+        title: `BAC Plus — Top licee ${an}`,
+        description: `Classamentul liceelor din România ${an}`,
+      };
 }
 
 export function generateStaticParams() {
@@ -86,9 +87,9 @@ export default function Page({ params }: { params: { query: string[] } }) {
         </Title>
         <div className="mb-4 flex flex-col gap-2">
           <p>
-            Acest clasament conține {licee.length} de licee și a fost sintetizat
+            Acest clasament conține {licee.length} de licee și a fost realizat
             folosind rezultatele oficiale la examenele de Bacalaureat și
-            Evaluare Națională publicate de Ministerul Educației.
+            Evaluare Națională publicate de Ministerul Educației Naționale.
           </p>
           <p>
             Apăsați pe capetele de tabel pentru a sorta liceele după un anumit

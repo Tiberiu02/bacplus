@@ -10,7 +10,7 @@ import { LinkText } from "~/components/LinkText";
 import unidecode from "unidecode";
 import { liceuFromDataArray } from "~/data/licee";
 import type { Liceu, LiceuDataArray } from "~/data/licee";
-import { PercentageBar } from "./ProgressBar";
+import { PercentageBar } from "~/components/ProgressBar";
 import { formtaNumber } from "~/data/formatNumber";
 import { JUDETE_MAP } from "~/data/coduriJudete";
 

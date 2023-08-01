@@ -50,6 +50,8 @@ export function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [animationParent] = useAutoAnimate();
 
+  console.log("Ultimul an bac", ultimulAnBac);
+
   return (
     <nav
       className="z-50 flex flex-col items-center bg-gray-200 drop-shadow-lg"
@@ -75,8 +77,8 @@ export function Navbar({
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
                 href={path
-                  .replace("${ultimulAnBac}", ultimulAnBac.toString())
-                  .replace("${ultimulAnEn}", ultimulAnEn.toString())}
+                  .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
+                  .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
                 className={
                   key == activePage ? "text-gray-800" : "hover:text-gray-800"
                 }
@@ -92,7 +94,9 @@ export function Navbar({
         <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-500 sm:flex-row">
           {Object.entries(PAGES).map(([key, { name, path }]) => (
             <Link
-              href={path}
+              href={path
+                .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
+                .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
               key={key}
               className={key == activePage ? "text-gray-800" : ""}
             >
