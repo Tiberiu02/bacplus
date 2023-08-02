@@ -13,6 +13,7 @@ import Image from "next/image";
 
 import backgoundImg from "../../public/hero-bg.jpg";
 import { Authors } from "~/components/Authors";
+import { aniBac, aniEn } from "~/data/dbQuery";
 
 function Section({
   children,
@@ -68,19 +69,30 @@ export default function Home() {
           alt="background"
           className="absolute left-0 top-0 z-0 h-screen w-screen overflow-hidden object-cover"
         />
-        <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/60">
-          <div className="flex max-w-3xl flex-col gap-8">
-            <h1 className="text-center text-5xl font-extrabold">
-              TRANSPARENȚĂ LA&nbsp;BAC
+        <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/70">
+          <div className="flex max-w-3xl flex-col gap-4 p-4">
+            <h1 className="text-center text-4xl font-extrabold [word-spacing:0.5rem] sm:text-5xl">
+              TRANSPARENȚĂ{"  "}ÎN&nbsp;EDUCAȚIE
             </h1>
-            <h5 className="text-center text-xl">
-              Sporim transparența examenului de bacalaureat prin statistici la
-              nivel de liceu, județ sau țară, precum și clasamente ale liceelor
-              și județelor.
+            <h5 className="text-center text-xl font-medium">
+              Sporim transparența examenelor de Bacalaureat și Evaluare
+              Națională prin statistici la nivel de liceu, școală generală,
+              județ sau țară, precum și clasamente ale liceelor, școlilor
+              generale și județelor.
             </h5>
             <div className="flex flex-row justify-center gap-2">
-              <LinkButton>Licee</LinkButton>
-              <LinkButton>Județe</LinkButton>
+              <LinkButton
+                className="flex w-24 justify-center"
+                href={`/top_licee/${aniBac[0]}`}
+              >
+                Licee
+              </LinkButton>
+              <LinkButton
+                className="flex w-24 justify-center"
+                href={`/top_scoli/${aniEn[0]}`}
+              >
+                Școli
+              </LinkButton>
             </div>
           </div>
         </div>

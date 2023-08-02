@@ -8,20 +8,15 @@ import { useState } from "react";
 import type { ChangeEventHandler } from "react";
 import { LinkText } from "~/components/LinkText";
 import unidecode from "unidecode";
-import { liceuFromDataArray } from "~/data/data";
-import type { Liceu, LiceuDataArray } from "~/data/data";
-import { PercentageBar } from "~/components/ProgressBar";
+import { scoalaFromDataArray } from "~/data/data";
+import type { Scoala, ScoalaDataArray } from "~/data/data";
 import { formtaNumber } from "~/data/formatNumber";
 import { JUDETE_MAP_ID } from "~/data/coduriJudete";
 
-export function TabelLicee({
-  data,
-  anAdmitere,
-}: {
-  data: LiceuDataArray[];
-  anAdmitere?: number;
-}) {
-  const [sortField, setSortField] = useState<keyof Liceu>("medieBac");
+export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
+  const [sortField, setSortField] = useState<keyof Scoala>(
+    "medieEvaluareNationala"
+  );
   const [sortOrder, setSortOrder] = useState<1 | -1>(-1);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({});
@@ -34,8 +29,8 @@ export function TabelLicee({
     setGlobalFilterValue(value);
   };
 
-  const licee = data
-    .map(liceuFromDataArray)
+  const scoli = data
+    .map(scoalaFromDataArray)
     .sort((a, b) => {
       const aVal = a[sortField];
       const bVal = b[sortField];
@@ -57,11 +52,11 @@ export function TabelLicee({
     .map((row, ix) => ({
       ...row,
       rowIndex: ix + 1,
-      key: unidecode(row.numeLiceu).toLowerCase(),
+      key: unidecode(row.numeScoala).toLowerCase(),
     }));
 
-  const doarUnJudet = licee.every(
-    (liceu) => liceu.codJudet == licee[0]?.codJudet
+  const doarUnJudet = scoli.every(
+    (scoala) => scoala.codJudet == scoli[0]?.codJudet
   );
 
   const header = (
@@ -71,7 +66,7 @@ export function TabelLicee({
         <InputText
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
-          placeholder="Caută liceu"
+          placeholder="Caută școală"
         />
       </span>
     </div>
@@ -85,7 +80,7 @@ export function TabelLicee({
 
   return (
     <DataTable
-      value={licee}
+      value={scoli}
       paginator
       rows={10}
       rowsPerPageOptions={[10, 25, 50, 100]}
@@ -104,7 +99,7 @@ export function TabelLicee({
             ? -1
             : 1
         );
-        setSortField(e.sortField as keyof Liceu);
+        setSortField(e.sortField as keyof Scoala);
       }}
     >
       <Column
@@ -113,10 +108,10 @@ export function TabelLicee({
         body={({ rowIndex }: { rowIndex: number }) => rowIndex}
       />
       <Column
-        field="numeLiceu"
-        header="Nume liceu"
-        body={({ id, numeLiceu }: Liceu) => (
-          <LinkText href={`/liceu/${id}`}>{numeLiceu}</LinkText>
+        field="numeScoala"
+        header="Nume școală"
+        body={({ id, numeScoala }: Scoala) => (
+          <LinkText href={`/scoala/${id}`}>{numeScoala}</LinkText>
         )}
         style={{
           padding: "0.5rem 1rem",
@@ -130,7 +125,7 @@ export function TabelLicee({
               Județ
             </div>
           }
-          body={({ codJudet }: Liceu) => (
+          body={({ codJudet }: Scoala) => (
             <LinkText href={`/judet/${JUDETE_MAP_ID[codJudet]?.nume ?? ""}`}>
               {JUDETE_MAP_ID[codJudet]?.numeIntreg}
             </LinkText>
@@ -139,39 +134,42 @@ export function TabelLicee({
         />
       )}
       <Column
-        field="medieBac"
+        field="medieEvaluareNationala"
         sortable
-        header="Medie"
+        header="Medie Evaluare Națională"
         style={colStyle}
-        body={(rowData: Liceu) => formtaNumber(rowData["medieBac"], 2)}
+        body={(rowData: Scoala) =>
+          formtaNumber(rowData["medieEvaluareNationala"], 2)
+        }
       />
       <Column
         sortable
-        field="rataPromovare"
-        header={
-          <>
-            Rata de
-            <br />
-            promovare
-          </>
-        }
+        field="medieLimbaRomana"
+        header={<>Medie limba română</>}
         style={colStyle}
-        body={(rowData: Liceu) => (
-          <PercentageBar value={rowData["rataPromovare"] * 100} />
-        )}
+        body={(rowData: Scoala) => formtaNumber(rowData["medieLimbaRomana"], 2)}
       />
+      <Column
+        sortable
+        field="medieMatematica"
+        header={<>Medie matematică</>}
+        style={colStyle}
+        body={(rowData: Scoala) => formtaNumber(rowData["medieMatematica"], 2)}
+      />
+      {scoli.some((scoala) => scoala.medieAbsolvire) && (
+        <Column
+          sortable
+          field="medieAbsolvire"
+          header={<>Medie absolvire</>}
+          style={colStyle}
+          body={(rowData: Scoala) => formtaNumber(rowData["medieAbsolvire"], 2)}
+        />
+      )}
       <Column
         field="numCandidati"
         sortable
         header="Absolvenți"
         style={colStyle}
-      />
-      <Column
-        field="medieAdm"
-        sortable
-        header={`Medie admitere ${anAdmitere ?? ""}`}
-        style={colStyle}
-        body={(rowData: Liceu) => formtaNumber(rowData["medieAdm"], 2)}
       />
     </DataTable>
   );

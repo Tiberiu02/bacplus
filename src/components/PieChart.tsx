@@ -32,7 +32,8 @@ export function PieChart({
         ],
       }}
       options={{
-        aspectRatio,
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: "bottom",

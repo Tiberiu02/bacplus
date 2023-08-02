@@ -23,7 +23,7 @@ import {
 } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
-import { JUDETE_MAP } from "~/data/coduriJudete";
+import { JUDETE_MAP_ID } from "~/data/coduriJudete";
 import { LinkText } from "~/components/LinkText";
 import { twMerge } from "tailwind-merge";
 import type { PropsWithChildren } from "react";
@@ -95,8 +95,8 @@ function ChartCard({
   Icon: IconType;
 }>) {
   return (
-    <Card className="flex w-full flex-col gap-5">
-      <div className="flex items-center gap-3 text-xl font-semibold">
+    <Card className="flex w-full max-w-[calc(100vw-1.5rem)] flex-col gap-5">
+      <div className="flex max-w-full items-center gap-3 text-xl font-semibold">
         <Icon className="shrink-0 text-3xl text-blue-500 opacity-60" />
         <div className="opacity-90">{title}</div>
       </div>
@@ -130,9 +130,9 @@ export default function PaginaLiceu({
       <Title>{numeLiceu}</Title>
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
-        {JUDETE_MAP[codJudet]?.numeIntreg}, bazate pe rezultatele la examenele
-        de Bacalaureat și Evaluare Națională publicate de Ministerul Educației
-        Naționale.
+        {JUDETE_MAP_ID[codJudet]?.numeIntreg}, bazate pe rezultatele la
+        examenele de Bacalaureat și Evaluare Națională publicate de Ministerul
+        Educației Naționale.
       </p>
       {(website || adresa) && (
         <p>
@@ -202,7 +202,7 @@ export default function PaginaLiceu({
         </Card>
       </div>
 
-      <div className="mt-1 grid w-full gap-4 self-center lg:grid-cols-2">
+      <div className="mt-1 grid w-full gap-4 self-center overflow-hidden lg:grid-cols-2">
         <ChartCard
           title={`Distribuție limbi străine ${dataBac[0]}`}
           Icon={IoLanguage}

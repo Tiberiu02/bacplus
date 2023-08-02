@@ -11,6 +11,41 @@ export const queryBac = await prisma.bac.groupBy({
   },
 });
 
+export const queryEn = await prisma.en.groupBy({
+  by: ["id_scoala", "an", "id_judet"],
+  _count: {
+    _all: true,
+  },
+  _avg: {
+    lr_final: true,
+    ma_final: true,
+    lm_final: true,
+    medie_abs: true,
+    medie_en: true,
+  },
+});
+
+export const queryBacJudete = await prisma.bac.groupBy({
+  by: ["an", "id_judet"],
+  _count: {
+    _all: true,
+    my_medie: true, // only set when valid candidate
+  },
+  _avg: {
+    my_medie: true,
+  },
+});
+
+export const queryEnJudete = await prisma.en.groupBy({
+  by: ["an", "id_judet"],
+  _count: {
+    _all: true,
+  },
+  _avg: {
+    medie_en: true,
+  },
+});
+
 export const queryGender = await prisma.bac.groupBy({
   by: ["id_liceu", "sex"],
   _count: {
@@ -62,6 +97,13 @@ export const queryLicee = await prisma.licee.findMany({
     nume_liceu: true,
     website: true,
     address: true,
+  },
+});
+
+export const queryScoli = await prisma.scoli.findMany({
+  select: {
+    id_scoala: true,
+    nume_scoala: true,
   },
 });
 

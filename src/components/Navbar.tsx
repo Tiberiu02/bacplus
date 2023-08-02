@@ -20,7 +20,7 @@ const PAGES = {
   },
   counties: {
     name: "Județe",
-    path: "/judete",
+    path: "/top_judete/${ultimulAnBac}",
   },
   national: {
     name: "Național",

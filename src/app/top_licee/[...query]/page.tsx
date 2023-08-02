@@ -7,12 +7,13 @@ import {
   queryBac,
   queryMediiAdmLicee,
   queryPromovatiBac,
+  queryEn,
 } from "~/data/dbQuery";
 
-import { TabelLicee } from "~/app/top_licee/[...query]/TabelLicee";
+import { TabelLicee } from "./TabelLicee";
 import { MainContainer } from "~/components/MainContainer";
-import { liceuToDataArray } from "~/data/licee";
-import type { Liceu } from "~/data/licee";
+import { liceuToDataArray } from "~/data/data";
+import type { Liceu } from "~/data/data";
 import type { Metadata } from "next";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";

@@ -217,7 +217,7 @@ export const JUDETE = [
   },
 ];
 
-export const JUDETE_MAP = JUDETE.reduce((acc, judet) => {
+export const JUDETE_MAP_ID = JUDETE.reduce((acc, judet) => {
   acc[judet.id] = judet;
   return acc;
 }, {} as { [id: string]: Judet });
