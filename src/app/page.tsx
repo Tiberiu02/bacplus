@@ -13,7 +13,15 @@ import Image from "next/image";
 
 import backgoundImg from "../../public/hero-bg.jpg";
 import { Authors } from "~/components/Authors";
-import { aniBac, aniEn } from "~/data/dbQuery";
+import {
+  aniBac,
+  aniEn,
+  queryBac,
+  queryEn,
+  queryLicee,
+  queryScoli,
+  querySpecializariBac,
+} from "~/data/dbQuery";
 
 function Section({
   children,
@@ -147,28 +155,33 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <CountUpCard
             caption="Candidați"
-            finalNumber={1636920}
+            finalNumber={
+              queryBac.reduce((acc, e) => acc + e._count._all, 0) +
+              queryEn.reduce((acc, e) => acc + e._count._all, 0)
+            }
             duration={2500}
             className="basis-1/4"
             Icon={FaUserGraduate}
           />
           <CountUpCard
             caption="Licee"
-            finalNumber={1664}
+            finalNumber={queryLicee.length}
             duration={3000}
             className="basis-1/4"
             Icon={FaSchool}
           />
           <CountUpCard
             caption="Școli generale"
-            finalNumber={6195}
+            finalNumber={queryScoli.length}
             duration={3500}
             className="basis-1/4"
             Icon={FaSchool2}
           />
           <CountUpCard
             caption="Specializări"
-            finalNumber={70}
+            finalNumber={
+              new Set(querySpecializariBac.map((e) => e.specializare)).size
+            }
             duration={4000}
             className="basis-1/4"
             Icon={FaBriefcase}
