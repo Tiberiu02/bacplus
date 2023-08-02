@@ -1,5 +1,4 @@
 import { Authors } from "~/components/Authors";
-import { LinkText } from "~/components/LinkText";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 

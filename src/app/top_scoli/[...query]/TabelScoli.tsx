@@ -11,7 +11,7 @@ import unidecode from "unidecode";
 import { scoalaFromDataArray } from "~/data/data";
 import type { Scoala, ScoalaDataArray } from "~/data/data";
 import { formtaNumber } from "~/data/formatNumber";
-import { JUDETE_MAP_ID } from "~/data/coduriJudete";
+import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
 
 export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
   const [sortField, setSortField] = useState<keyof Scoala>(
@@ -126,8 +126,8 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
             </div>
           }
           body={({ codJudet }: Scoala) => (
-            <LinkText href={`/judet/${JUDETE_MAP_ID[codJudet]?.nume ?? ""}`}>
-              {JUDETE_MAP_ID[codJudet]?.numeIntreg}
+            <LinkText href={`/judet/${JUDETE_DUPA_COD[codJudet]?.nume ?? ""}`}>
+              {JUDETE_DUPA_COD[codJudet]?.numeIntreg}
             </LinkText>
           )}
           style={colStyle}

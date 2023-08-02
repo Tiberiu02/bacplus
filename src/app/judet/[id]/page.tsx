@@ -1,37 +1,32 @@
-import { FaAward, FaUserFriends } from "react-icons/fa";
+import { FaAward } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
   FaPersonCircleCheck,
   FaSchoolCircleCheck,
-  FaSuitcase,
   FaUserGraduate,
 } from "react-icons/fa6";
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import {
-  queryBac,
-  queryGender,
-  queryLicee,
-  queryLimbiMaterneBac,
-  queryLimbiStraineBac,
-  queryMediiAdmLicee,
-  queryPromovatiBac,
-  querySpecializariBac,
+  queryBacJudete,
+  queryEnJudete,
+  queryLimbiMaterneBacJudete,
+  queryLimbiStraineBacJudete,
+  queryPromovatiBacJudete,
 } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
-import { LinkText } from "~/components/LinkText";
+import { JUDETE, JUDETE_DUPA_NUME } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 
 export function generateStaticParams() {
-  return queryLicee.map((e) => ({
+  return JUDETE.map((judet) => ({
     params: {
-      id: e.id_liceu,
+      id: judet.nume,
     },
   }));
 }
@@ -41,65 +36,38 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeLiceu = queryLicee.find((e) => e.id_liceu == params.id)?.nume_liceu;
+  const numeJudet = JUDETE_DUPA_NUME[params.id]?.numeIntreg;
 
-  if (!numeLiceu) return {};
+  if (!numeJudet) return {};
 
   return {
-    title: `${numeLiceu} | Bac Plus`,
-    description: `Vezi informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,
+    title: `${numeJudet} | Bac Plus`,
+    description: `Vezi informații detaliate despre județul ${numeJudet}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,
   };
 }
 
-export default function PaginaLiceu({
+export default function PaginaJudet({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const {
-    numeLiceu,
-    website,
-    adresa,
-    codJudet,
-    rezultateBac,
-    admitere,
-    genderData,
-  } = getInfoLiceu(id);
+  const { numeJudet, rezultateBac } = getInfoJudet(id);
 
   const dataBac = Object.entries(rezultateBac).at(-1);
-  const dataAdm = Object.entries(admitere).at(-1) as [string, number];
+  const dataAdm = Object.entries(rezultateBac)
+    .filter((e) => e[1].medieEn)
+    .at(-1);
 
-  if (!dataBac || !codJudet) return <div>404</div>;
+  if (!dataBac) return <div>404</div>;
 
   return (
     <MainContainer>
-      <Title>{numeLiceu}</Title>
+      <Title>{numeJudet}</Title>
       <p>
-        Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
-        {JUDETE_DUPA_COD[codJudet]?.numeIntreg}, bazate pe rezultatele la
-        examenele de Bacalaureat și Evaluare Națională publicate de Ministerul
-        Educației Naționale.
+        Pe această pagină puteți vedea informații despre județul {numeJudet},
+        bazate pe rezultatele oficiale la examenele de Bacalaureat și Evaluare
+        Națională publicate de Ministerul Educației Naționale.
       </p>
-      {(website || adresa) && (
-        <p>
-          Pentru mai multe informații despre acest liceu, puteți{" "}
-          {website && (
-            <>
-              să accesați site-ul oficial al liceului,{" "}
-              <LinkText href={website} target="_blank">
-                {new URL(website).hostname}
-              </LinkText>
-            </>
-          )}
-          {website && adresa && <>, sau </>}
-          {adresa && (
-            <>
-              să vizitați liceul la adresa <i>{adresa}</i>
-            </>
-          )}
-          .
-        </p>
-      )}
       <div className="my-4 flex justify-end">
         <ShareButtons />
       </div>
@@ -112,19 +80,19 @@ export default function PaginaLiceu({
             Icon={FaAward}
           />
           <SnippetCard
-            title={`Promovare ${dataBac[0]}`}
+            title={`Promovare Bac ${dataBac[0]}`}
             value={formtaNumber(dataBac[1].rataPromovare, 1) + "%"}
             Icon={FaSchoolCircleCheck}
           />
           <SnippetCard
-            title={`Absolvenți ${dataBac[0]}`}
+            title={`Absolvenți liceu ${dataBac[0]}`}
             value={formtaNumber(dataBac[1].candidati, 3)}
             Icon={FaUserGraduate}
           />
           {dataAdm && (
             <SnippetCard
-              title={`Medie Admitere ${dataAdm[0]}`}
-              value={formtaNumber(dataAdm[1], 3)}
+              title={`Medie Evaluare ${dataAdm[0]}`}
+              value={formtaNumber(dataAdm[1].medieEn, 3)}
               Icon={FaPersonCircleCheck}
             />
           )}
@@ -132,18 +100,10 @@ export default function PaginaLiceu({
 
         <Card className="relative flex w-full flex-col justify-center self-stretch">
           <div className="hidden lg:block">
-            <MainChart
-              rezultateBac={rezultateBac}
-              admitere={admitere}
-              aspectRatio={1.87}
-            />
+            <MainChart rezultateBac={rezultateBac} aspectRatio={1.87} />
           </div>
           <div className="lg:hidden">
-            <MainChart
-              rezultateBac={rezultateBac}
-              admitere={admitere}
-              aspectRatio={1}
-            />
+            <MainChart rezultateBac={rezultateBac} aspectRatio={1} />
           </div>
         </Card>
       </div>
@@ -163,21 +123,6 @@ export default function PaginaLiceu({
         </ChartCard>
 
         <ChartCard
-          title={`Distribuție specializări ${dataBac[0]}`}
-          Icon={FaSuitcase}
-        >
-          <PieChart
-            data={Object.entries(dataBac[1].specializari).map(
-              ([specializare, e]) => ({
-                name: specializare,
-                value: e.candidati,
-              })
-            )}
-            aspectRatio={1.7}
-          />
-        </ChartCard>
-
-        <ChartCard
           title={`Distribuție limbi materne ${dataBac[0]}`}
           Icon={TbMessageLanguage}
         >
@@ -189,39 +134,14 @@ export default function PaginaLiceu({
             aspectRatio={1.7}
           />
         </ChartCard>
-
-        {genderData && (
-          <ChartCard title="Distribuție demografică elevi" Icon={FaUserFriends}>
-            <PieChart
-              data={[
-                {
-                  name: "M",
-                  value: genderData.males,
-                  color: "rgb(54, 162, 235)",
-                },
-                {
-                  name: "F",
-                  value: genderData.females,
-                  color: "rgb(255, 99, 132)",
-                },
-              ]}
-              aspectRatio={1.7}
-              convertToPercentages
-            />
-          </ChartCard>
-        )}
       </div>
     </MainContainer>
   );
 }
 
-function getInfoLiceu(id: string) {
-  const codJudet = queryBac.find((result) => result.id_liceu == id)?.id_judet;
-  const {
-    nume_liceu: numeLiceu,
-    website,
-    address: adresa,
-  } = queryLicee.find((result) => result.id_liceu == id) || {};
+function getInfoJudet(id: string) {
+  const idJudet = JUDETE_DUPA_NUME[id]?.id;
+  const numeJudet = JUDETE_DUPA_NUME[id]?.numeIntreg;
 
   const rezultateBac = {} as {
     [an: number]: {
@@ -229,6 +149,7 @@ function getInfoLiceu(id: string) {
       candidati: number;
       candidatiValizi: number;
       rataPromovare?: number;
+      medieEn?: number;
       limbiMaterne: {
         [limba: string]: {
           candidati: number;
@@ -239,23 +160,11 @@ function getInfoLiceu(id: string) {
           candidati: number;
         };
       };
-      specializari: {
-        [specializare: string]: {
-          candidati: number;
-        };
-      };
     };
   };
 
-  const admitere = Object.fromEntries(
-    queryMediiAdmLicee
-      .filter((result) => result.repartizat_id_liceu == id)
-      .sort((a, b) => b.an - a.an)
-      .map((e) => [e.an, e._min.medie_adm])
-  );
-
-  queryBac
-    .filter((result) => result.id_liceu == id)
+  queryBacJudete
+    .filter((result) => result.id_judet == idJudet)
     .forEach((result) => {
       rezultateBac[result.an] = {
         medie: result._avg.my_medie || undefined,
@@ -263,12 +172,11 @@ function getInfoLiceu(id: string) {
         candidatiValizi: result._count.my_medie,
         limbiMaterne: {},
         limbiStraine: {},
-        specializari: {},
       };
     });
 
-  queryPromovatiBac
-    .filter((result) => result.id_liceu == id)
+  queryPromovatiBacJudete
+    .filter((result) => result.id_judet == idJudet)
     .forEach((result) => {
       const d = rezultateBac[result.an];
 
@@ -277,8 +185,8 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  queryLimbiMaterneBac
-    .filter((result) => result.id_liceu == id)
+  queryLimbiMaterneBacJudete
+    .filter((result) => result.id_judet == idJudet)
     .forEach((e) => {
       const d = rezultateBac[e.an];
 
@@ -297,8 +205,8 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  queryLimbiStraineBac
-    .filter((result) => result.id_liceu == id)
+  queryLimbiStraineBacJudete
+    .filter((result) => result.id_judet == idJudet)
     .forEach((e) => {
       const d = rezultateBac[e.an];
 
@@ -309,59 +217,33 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  querySpecializariBac
-    .filter((result) => result.id_liceu == id)
-    .forEach((e) => {
-      const d = rezultateBac[e.an];
+  queryEnJudete
+    .filter((result) => result.id_judet == idJudet)
+    .forEach((result) => {
+      const d = rezultateBac[result.an];
 
       if (d) {
-        d.specializari[e.specializare] = {
-          candidati: e._count._all,
-        };
+        d.medieEn = result._avg.medie_en || undefined;
       }
     });
 
-  const males =
-    queryGender.find((e) => e.id_liceu == id && e.sex == "M")?._count._all ||
-    null;
-  const females =
-    queryGender.find((e) => e.id_liceu == id && e.sex == "F")?._count._all ||
-    null;
-
-  const genderData =
-    males != null && females != null
-      ? {
-          males,
-          females,
-        }
-      : undefined;
-
   return {
-    numeLiceu,
-    website,
-    adresa,
-    codJudet,
+    numeJudet,
     rezultateBac,
-    admitere,
-    genderData,
   };
 }
 
 function MainChart({
   rezultateBac: data,
-  admitere: dataAdm,
   aspectRatio,
 }: {
   rezultateBac: {
     [an: string]: {
       medie?: number;
       candidati: number;
-      candidatiValizi: number;
       rataPromovare?: number;
+      medieEn?: number;
     };
-  };
-  admitere: {
-    [an: string]: number | null;
   };
   aspectRatio: number;
 }) {
@@ -371,7 +253,7 @@ function MainChart({
     labels: entries.map((e) => e[0]),
     datasets: [
       {
-        label: "Medie absolvire",
+        label: "Medie Bac",
         data: entries.map((e) => e[1].medie),
         fill: false,
         backgroundColor: "#FD8A8A",
@@ -380,8 +262,8 @@ function MainChart({
         yAxisID: "y",
       },
       {
-        label: "Medie admitere",
-        data: entries.map((e) => dataAdm[e[0]]),
+        label: "Medie Evaluare",
+        data: entries.map((e) => e[1].medieEn),
         fill: false,
         backgroundColor: "#FDAD35",
         borderColor: "#FDAD35",
@@ -389,7 +271,7 @@ function MainChart({
         yAxisID: "y",
       },
       {
-        label: "Absolvenți",
+        label: "Absolvenți liceu",
         data: entries.map((e) => e[1].candidati),
         fill: false,
         borderColor: "#9EA1D4",

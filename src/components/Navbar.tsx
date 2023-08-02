@@ -8,6 +8,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { MdMenu, MdOutlineClose } from "react-icons/md";
 
 import { twMerge } from "tailwind-merge";
+import { usePathname } from "next/navigation";
 
 const PAGES = {
   highshools: {
@@ -39,16 +40,19 @@ const PAGES = {
 const HOME_PATH = "/";
 
 export function Navbar({
-  activePage,
   ultimulAnBac,
   ultimulAnEn,
 }: {
-  activePage?: keyof typeof PAGES;
   ultimulAnBac: number;
   ultimulAnEn: number;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [animationParent] = useAutoAnimate();
+
+  const currentPath = usePathname();
+  const activePage = Object.entries(PAGES).find(
+    ([_, { path }]) => path.split("/")[1] == currentPath.split("/")[1]
+  )?.[0];
 
   return (
     <nav
@@ -91,15 +95,16 @@ export function Navbar({
       {isMenuOpen && (
         <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-500 sm:flex-row">
           {Object.entries(PAGES).map(([key, { name, path }]) => (
-            <Link
-              href={path
-                .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
-                .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
-              key={key}
-              className={key == activePage ? "text-gray-800" : ""}
-            >
-              {name}
-            </Link>
+            <div onClick={() => setIsMenuOpen(false)} key={key}>
+              <Link
+                href={path
+                  .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
+                  .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
+                className={key == activePage ? "text-gray-800" : ""}
+              >
+                {name}
+              </Link>
+            </div>
           ))}
         </div>
       )}

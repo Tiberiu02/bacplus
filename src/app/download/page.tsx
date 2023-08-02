@@ -44,6 +44,11 @@ export default function Download() {
           <LinkText href="https://sqlitestudio.pl/" target="_blank">
             SQLiteStudio
           </LinkText>
+          . Va fi nevoie să cunoașteți limbajul de interogare a bazelor de date
+          SQL (Standard Query Language). Vă recomandăm{" "}
+          <LinkText href="https://www.w3schools.com/sql" target="_blank">
+            acest tutorial SQL gratuit
+          </LinkText>
           .
         </p>
         <p>

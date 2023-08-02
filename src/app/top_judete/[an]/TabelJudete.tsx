@@ -102,7 +102,7 @@ export function TabelJudete({ data }: { data: Judet[] }) {
       <Column
         field="numeIntreg"
         header="Nume județ"
-        body={({ id, nume, numeIntreg }: Judet) => (
+        body={({ nume, numeIntreg }: Judet) => (
           <LinkText href={`/judet/${nume}`}>{numeIntreg}</LinkText>
         )}
         style={{

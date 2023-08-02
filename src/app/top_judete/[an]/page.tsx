@@ -1,19 +1,14 @@
 import { Title } from "~/components/Title";
-import { JUDETE, JUDETE_MAP_ID } from "~/data/coduriJudete";
+import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
 import {
   aniBac,
-  queryEn,
-  queryScoli,
-  aniEn,
   queryBacJudete,
   queryPromovatiBac,
   queryEnJudete,
 } from "~/data/dbQuery";
-
 import { TabelJudete } from "./TabelJudete";
 import { MainContainer } from "~/components/MainContainer";
-import { scoalaToDataArray } from "~/data/data";
-import type { Judet, Scoala } from "~/data/data";
+import type { Judet } from "~/data/data";
 import type { Metadata } from "next";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
@@ -94,8 +89,8 @@ function getJudete(an: number) {
 
     judete[result.id_judet] = {
       id: result.id_judet,
-      nume: JUDETE_MAP_ID[result.id_judet]?.nume ?? "",
-      numeIntreg: JUDETE_MAP_ID[result.id_judet]?.numeIntreg ?? "",
+      nume: JUDETE_DUPA_COD[result.id_judet]?.nume ?? "",
+      numeIntreg: JUDETE_DUPA_COD[result.id_judet]?.numeIntreg ?? "",
       medieBac: result._avg.my_medie ?? undefined,
       numCandidatiBac: result._count._all,
       numCandidatiValiziBac: result._count.my_medie,

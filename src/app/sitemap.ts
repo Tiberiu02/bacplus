@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { JUDETE } from "~/data/coduriJudete";
 import { aniBac, aniEn, queryLicee, queryScoli } from "~/data/dbQuery";
 

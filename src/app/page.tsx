@@ -72,7 +72,7 @@ export default function Home() {
         <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/70">
           <div className="flex max-w-3xl flex-col gap-4 p-4">
             <h1 className="text-center text-4xl font-extrabold [word-spacing:0.5rem] sm:text-5xl">
-              TRANSPARENȚĂ{"  "}ÎN&nbsp;EDUCAȚIE
+              TRANSPARENȚĂ ÎN&nbsp;EDUCAȚIE
             </h1>
             <h5 className="text-center text-xl font-medium">
               Sporim transparența examenelor de Bacalaureat și Evaluare
@@ -83,13 +83,13 @@ export default function Home() {
             <div className="flex flex-row justify-center gap-2">
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_licee/${aniBac[0]}`}
+                href={`/top_licee/${aniBac[0] ?? ""}`}
               >
                 Licee
               </LinkButton>
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_scoli/${aniEn[0]}`}
+                href={`/top_scoli/${aniEn[0] ?? ""}`}
               >
                 Școli
               </LinkButton>

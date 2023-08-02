@@ -7,7 +7,6 @@ import {
   queryBac,
   queryMediiAdmLicee,
   queryPromovatiBac,
-  queryEn,
 } from "~/data/dbQuery";
 
 import { TabelLicee } from "./TabelLicee";

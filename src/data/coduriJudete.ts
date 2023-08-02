@@ -1,9 +1,3 @@
-type Judet = {
-  id: string;
-  nume: string;
-  numeIntreg: string;
-};
-
 export const JUDETE = [
   {
     id: "AB",
@@ -217,7 +211,10 @@ export const JUDETE = [
   },
 ];
 
-export const JUDETE_MAP_ID = JUDETE.reduce((acc, judet) => {
-  acc[judet.id] = judet;
-  return acc;
-}, {} as { [id: string]: Judet });
+export const JUDETE_DUPA_COD = Object.fromEntries(
+  JUDETE.map((judet) => [judet.id, judet])
+);
+
+export const JUDETE_DUPA_NUME = Object.fromEntries(
+  JUDETE.map((judet) => [judet.nume, judet])
+);

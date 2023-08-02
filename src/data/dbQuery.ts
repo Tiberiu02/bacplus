@@ -11,6 +11,28 @@ export const queryBac = await prisma.bac.groupBy({
   },
 });
 
+export const queryBacJudete = await prisma.bac.groupBy({
+  by: ["an", "id_judet"],
+  _count: {
+    _all: true,
+    my_medie: true, // only set when valid candidate
+  },
+  _avg: {
+    my_medie: true,
+  },
+});
+
+export const queryBacNational = await prisma.bac.groupBy({
+  by: ["an"],
+  _count: {
+    _all: true,
+    my_medie: true, // only set when valid candidate
+  },
+  _avg: {
+    my_medie: true,
+  },
+});
+
 export const queryEn = await prisma.en.groupBy({
   by: ["id_scoala", "an", "id_judet"],
   _count: {
@@ -25,19 +47,18 @@ export const queryEn = await prisma.en.groupBy({
   },
 });
 
-export const queryBacJudete = await prisma.bac.groupBy({
+export const queryEnJudete = await prisma.en.groupBy({
   by: ["an", "id_judet"],
   _count: {
     _all: true,
-    my_medie: true, // only set when valid candidate
   },
   _avg: {
-    my_medie: true,
+    medie_en: true,
   },
 });
 
-export const queryEnJudete = await prisma.en.groupBy({
-  by: ["an", "id_judet"],
+export const queryEnNational = await prisma.en.groupBy({
+  by: ["an"],
   _count: {
     _all: true,
   },
@@ -63,6 +84,26 @@ export const queryPromovatiBac = await prisma.bac.groupBy({
   },
 });
 
+export const queryPromovatiBacJudete = await prisma.bac.groupBy({
+  by: ["an", "id_judet"],
+  _count: {
+    _all: true,
+  },
+  where: {
+    rezultat: "REUSIT",
+  },
+});
+
+export const queryPromovatiBacNational = await prisma.bac.groupBy({
+  by: ["an"],
+  _count: {
+    _all: true,
+  },
+  where: {
+    rezultat: "REUSIT",
+  },
+});
+
 export const queryLimbiMaterneBac = await prisma.bac.groupBy({
   by: ["an", "id_liceu", "limba_materna"],
   _count: {
@@ -70,8 +111,43 @@ export const queryLimbiMaterneBac = await prisma.bac.groupBy({
   },
 });
 
+export const queryLimbiMaterneBacJudete = await prisma.bac.groupBy({
+  by: ["an", "id_judet", "limba_materna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const queryLimbiMaterneBacNational = await prisma.bac.groupBy({
+  by: ["an", "limba_materna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const queryLimbiMaterneEn = await prisma.en.groupBy({
+  by: ["an", "id_scoala", "limba_materna"],
+  _count: {
+    _all: true,
+  },
+});
+
 export const queryLimbiStraineBac = await prisma.bac.groupBy({
   by: ["an", "id_liceu", "limba_moderna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const queryLimbiStraineBacJudete = await prisma.bac.groupBy({
+  by: ["an", "id_judet", "limba_moderna"],
+  _count: {
+    _all: true,
+  },
+});
+
+export const queryLimbiStraineBacNational = await prisma.bac.groupBy({
+  by: ["an", "limba_moderna"],
   _count: {
     _all: true,
   },
