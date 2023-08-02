@@ -15,9 +15,7 @@ import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 
 export function generateStaticParams() {
   return queryScoli.map((e) => ({
-    params: {
-      id: e.id_scoala,
-    },
+    id: e.id_scoala,
   }));
 }
 

@@ -17,7 +17,7 @@ if (!OUTPUT_FILE) {
     process.exit(1);
 }
 
-console.log(fs.existsSync(OUTPUT_FILE), OUTPUT_FILE);
+console.log(`Downloading database from ${DOWNLOAD_URL} to ${OUTPUT_FILE}`);
 
 if (fs.existsSync(OUTPUT_FILE)) {
     console.log("Database file already exists, skipping download!");

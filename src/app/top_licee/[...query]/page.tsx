@@ -39,7 +39,7 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const params = aniBac
+  return aniBac
     .map((an) => an.toString())
     .flatMap((an) => [
       { query: [an] },
@@ -47,8 +47,6 @@ export function generateStaticParams() {
         query: [an, judet.nume],
       })),
     ]);
-
-  return params;
 }
 
 export default function Page({ params }: { params: { query: string[] } }) {

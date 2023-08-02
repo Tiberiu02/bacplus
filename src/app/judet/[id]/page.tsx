@@ -25,9 +25,7 @@ import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 
 export function generateStaticParams() {
   return JUDETE.map((judet) => ({
-    params: {
-      id: judet.nume,
-    },
+    id: judet.nume,
   }));
 }
 

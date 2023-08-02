@@ -30,9 +30,7 @@ import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 
 export function generateStaticParams() {
   return queryLicee.map((e) => ({
-    params: {
-      id: e.id_liceu,
-    },
+    id: e.id_liceu,
   }));
 }
 
