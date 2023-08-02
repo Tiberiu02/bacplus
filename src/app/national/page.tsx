@@ -1,34 +1,24 @@
-import { FaAward, FaUserFriends } from "react-icons/fa";
+import { FaAward } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
   FaPersonCircleCheck,
   FaSchoolCircleCheck,
-  FaSuitcase,
   FaUserGraduate,
 } from "react-icons/fa6";
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import {
-  queryBac,
   queryBacNational,
   queryEnNational,
-  queryGender,
   queryLicee,
-  queryLimbiMaterneBac,
   queryLimbiMaterneBacNational,
-  queryLimbiStraineBac,
   queryLimbiStraineBacNational,
-  queryMediiAdmLicee,
-  queryPromovatiBac,
   queryPromovatiBacNational,
-  querySpecializariBac,
 } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
-import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";

@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "node downloadData.cjs && prisma generate && next build",
     "dev": "next dev",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
-    "start": "next start",
-    "postinstall": "node downloadData.cjs"
+    "start": "next start"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.7.0",
