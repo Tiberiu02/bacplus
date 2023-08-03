@@ -7,7 +7,7 @@ export function Announcements() {
   return (
     <>
       {showLGBT && (
-        <div className="flex items-center gap-3 rounded bg-green-100 p-3 shadow">
+        <div className="flex items-center gap-3 rounded bg-green-100 px-3 py-3 shadow sm:px-4">
           <BsFillSuitHeartFill className="shrink-0 text-3xl text-green-700" />
           <div className="text-green-700">
             <span className="font-bold">
