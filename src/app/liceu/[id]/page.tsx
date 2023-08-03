@@ -27,6 +27,7 @@ import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
+import { env } from "~/env.mjs";
 
 export function generateStaticParams() {
   return queryLicee.map((e) => ({
@@ -52,6 +53,9 @@ export function generateMetadata({
     openGraph: {
       title,
       description,
+      siteName: "Bac Plus",
+      images: ["/og-banner.jpg"],
+      url: new URL(env.WEBSITE_URL).host,
     },
   };
 }

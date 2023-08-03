@@ -27,11 +27,10 @@ export const metadata: Metadata = {
     minimumScale: 1,
   },
   openGraph: {
-    type: "website",
-    siteName: "Bac Plus",
     title: "Bac Plus",
     description:
       "Descoperă statistici despre examenele de Bacalaureat și Evaluare Națională la nivel de liceu, școală generală, județ sau țară, precum și clasamente ale liceelor, școlilor generale și județelor.",
+    siteName: "Bac Plus",
     images: ["/og-banner.jpg"],
     url: new URL(env.WEBSITE_URL).host,
   },

@@ -9,6 +9,7 @@ import type { Scoala } from "~/data/data";
 import type { Metadata } from "next";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
+import { env } from "~/env.mjs";
 
 export function generateMetadata({
   params,
@@ -34,6 +35,9 @@ export function generateMetadata({
     openGraph: {
       title,
       description,
+      siteName: "Bac Plus",
+      images: ["/og-banner.jpg"],
+      url: new URL(env.WEBSITE_URL).host,
     },
   };
 }

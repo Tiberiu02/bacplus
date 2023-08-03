@@ -12,6 +12,7 @@ import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
+import { env } from "~/env.mjs";
 
 export function generateStaticParams() {
   return queryScoli.map((e) => ({
@@ -39,6 +40,9 @@ export function generateMetadata({
     openGraph: {
       title,
       description,
+      siteName: "Bac Plus",
+      images: ["/og-banner.jpg"],
+      url: new URL(env.WEBSITE_URL).host,
     },
   };
 }
