@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { JUDETE } from "~/data/coduriJudete";
 import { aniBac, aniEn, queryLicee, queryScoli } from "~/data/dbQuery";
+import { env } from "~/env.mjs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const BASE_URL = "https://bacplus.ro";
   const pages = [
     "/",
     "/contact",
@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   return pages.map((page) => ({
-    url: `${BASE_URL}${page}`,
+    url: env.WEBSITE_URL + page,
     lastModified: new Date(),
   }));
 }

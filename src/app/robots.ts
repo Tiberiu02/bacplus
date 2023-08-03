@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { env } from "~/env.mjs";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://bacplus.ro/sitemap.xml",
+    sitemap: env.WEBSITE_URL + "/sitemap.xml",
   };
 }
