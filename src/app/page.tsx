@@ -13,15 +13,7 @@ import Image from "next/image";
 
 import backgoundImg from "../../public/hero-bg.jpg";
 import { Authors } from "~/components/Authors";
-import {
-  aniBac,
-  aniEn,
-  queryBac,
-  queryEn,
-  queryLicee,
-  queryScoli,
-  querySpecializariBac,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 
 function Section({
   children,
@@ -91,13 +83,13 @@ export default function Home() {
             <div className="flex flex-row justify-center gap-2">
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_licee/${aniBac[0] ?? ""}`}
+                href={`/top_licee/${query.aniBac[0]?.an ?? ""}`}
               >
                 Licee
               </LinkButton>
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_scoli/${aniEn[0] ?? ""}`}
+                href={`/top_scoli/${query.aniEn[0]?.an ?? ""}`}
               >
                 Școli
               </LinkButton>
@@ -156,8 +148,8 @@ export default function Home() {
           <CountUpCard
             caption="Candidați"
             finalNumber={
-              queryBac.reduce((acc, e) => acc + e._count._all, 0) +
-              queryEn.reduce((acc, e) => acc + e._count._all, 0)
+              query.bac.reduce((acc, e) => acc + e._count._all, 0) +
+              query.en.reduce((acc, e) => acc + e._count._all, 0)
             }
             duration={2500}
             className="basis-1/4"
@@ -165,14 +157,14 @@ export default function Home() {
           />
           <CountUpCard
             caption="Licee"
-            finalNumber={queryLicee.length}
+            finalNumber={query.licee.length}
             duration={3000}
             className="basis-1/4"
             Icon={FaSchool}
           />
           <CountUpCard
             caption="Școli generale"
-            finalNumber={queryScoli.length}
+            finalNumber={query.scoli.length}
             duration={3500}
             className="basis-1/4"
             Icon={FaSchool2}
@@ -181,7 +173,7 @@ export default function Home() {
             caption="Specializări"
             finalNumber={
               new Set(
-                querySpecializariBac.map((e) =>
+                query.specializariBac.map((e) =>
                   e.specializare
                     .normalize("NFD")
                     .replace(/[\u0300-\u036f]/g, "")

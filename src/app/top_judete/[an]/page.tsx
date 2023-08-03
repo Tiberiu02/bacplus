@@ -1,11 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
-import {
-  aniBac,
-  queryBacJudete,
-  queryPromovatiBac,
-  queryEnJudete,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { TabelJudete } from "./TabelJudete";
 import { MainContainer } from "~/components/MainContainer";
 import type { Judet } from "~/data/data";
@@ -27,7 +22,7 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const params = aniBac.map((an) => ({
+  const params = query.aniBac.map(({ an }) => ({
     an: an.toString(),
   }));
 
@@ -41,7 +36,7 @@ export default function Page({ params }: { params: { an: string } }) {
 
   const judete = getJudete(parseInt(an));
 
-  const optionsAni = aniBac.map((an) => ({
+  const optionsAni = query.aniBac.map(({ an }) => ({
     value: `${an}`,
     label: `${an}`,
     link: `/top_judete/${an}`,
@@ -83,7 +78,7 @@ function getJudete(an: number) {
     [id: string]: Judet;
   };
 
-  queryBacJudete.forEach((result) => {
+  query.bacJudete.forEach((result) => {
     if (result.id_judet === null || result.an != an) return;
 
     judete[result.id_judet] = {
@@ -99,7 +94,7 @@ function getJudete(an: number) {
     };
   });
 
-  queryPromovatiBac.forEach((result) => {
+  query.promovatiBac.forEach((result) => {
     if (result.id_judet === null || result.an != an) return;
 
     const obj = judete[result.id_judet];
@@ -108,7 +103,7 @@ function getJudete(an: number) {
     }
   });
 
-  queryEnJudete.forEach((result) => {
+  query.enJudete.forEach((result) => {
     if (result.id_judet === null || result.an != an) return;
 
     const obj = judete[result.id_judet];

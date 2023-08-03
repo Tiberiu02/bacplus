@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { JUDETE } from "~/data/coduriJudete";
-import { aniBac, aniEn, queryLicee, queryScoli } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { env } from "~/env.mjs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -8,17 +8,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/contact",
     "/download",
-    ...aniBac.flatMap((an) => [
+    ...query.aniBac.flatMap(({ an }) => [
       `/top_licee/${an}`,
       ...JUDETE.map((judet) => `/top_licee/${an}/${judet.nume}`),
     ]),
-    ...aniEn.flatMap((an) => [
+    ...query.aniEn.flatMap(({ an }) => [
       `/top_scoli/${an}`,
       ...JUDETE.map((judet) => `/top_scoli/${an}/${judet.nume}`),
     ]),
-    ...aniBac.map((an) => `/top_judete/${an}`),
-    ...queryLicee.map((liceu) => `/liceu/${liceu.id_liceu}`),
-    ...queryScoli.map((scoala) => `/scoala/${scoala.id_scoala}`),
+    ...query.aniBac.map(({ an }) => `/top_judete/${an}`),
+    ...query.licee.map((liceu) => `/liceu/${liceu.id_liceu}`),
+    ...query.scoli.map((scoala) => `/scoala/${scoala.id_scoala}`),
     ...JUDETE.map((judet) => `/judet/${judet.nume}`),
   ];
 

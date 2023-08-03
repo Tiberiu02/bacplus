@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { queryEn, queryScoli, aniEn } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 
 import { TabelScoli } from "./TabelScoli";
 import { MainContainer } from "~/components/MainContainer";
@@ -11,6 +11,7 @@ import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
+import { Announcements } from "~/components/Announcements";
 
 export function generateMetadata({
   params,
@@ -44,8 +45,8 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const params = aniEn
-    .map((an) => an.toString())
+  const params = query.aniEn
+    .map(({ an }) => an.toString())
     .flatMap((an) => [
       { query: [an] },
       ...JUDETE.map((judet) => ({
@@ -65,7 +66,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   const scoli = getScoli(parseInt(an), judet?.id);
 
-  const optionsAni = aniEn.map((an) => ({
+  const optionsAni = query.aniEn.map(({ an }) => ({
     value: `${an}`,
     label: `${an}`,
     link: `/top_scoli/${an}${judet ? "/" + judet.nume : ""}`,
@@ -91,6 +92,9 @@ export default function Page({ params }: { params: { query: string[] } }) {
           Clasamentul școlilor generale din {judet?.numeIntreg ?? "România"}{" "}
           {an}
         </Title>
+
+        <Announcements />
+
         <div className="mb-4 flex flex-col gap-2">
           <p>
             Acest clasament conține {scoli.length} de școli generale și a fost
@@ -129,7 +133,7 @@ function getScoli(an: number, judet?: string) {
     [id: string]: Scoala;
   };
 
-  queryEn
+  query.en
     .filter(
       (result) =>
         result.an === an && (result.id_judet === judet || judet === undefined)
@@ -150,7 +154,7 @@ function getScoli(an: number, judet?: string) {
       };
     });
 
-  queryScoli.forEach((scoala) => {
+  query.scoli.forEach((scoala) => {
     const obj = scoli[scoala.id_scoala];
     if (obj != undefined) {
       obj.numeScoala = scoala.nume_scoala;

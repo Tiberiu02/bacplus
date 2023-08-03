@@ -9,13 +9,7 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import {
-  queryBacJudete,
-  queryEnJudete,
-  queryLimbiMaterneBacJudete,
-  queryLimbiStraineBacJudete,
-  queryPromovatiBacJudete,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { JUDETE, JUDETE_DUPA_NUME } from "~/data/coduriJudete";
 import type { Metadata } from "next";
@@ -158,7 +152,7 @@ function getInfoJudet(id: string) {
     };
   };
 
-  queryBacJudete
+  query.bacJudete
     .filter((result) => result.id_judet == idJudet)
     .forEach((result) => {
       rezultateBac[result.an] = {
@@ -170,7 +164,7 @@ function getInfoJudet(id: string) {
       };
     });
 
-  queryPromovatiBacJudete
+  query.promovatiBacJudete
     .filter((result) => result.id_judet == idJudet)
     .forEach((result) => {
       const d = rezultateBac[result.an];
@@ -180,7 +174,7 @@ function getInfoJudet(id: string) {
       }
     });
 
-  queryLimbiMaterneBacJudete
+  query.limbiMaterneBacJudete
     .filter((result) => result.id_judet == idJudet)
     .forEach((e) => {
       const d = rezultateBac[e.an];
@@ -200,7 +194,7 @@ function getInfoJudet(id: string) {
       }
     });
 
-  queryLimbiStraineBacJudete
+  query.limbiStraineBacJudete
     .filter((result) => result.id_judet == idJudet)
     .forEach((e) => {
       const d = rezultateBac[e.an];
@@ -212,7 +206,7 @@ function getInfoJudet(id: string) {
       }
     });
 
-  queryEnJudete
+  query.enJudete
     .filter((result) => result.id_judet == idJudet)
     .forEach((result) => {
       const d = rezultateBac[result.an];

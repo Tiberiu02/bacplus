@@ -5,7 +5,7 @@ import { TbMathFunction } from "react-icons/tb";
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { queryEn, queryLimbiMaterneEn, queryScoli } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
 import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
@@ -14,9 +14,10 @@ import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
+import { Announcements } from "~/components/Announcements";
 
 export function generateStaticParams() {
-  return queryScoli.map((e) => ({
+  return query.scoli.map((e) => ({
     id: e.id_scoala,
   }));
 }
@@ -26,7 +27,7 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeScoala = queryScoli.find(
+  const numeScoala = query.scoli.find(
     (e) => e.id_scoala == params.id
   )?.nume_scoala;
 
@@ -62,6 +63,9 @@ export default function PaginaScoala({
   return (
     <MainContainer>
       <Title>{numeScoala}</Title>
+
+      <Announcements />
+
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeScoala}</b> din{" "}
         {JUDETE_DUPA_COD[codJudet]?.numeIntreg}, bazate pe rezultatele la
@@ -125,9 +129,9 @@ export default function PaginaScoala({
 }
 
 function getInfoScoala(id: string) {
-  const codJudet = queryEn.find((result) => result.id_scoala == id)?.id_judet;
+  const codJudet = query.en.find((result) => result.id_scoala == id)?.id_judet;
   const { nume_scoala: numeScoala } =
-    queryScoli.find((result) => result.id_scoala == id) || {};
+    query.scoli.find((result) => result.id_scoala == id) || {};
 
   const rezultateEn = {} as {
     [an: number]: {
@@ -145,7 +149,7 @@ function getInfoScoala(id: string) {
     };
   };
 
-  queryEn.forEach((result) => {
+  query.en.forEach((result) => {
     if (result.id_scoala != id) return;
 
     rezultateEn[result.an] = {
@@ -159,19 +163,11 @@ function getInfoScoala(id: string) {
     };
   });
 
-  queryLimbiMaterneEn.forEach((result) => {
+  query.limbiMaterneEn.forEach((result) => {
     if (result.id_scoala != id) return;
 
     const obj = rezultateEn[result.an];
     if (obj != undefined) {
-      // const limba =
-      //   "L" +
-      //   (result.limba_materna || "Limba română")
-      //     .replaceAll(" (REAL)", "")
-      //     .replaceAll(" (UMAN)", "")
-      //     .toLowerCase()
-      //     .slice(1);
-
       obj.limbiMaterne[result.limba_materna || "Limba română"] = {
         candidati: result._count._all,
       };

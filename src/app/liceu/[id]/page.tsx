@@ -10,16 +10,7 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import {
-  queryBac,
-  queryGender,
-  queryLicee,
-  queryLimbiMaterneBac,
-  queryLimbiStraineBac,
-  queryMediiAdmLicee,
-  queryPromovatiBac,
-  querySpecializariBac,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
 import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
@@ -29,9 +20,10 @@ import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
+import { Announcements } from "~/components/Announcements";
 
 export function generateStaticParams() {
-  return queryLicee.map((e) => ({
+  return query.licee.map((e) => ({
     id: e.id_liceu,
   }));
 }
@@ -41,7 +33,9 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeLiceu = queryLicee.find((e) => e.id_liceu == params.id)?.nume_liceu;
+  const numeLiceu = query.licee.find(
+    (e) => e.id_liceu == params.id
+  )?.nume_liceu;
 
   if (!numeLiceu) return {};
 
@@ -84,6 +78,9 @@ export default function PaginaLiceu({
   return (
     <MainContainer>
       <Title>{numeLiceu}</Title>
+
+      <Announcements />
+
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
         {JUDETE_DUPA_COD[codJudet]?.numeIntreg}, bazate pe rezultatele la
@@ -226,12 +223,12 @@ export default function PaginaLiceu({
 }
 
 function getInfoLiceu(id: string) {
-  const codJudet = queryBac.find((result) => result.id_liceu == id)?.id_judet;
+  const codJudet = query.bac.find((result) => result.id_liceu == id)?.id_judet;
   const {
     nume_liceu: numeLiceu,
     website,
     address: adresa,
-  } = queryLicee.find((result) => result.id_liceu == id) || {};
+  } = query.licee.find((result) => result.id_liceu == id) || {};
 
   const rezultateBac = {} as {
     [an: number]: {
@@ -258,13 +255,13 @@ function getInfoLiceu(id: string) {
   };
 
   const admitere = Object.fromEntries(
-    queryMediiAdmLicee
+    query.mediiAdmLicee
       .filter((result) => result.repartizat_id_liceu == id)
       .sort((a, b) => b.an - a.an)
       .map((e) => [e.an, e._min.medie_adm])
   );
 
-  queryBac
+  query.bac
     .filter((result) => result.id_liceu == id)
     .forEach((result) => {
       rezultateBac[result.an] = {
@@ -277,7 +274,7 @@ function getInfoLiceu(id: string) {
       };
     });
 
-  queryPromovatiBac
+  query.promovatiBac
     .filter((result) => result.id_liceu == id)
     .forEach((result) => {
       const d = rezultateBac[result.an];
@@ -287,7 +284,7 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  queryLimbiMaterneBac
+  query.limbiMaterneBac
     .filter((result) => result.id_liceu == id)
     .forEach((e) => {
       const d = rezultateBac[e.an];
@@ -307,7 +304,7 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  queryLimbiStraineBac
+  query.limbiStraineBac
     .filter((result) => result.id_liceu == id)
     .forEach((e) => {
       const d = rezultateBac[e.an];
@@ -319,7 +316,7 @@ function getInfoLiceu(id: string) {
       }
     });
 
-  querySpecializariBac
+  query.specializariBac
     .filter((result) => result.id_liceu == id)
     .forEach((e) => {
       const d = rezultateBac[e.an];
@@ -332,10 +329,10 @@ function getInfoLiceu(id: string) {
     });
 
   const males =
-    queryGender.find((e) => e.id_liceu == id && e.sex == "M")?._count._all ||
+    query.gender.find((e) => e.id_liceu == id && e.sex == "M")?._count._all ||
     null;
   const females =
-    queryGender.find((e) => e.id_liceu == id && e.sex == "F")?._count._all ||
+    query.gender.find((e) => e.id_liceu == id && e.sex == "F")?._count._all ||
     null;
 
   const genderData =

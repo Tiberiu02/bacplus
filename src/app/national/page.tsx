@@ -9,14 +9,7 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import {
-  queryBacNational,
-  queryEnNational,
-  queryLicee,
-  queryLimbiMaterneBacNational,
-  queryLimbiStraineBacNational,
-  queryPromovatiBacNational,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -28,7 +21,9 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeLiceu = queryLicee.find((e) => e.id_liceu == params.id)?.nume_liceu;
+  const numeLiceu = query.licee.find(
+    (e) => e.id_liceu == params.id
+  )?.nume_liceu;
 
   if (!numeLiceu) return {};
 
@@ -146,7 +141,7 @@ function getInfoNational() {
     };
   };
 
-  queryBacNational.forEach((result) => {
+  query.bacNational.forEach((result) => {
     rezultateBac[result.an] = {
       medie: result._avg.my_medie || undefined,
       candidati: result._count._all,
@@ -156,7 +151,7 @@ function getInfoNational() {
     };
   });
 
-  queryPromovatiBacNational.forEach((result) => {
+  query.promovatiBacNational.forEach((result) => {
     const d = rezultateBac[result.an];
 
     if (d) {
@@ -164,7 +159,7 @@ function getInfoNational() {
     }
   });
 
-  queryLimbiMaterneBacNational.forEach((e) => {
+  query.limbiMaterneBacNational.forEach((e) => {
     const d = rezultateBac[e.an];
 
     if (d) {
@@ -182,7 +177,7 @@ function getInfoNational() {
     }
   });
 
-  queryLimbiStraineBacNational.forEach((e) => {
+  query.limbiStraineBacNational.forEach((e) => {
     const d = rezultateBac[e.an];
 
     if (d) {
@@ -192,7 +187,7 @@ function getInfoNational() {
     }
   });
 
-  queryEnNational.forEach((result) => {
+  query.enNational.forEach((result) => {
     const d = rezultateBac[result.an];
 
     if (d) {

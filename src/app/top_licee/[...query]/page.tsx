@@ -1,13 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import {
-  aniAdm,
-  aniBac,
-  queryLicee,
-  queryBac,
-  queryMediiAdmLicee,
-  queryPromovatiBac,
-} from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 
 import { TabelLicee } from "./TabelLicee";
 import { MainContainer } from "~/components/MainContainer";
@@ -18,6 +11,7 @@ import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
+import { Announcements } from "~/components/Announcements";
 
 export function generateMetadata({
   params,
@@ -51,8 +45,8 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  return aniBac
-    .map((an) => an.toString())
+  return query.aniBac
+    .map(({ an }) => an.toString())
     .flatMap((an) => [
       { query: [an] },
       ...JUDETE.map((judet) => ({
@@ -70,7 +64,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   const { licee, anAdmitere } = getLicee(parseInt(an), judet?.id);
 
-  const optionsAni = aniBac.map((an) => ({
+  const optionsAni = query.aniBac.map(({ an }) => ({
     value: `${an}`,
     label: `${an}`,
     link: `/top_licee/${an}${judet ? "/" + judet.nume : ""}`,
@@ -95,6 +89,9 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <Title>
           Clasamentul liceelor din {judet?.numeIntreg ?? "România"} {an}
         </Title>
+
+        <Announcements />
+
         <div className="mb-4 flex flex-col gap-2">
           <p>
             Acest clasament conține {licee.length} de licee și a fost realizat
@@ -124,7 +121,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
         </div>
         <TabelLicee
           data={licee.map(liceuToDataArray)}
-          anAdmitere={anAdmitere}
+          anAdmitere={anAdmitere?.an}
         />
       </MainContainer>
     </>
@@ -136,7 +133,7 @@ function getLicee(an: number, judet?: string) {
     [id: string]: Liceu;
   };
 
-  queryBac
+  query.bac
     .filter(
       (result) =>
         result.an === an && (result.id_judet === judet || judet === undefined)
@@ -155,7 +152,7 @@ function getLicee(an: number, judet?: string) {
       };
     });
 
-  queryPromovatiBac
+  query.promovatiBac
     .filter((result) => result.an === an)
     .forEach((result) => {
       if (result.id_liceu === null) return;
@@ -168,11 +165,13 @@ function getLicee(an: number, judet?: string) {
     });
 
   const anAdmitere =
-    aniAdm.find((a) => a == an) ??
-    (aniAdm[0] && an > aniAdm[0] ? aniAdm[0] : aniAdm[aniAdm.length - 1]);
+    query.aniAdm.find((a) => a.an == an) ??
+    (query.aniAdm[0] && an > query.aniAdm[0].an
+      ? query.aniAdm[0]
+      : query.aniAdm[query.aniAdm.length - 1]);
 
-  queryMediiAdmLicee
-    .filter((result) => result.an === anAdmitere)
+  query.mediiAdmLicee
+    .filter((result) => result.an === anAdmitere?.an)
     .forEach((result) => {
       if (result.repartizat_id_liceu === null) return;
 
@@ -183,7 +182,7 @@ function getLicee(an: number, judet?: string) {
       }
     });
 
-  queryLicee.forEach((liceu) => {
+  query.licee.forEach((liceu) => {
     const obj = licee[liceu.id_liceu];
     if (obj != undefined) {
       obj.numeLiceu = liceu.nume_liceu;

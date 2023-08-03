@@ -8,7 +8,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
 import "primereact/resources/primereact.css"; // core css
 import "primeicons/primeicons.css"; // icons
 import "primeflex/primeflex.css"; // css utility
-import { aniBac, aniEn } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import Script from "next/script";
 import { env } from "~/env.mjs";
 import type { Metadata } from "next";
@@ -44,7 +44,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={twMerge(inter.className, "flex min-h-screen flex-col")}>
-        <Navbar ultimulAnBac={aniBac[0] ?? 0} ultimulAnEn={aniEn[0] ?? 0} />
+        <Navbar
+          ultimulAnBac={query.aniBac[0]?.an ?? 0}
+          ultimulAnEn={query.aniEn[0]?.an ?? 0}
+        />
         {children}
         <div className="m-4"></div>
         <Footer />
