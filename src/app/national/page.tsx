@@ -21,6 +21,7 @@ import { formtaNumber } from "~/data/formatNumber";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
+import { notFound } from "next/navigation";
 
 export function generateMetadata({
   params,
@@ -45,7 +46,7 @@ export default function PaginaNational() {
     .filter((e) => e[1].medieEn)
     .at(-1);
 
-  if (!dataBac) return <div>404</div>;
+  if (!dataBac) notFound();
 
   return (
     <MainContainer>

@@ -17,6 +17,7 @@ import type { Metadata } from "next";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
+import { notFound } from "next/navigation";
 
 export function generateMetadata({
   params,
@@ -63,7 +64,7 @@ export function generateStaticParams() {
 export default function Page({ params }: { params: { query: string[] } }) {
   const [an, numeJudet] = params.query;
 
-  if (!an) return <div>404</div>;
+  if (!an) notFound();
 
   const judet = JUDETE.find((j) => j.nume === numeJudet);
 

@@ -11,6 +11,7 @@ import { MainContainer } from "~/components/MainContainer";
 import type { Judet } from "~/data/data";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
+import { notFound } from "next/navigation";
 
 export function generateMetadata({
   params,
@@ -36,7 +37,7 @@ export function generateStaticParams() {
 export default function Page({ params }: { params: { an: string } }) {
   const { an } = params;
 
-  if (!an) return <div>404</div>;
+  if (!an) notFound();
 
   const judete = getJudete(parseInt(an));
 

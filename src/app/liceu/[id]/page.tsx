@@ -28,6 +28,7 @@ import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
+import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
   return queryLicee.map((e) => ({
@@ -78,7 +79,7 @@ export default function PaginaLiceu({
   const dataBac = Object.entries(rezultateBac).at(-1);
   const dataAdm = Object.entries(admitere).at(-1) as [string, number];
 
-  if (!dataBac || !codJudet) return <div>404</div>;
+  if (!dataBac || !codJudet) notFound();
 
   return (
     <MainContainer>

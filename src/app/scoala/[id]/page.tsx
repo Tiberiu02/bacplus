@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
+import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
   return queryScoli.map((e) => ({
@@ -56,7 +57,7 @@ export default function PaginaScoala({
 
   const data = Object.entries(rezultateEn).at(-1);
 
-  if (!data || !codJudet) return <div>404</div>;
+  if (!data || !codJudet) notFound();
 
   return (
     <MainContainer>
