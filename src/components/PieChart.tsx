@@ -37,12 +37,19 @@ export function PieChart({
     <Chart
       type="pie"
       data={{
-        labels: data.map((e) => e.name),
+        labels: data.map(
+          (e) =>
+            `${e.name} (${
+              convertToPercentages
+                ? Math.round((e.value / total) * 100) + "%"
+                : e.value
+            })`
+        ),
         datasets: [
           {
             data: data.map((e) =>
               convertToPercentages
-                ? Math.round((e.value / total) * 1000) / 10
+                ? Math.round((e.value / total) * 100)
                 : e.value
             ),
             backgroundColor: data.map((e) => e.color ?? colorFromStr(e.name)),
