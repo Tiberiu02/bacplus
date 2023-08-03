@@ -16,7 +16,7 @@ import type { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bacplus.ro"),
+  metadataBase: new URL(env.WEBSITE_URL),
   title: "BacPlus",
   icons: ["/favicon.ico"],
   viewport: {
@@ -29,7 +29,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Bac Plus",
+    title: "Bac Plus",
+    description:
+      "Descoperă statistici despre examenele de Bacalaureat și Evaluare Națională la nivel de liceu, școală generală, județ sau țară, precum și clasamente ale liceelor, școlilor generale și județelor.",
     images: ["/og-banner.jpg"],
+    url: new URL(env.WEBSITE_URL).host,
   },
 };
 

@@ -30,9 +30,16 @@ export function generateMetadata({
 
   if (!numeScoala) return {};
 
+  const title = `${numeScoala} | Bac Plus`;
+  const description = `Vezi informații detaliate despre ${numeScoala}, bazate pe rezultatele oficiale de la examenul de Evaluare Națională publicate de Ministerul Educației Naționale.`;
+
   return {
-    title: `${numeScoala} | Bac Plus`,
-    description: `Vezi informații detaliate despre ${numeScoala}, bazate pe rezultatele oficiale de la examenul de Evaluare Națională publicate de Ministerul Educației Naționale.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
   };
 }
 

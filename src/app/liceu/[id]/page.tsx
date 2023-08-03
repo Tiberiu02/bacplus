@@ -43,9 +43,16 @@ export function generateMetadata({
 
   if (!numeLiceu) return {};
 
+  const title = `${numeLiceu} | Bac Plus`;
+  const description = `Descoperă informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`;
+
   return {
-    title: `${numeLiceu} | Bac Plus`,
-    description: `Vezi informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
   };
 }
 
@@ -115,7 +122,7 @@ export default function PaginaLiceu({
             Icon={FaSchoolCircleCheck}
           />
           <SnippetCard
-            title={`Absolvenți ${dataBac[0]}`}
+            title={`Candidați Bac ${dataBac[0]}`}
             value={formtaNumber(dataBac[1].candidati, 3)}
             Icon={FaUserGraduate}
           />
@@ -387,7 +394,7 @@ function MainChart({
         yAxisID: "y",
       },
       {
-        label: "Absolvenți",
+        label: "Candidați Bac",
         data: entries.map((e) => e[1].candidati),
         fill: false,
         borderColor: "#9EA1D4",

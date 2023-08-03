@@ -27,15 +27,22 @@ export function generateMetadata({
 
   if (!an) return {};
 
-  return numeIntregJudet
-    ? {
-        title: `Top licee ${numeIntregJudet} ${an} | Bac Plus`,
-        description: `Descoperă cele mai bune licee din ${numeIntregJudet} ${an}`,
-      }
-    : {
-        title: `Top licee ${an} | Bac Plus`,
-        description: `Descoperă cele mai bune licee din România ${an}`,
-      };
+  const title = numeIntregJudet
+    ? `Top licee ${numeIntregJudet} ${an} | Bac Plus`
+    : `Top licee ${an} | Bac Plus`;
+
+  const description = `Descoperă cele mai bune licee din ${
+    numeIntregJudet ?? "România"
+  } ${an}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
 }
 
 export function generateStaticParams() {

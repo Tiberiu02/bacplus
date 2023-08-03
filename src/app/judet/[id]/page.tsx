@@ -17,7 +17,6 @@ import {
   queryPromovatiBacJudete,
 } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { ShareButtons } from "~/components/ShareButtons";
 import { JUDETE, JUDETE_DUPA_NUME } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -66,11 +65,8 @@ export default function PaginaJudet({
         bazate pe rezultatele oficiale la examenele de Bacalaureat și Evaluare
         Națională publicate de Ministerul Educației Naționale.
       </p>
-      <div className="my-4 flex justify-end">
-        <ShareButtons />
-      </div>
 
-      <div className="flex w-full flex-col items-center gap-4 xl:flex-row">
+      <div className="my-4 flex w-full flex-col items-center gap-4 xl:flex-row">
         <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:w-fit xl:flex-col">
           <SnippetCard
             title={`Medie Bac ${dataBac[0]}`}
@@ -83,7 +79,7 @@ export default function PaginaJudet({
             Icon={FaSchoolCircleCheck}
           />
           <SnippetCard
-            title={`Absolvenți liceu ${dataBac[0]}`}
+            title={`Candidați Bac ${dataBac[0]}`}
             value={formtaNumber(dataBac[1].candidati, 3)}
             Icon={FaUserGraduate}
           />
@@ -269,7 +265,7 @@ function MainChart({
         yAxisID: "y",
       },
       {
-        label: "Absolvenți liceu",
+        label: "Candidați Bac",
         data: entries.map((e) => e[1].candidati),
         fill: false,
         borderColor: "#9EA1D4",

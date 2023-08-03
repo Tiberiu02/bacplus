@@ -20,15 +20,22 @@ export function generateMetadata({
 
   if (!an) return {};
 
-  return numeIntregJudet
-    ? {
-        title: `Top școli generale ${numeIntregJudet} ${an} | Bac Plus`,
-        description: `Descoperă cele mai bune școli generale din ${numeIntregJudet} ${an}`,
-      }
-    : {
-        title: `Top școli generale ${an} | Bac Plus`,
-        description: `Descoperă cele mai bune școli generale din România ${an}`,
-      };
+  const title = numeIntregJudet
+    ? `Top școli generale ${numeIntregJudet} ${an} | Bac Plus`
+    : `Top școli generale ${an} | Bac Plus`;
+
+  const description = `Descoperă cele mai bune școli generale din ${
+    numeIntregJudet ?? "România"
+  } ${an}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
 }
 
 export function generateStaticParams() {

@@ -163,7 +163,7 @@ export function TabelLicee({
       <Column
         field="numCandidati"
         sortable
-        header="Absolvenți"
+        header="Candidați Bac"
         style={colStyle}
       />
       <Column

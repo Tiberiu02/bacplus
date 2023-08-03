@@ -10,7 +10,6 @@ import { TabelJudete } from "./TabelJudete";
 import { MainContainer } from "~/components/MainContainer";
 import type { Judet } from "~/data/data";
 import type { Metadata } from "next";
-import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 
 export function generateMetadata({
@@ -71,7 +70,6 @@ export default function Page({ params }: { params: { an: string } }) {
           <div className="flex gap-2">
             <LinkSelect defaultValue={an} options={optionsAni} />
           </div>
-          <ShareButtons />
         </div>
         <TabelJudete data={judete} />
       </MainContainer>
@@ -105,7 +103,7 @@ function getJudete(an: number) {
 
     const obj = judete[result.id_judet];
     if (obj != undefined) {
-      obj.rataPromovareBac += result._count._all / obj.numCandidatiBac;
+      obj.rataPromovareBac += result._count._all / obj.numCandidatiValiziBac;
     }
   });
 
