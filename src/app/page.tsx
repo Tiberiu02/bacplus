@@ -180,7 +180,14 @@ export default function Home() {
           <CountUpCard
             caption="Specializări"
             finalNumber={
-              new Set(querySpecializariBac.map((e) => e.specializare)).size
+              new Set(
+                querySpecializariBac.map((e) =>
+                  e.specializare
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toUpperCase()
+                )
+              ).size
             }
             duration={4000}
             className="basis-1/4"
