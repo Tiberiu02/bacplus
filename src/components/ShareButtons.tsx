@@ -16,10 +16,20 @@ export function ShareButtons() {
     "flex items-center gap-2 rounded-lg px-3 py-[0.6rem] text-sm font-semibold text-white duration-100";
 
   const [url, setUrl] = useState("https://bacplus.ro");
+  const fbAppId = "291494419107518";
 
   useEffect(() => {
     setUrl(window.location.href);
   }, []);
+
+  const messengerClick = () => {
+    window.open(
+      "fb-messenger://share?link=" +
+        encodeURIComponent(url) +
+        "&app_id=" +
+        encodeURIComponent(fbAppId)
+    );
+  };
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -35,12 +45,16 @@ export function ShareButtons() {
           Share
         </div>
       </FacebookShareButton>
-      <FacebookMessengerShareButton url={url} appId="291494419107518">
-        <div className={twMerge(className, "bg-[#008cff] hover:bg-[#42aaff]")}>
-          <FaFacebookMessenger className="text-xl" />
-          Share
-        </div>
-      </FacebookMessengerShareButton>
+      <div onClick={messengerClick}>
+        <FacebookMessengerShareButton url={url} appId={fbAppId}>
+          <div
+            className={twMerge(className, "bg-[#008cff] hover:bg-[#42aaff]")}
+          >
+            <FaFacebookMessenger className="text-xl" />
+            Share
+          </div>
+        </FacebookMessengerShareButton>
+      </div>
     </div>
   );
 }
