@@ -41,7 +41,7 @@ export function PieChart({
           (e) =>
             `${e.name} (${
               convertToPercentages
-                ? Math.round((e.value / total) * 100) + "%"
+                ? `${Math.round((e.value / total) * 100)}%`
                 : e.value
             })`
         ),
