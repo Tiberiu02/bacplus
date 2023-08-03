@@ -2,6 +2,7 @@
 
 import ReactSelect from "react-select";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function LinkSelect({
   options,
@@ -19,7 +20,11 @@ export function LinkSelect({
   const router = useRouter();
 
   const optionsWithLink = options.map((o) => ({
-    label: <a href={o.link}>{o.label}</a>,
+    label: (
+      <Link scroll={false} href={o.link}>
+        {o.label}
+      </Link>
+    ),
     value: o.value.toString(),
     link: o.link,
   }));
@@ -29,7 +34,9 @@ export function LinkSelect({
       className={className}
       options={optionsWithLink}
       defaultValue={optionsWithLink.find((o) => o.value == defaultValue)}
-      onChange={(option) => option && router.replace(option.link)}
+      onChange={(option) =>
+        option && router.replace(option.link, { scroll: false })
+      }
     />
   );
 }
