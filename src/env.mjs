@@ -32,7 +32,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID,
     DB_DOWNLOAD_URL: process.env.DB_DOWNLOAD_URL,
-    WEBSITE_URL: process.env.DOMAIN_NAME,
+    WEBSITE_URL: process.env.WEBSITE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
