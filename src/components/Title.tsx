@@ -8,7 +8,8 @@ export function Title({
     <div>
       <h1
         className={
-          "mt-12 text-4xl font-semibold " + (className ? className : "")
+          "mt-12 text-2xl font-semibold sm:text-3xl lg:text-4xl " +
+          (className ? className : "")
         }
       >
         {children}
