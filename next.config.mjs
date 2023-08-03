@@ -11,6 +11,8 @@ const config = {
   experimental: {
     appDir: true,
   },
+  
+  output: 'export',
 
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
