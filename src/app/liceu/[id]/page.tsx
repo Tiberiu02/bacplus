@@ -13,7 +13,6 @@ import { Title } from "~/components/Title";
 import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -21,6 +20,7 @@ import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
+import { judetDupaCod } from "~/data/coduriJudete";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -83,9 +83,9 @@ export default function PaginaLiceu({
 
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
-        {JUDETE_DUPA_COD[codJudet]?.numeIntreg}, bazate pe rezultatele la
-        examenele de Bacalaureat și Evaluare Națională publicate de Ministerul
-        Educației Naționale.
+        {judetDupaCod(codJudet).numeIntreg}, bazate pe rezultatele la examenele
+        de Bacalaureat și Evaluare Națională publicate de Ministerul Educației
+        Naționale.
       </p>
       {(website || adresa) && (
         <p>

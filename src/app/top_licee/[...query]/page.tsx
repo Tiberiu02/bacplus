@@ -1,5 +1,5 @@
 import { Title } from "~/components/Title";
-import { JUDETE } from "~/data/coduriJudete";
+import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 
 import { TabelLicee } from "./TabelLicee";
@@ -60,7 +60,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   if (!an) notFound();
 
-  const judet = JUDETE.find((j) => j.nume === numeJudet);
+  const judet = numeJudet ? judetDupaNume(numeJudet) : undefined;
 
   const { licee, anAdmitere } = getLicee(parseInt(an), judet?.id);
 

@@ -210,27 +210,15 @@ const queryFunctions = {
     }),
 };
 
-// import path from "path";
-// import { promises as fs } from "fs";
-
-// const cacheDir = path.join(process.cwd(), ".next", "cache", "db-query");
-
-// async function computeQuery<T, F extends () => Promise<T>>(
-//   key: string,
-//   f: F
-// ): Promise<T> {
-//   const cachePath = path.join(cacheDir, key + ".json");
-
-//   try {
-//     const cached = await fs.readFile(cachePath, "utf-8");
-//     // @ts-ignore
-//     return JSON.parse(cached) as T;
-//   } catch (e) {
-//     const result: T = await f();
-//     await fs.mkdir(cacheDir, { recursive: true });
-//     await fs.writeFile(cachePath, JSON.stringify(result));
-//     return result;
-//   }
-// }
-
 export const query = await computeAllQueries(queryFunctions);
+
+if (!query.aniBac[0]) {
+  throw new Error("No data found in BAC table");
+}
+
+if (!query.aniEn[0]) {
+  throw new Error("No data found in EN table");
+}
+
+export const ultimulAnBac = query.aniBac[0].an;
+export const ultimulAnEn = query.aniEn[0].an;

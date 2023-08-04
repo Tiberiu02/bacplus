@@ -1,5 +1,5 @@
 import { Title } from "~/components/Title";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
+import { judetDupaCod } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 import { TabelJudete } from "./TabelJudete";
 import { MainContainer } from "~/components/MainContainer";
@@ -83,8 +83,8 @@ function getJudete(an: number) {
 
     judete[result.id_judet] = {
       id: result.id_judet,
-      nume: JUDETE_DUPA_COD[result.id_judet]?.nume ?? "",
-      numeIntreg: JUDETE_DUPA_COD[result.id_judet]?.numeIntreg ?? "",
+      nume: judetDupaCod(result.id_judet).nume,
+      numeIntreg: judetDupaCod(result.id_judet).numeIntreg,
       medieBac: result._avg.my_medie ?? undefined,
       numCandidatiBac: result._count._all,
       numCandidatiValiziBac: result._count.my_medie,

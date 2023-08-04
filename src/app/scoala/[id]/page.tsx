@@ -8,7 +8,7 @@ import { Title } from "~/components/Title";
 import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
+import { judetDupaCod } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
@@ -68,9 +68,8 @@ export default function PaginaScoala({
 
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeScoala}</b> din{" "}
-        {JUDETE_DUPA_COD[codJudet]?.numeIntreg}, bazate pe rezultatele la
-        examenul de Evaluare Națională publicate de Ministerul Educației
-        Naționale.
+        {judetDupaCod(codJudet).numeIntreg}, bazate pe rezultatele la examenul
+        de Evaluare Națională publicate de Ministerul Educației Naționale.
       </p>
       <div className="my-4 flex justify-end">
         <ShareButtons />

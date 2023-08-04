@@ -12,7 +12,7 @@ import { liceuFromDataArray } from "~/data/data";
 import type { Liceu, LiceuDataArray } from "~/data/data";
 import { PercentageBar } from "~/components/ProgressBar";
 import { formtaNumber } from "~/data/formatNumber";
-import { JUDETE_DUPA_COD } from "~/data/coduriJudete";
+import { judetDupaCod } from "~/data/coduriJudete";
 
 export function TabelLicee({
   data,
@@ -131,8 +131,8 @@ export function TabelLicee({
             </div>
           }
           body={({ codJudet }: Liceu) => (
-            <LinkText href={`/judet/${JUDETE_DUPA_COD[codJudet]?.nume ?? ""}`}>
-              {JUDETE_DUPA_COD[codJudet]?.numeIntreg}
+            <LinkText href={`/judet/${judetDupaCod(codJudet).nume}`}>
+              {judetDupaCod(codJudet).numeIntreg}
             </LinkText>
           )}
           style={colStyle}

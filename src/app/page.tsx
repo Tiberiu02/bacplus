@@ -13,7 +13,7 @@ import Image from "next/image";
 
 import backgoundImg from "../../public/hero-bg.jpg";
 import { Authors } from "~/components/Authors";
-import { query } from "~/data/dbQuery";
+import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 
 function Section({
   children,
@@ -83,13 +83,13 @@ export default function Home() {
             <div className="flex flex-row justify-center gap-2">
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_licee/${query.aniBac[0]?.an ?? ""}`}
+                href={`/top_licee/${ultimulAnBac}`}
               >
                 Licee
               </LinkButton>
               <LinkButton
                 className="flex w-24 justify-center"
-                href={`/top_scoli/${query.aniEn[0]?.an ?? ""}`}
+                href={`/top_scoli/${ultimulAnEn}`}
               >
                 Școli
               </LinkButton>

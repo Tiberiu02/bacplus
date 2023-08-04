@@ -211,10 +211,30 @@ export const JUDETE = [
   },
 ];
 
-export const JUDETE_DUPA_COD = Object.fromEntries(
+const JUDETE_DUPA_COD = Object.fromEntries(
   JUDETE.map((judet) => [judet.id, judet])
 );
 
-export const JUDETE_DUPA_NUME = Object.fromEntries(
+const JUDETE_DUPA_NUME = Object.fromEntries(
   JUDETE.map((judet) => [judet.nume, judet])
 );
+
+export function judetDupaCod(cod: string) {
+  const judet = JUDETE_DUPA_COD[cod];
+
+  if (!judet) {
+    throw new Error(`Cod judet invalid: "${cod}"`);
+  }
+
+  return judet;
+}
+
+export function judetDupaNume(nume: string) {
+  const judet = JUDETE_DUPA_NUME[nume];
+
+  if (!judet) {
+    throw new Error(`Nume judet invalid: "${nume}"`);
+  }
+
+  return judet;
+}

@@ -11,7 +11,7 @@ import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { JUDETE, JUDETE_DUPA_NUME } from "~/data/coduriJudete";
+import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
@@ -28,7 +28,7 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeJudet = JUDETE_DUPA_NUME[params.id]?.numeIntreg;
+  const numeJudet = judetDupaNume(params.id).numeIntreg;
 
   if (!numeJudet) return {};
 
@@ -129,8 +129,8 @@ export default function PaginaJudet({
 }
 
 function getInfoJudet(id: string) {
-  const idJudet = JUDETE_DUPA_NUME[id]?.id;
-  const numeJudet = JUDETE_DUPA_NUME[id]?.numeIntreg;
+  const idJudet = judetDupaNume(id).id;
+  const numeJudet = judetDupaNume(id).numeIntreg;
 
   const rezultateBac = {} as {
     [an: number]: {

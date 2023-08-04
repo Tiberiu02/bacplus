@@ -11,6 +11,10 @@ const config = {
   experimental: {
     appDir: true,
   },
+
+  images: {
+    unoptimized: true,
+  },
   
   output: 'export',
 
