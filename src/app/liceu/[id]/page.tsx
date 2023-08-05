@@ -162,7 +162,6 @@ export default function PaginaLiceu({
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -177,7 +176,6 @@ export default function PaginaLiceu({
                 value: e.candidati,
               })
             )}
-            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -190,7 +188,6 @@ export default function PaginaLiceu({
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -209,7 +206,6 @@ export default function PaginaLiceu({
                   color: "rgb(255, 99, 132)",
                 },
               ]}
-              aspectRatio={1.7}
               convertToPercentages
             />
           </ChartCard>

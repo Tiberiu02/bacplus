@@ -106,7 +106,6 @@ export default function PaginaJudet({
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -119,7 +118,6 @@ export default function PaginaJudet({
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
       </div>

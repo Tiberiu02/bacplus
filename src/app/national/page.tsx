@@ -97,7 +97,6 @@ export default function PaginaNational() {
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
 
@@ -110,7 +109,6 @@ export default function PaginaNational() {
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
       </div>

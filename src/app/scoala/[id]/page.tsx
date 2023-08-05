@@ -116,7 +116,6 @@ export default function PaginaScoala({
               name: limba,
               value: e.candidati,
             }))}
-            aspectRatio={1.7}
           />
         </ChartCard>
       </div>

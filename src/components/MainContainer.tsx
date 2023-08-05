@@ -8,7 +8,7 @@ export function MainContainer({
   return (
     <div
       className={twMerge(
-        "mx-auto flex w-full max-w-[calc(min(72rem,100vw))] flex-col gap-4 px-3",
+        "mx-auto flex w-full max-w-6xl flex-col gap-4 px-3",
         className
       )}
     >
