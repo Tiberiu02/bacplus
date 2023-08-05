@@ -51,7 +51,7 @@ export function PieChart({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="relative">
+      <div className="group relative">
         <svg viewBox="-5 -5 110 110" className="w-full max-w-[16rem]">
           {/* SVG Pie slices */}
           {entries.map((e) => (
@@ -70,7 +70,6 @@ export function PieChart({
               fill={e.color}
               className="stroke-white transition-all duration-300 ease-in-out hover:scale-[1.02] hover:stroke-gray-100 hover:brightness-90 hover:saturate-[1.5]"
               onPointerEnter={() => setHovered(e.name)}
-              onPointerLeave={() => setHovered(null)}
               style={{
                 transformOrigin: "50% 50%",
               }}
@@ -81,12 +80,12 @@ export function PieChart({
         {/* Labels visible on slice hover */}
         {entries.map((e) => (
           <div
-            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white transition-all duration-300 ease-in-out"
+            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 select-none rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white transition-all duration-300 ease-in-out [--group-opacity:0] group-hover:[--group-opacity:1]"
             key={e.name}
             style={{
               left: `${50 - 33 * Math.sin(e.midAngle)}%`,
               top: `${50 - 33 * Math.cos(e.midAngle)}%`,
-              opacity: hovered === e.name ? 1 : 0,
+              opacity: hovered === e.name ? "var(--group-opacity)" : 0,
             }}
           >
             {e.label}
