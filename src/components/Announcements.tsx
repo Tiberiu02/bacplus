@@ -9,7 +9,7 @@ export function Announcements() {
       {showLGBT && (
         <div className="bg-lgbt mb-2 rounded-lg p-1">
           <div className="flex items-center gap-4 rounded bg-white bg-opacity-90 px-4 py-3 shadow sm:px-5">
-            <div className="text-3xl text-red-500 drop-shadow">
+            <div className="translate-y-[0.08rem] text-lg text-red-500 drop-shadow">
               <BsFillSuitHeartFill />
             </div>
             <div className="">
