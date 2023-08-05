@@ -101,15 +101,15 @@ export default function Home() {
       <Section>
         <h2 className="text-3xl font-bold">De Ce?</h2>
 
-        <blockquote className="">
-          <p className="text-xl">
+        <blockquote className="border-l-4 border-gray-300 pl-4">
+          <q className="text-xl italic">
             Investiția în educație plătește mereu cea mai bună dobândă.
-          </p>
+          </q>
           <footer className="text-gray-500">
             Benjamin Franklin în{" "}
-            <cite title="The Way to Wealth: Ben Franklin on Money and Success">
+            <q title="The Way to Wealth: Ben Franklin on Money and Success">
               The Way to Wealth
-            </cite>
+            </q>
           </footer>
         </blockquote>
 
