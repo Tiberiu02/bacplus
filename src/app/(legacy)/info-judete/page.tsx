@@ -1,6 +1,6 @@
 import { DynamicRedirect } from "~/components/DynamicRedirect";
 import { JUDETE } from "~/data/coduriJudete";
-import { query, ultimulAnBac } from "~/data/dbQuery";
+import { ultimulAnBac } from "~/data/dbQuery";
 
 export default function Page() {
   return (
