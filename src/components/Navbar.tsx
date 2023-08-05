@@ -9,6 +9,7 @@ import { MdMenu, MdOutlineClose } from "react-icons/md";
 
 import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const PAGES = {
   highshools: {
@@ -67,7 +68,13 @@ export function Navbar({
       >
         <div className="flex w-full items-center justify-between">
           <Link href={HOME_PATH}>
-            <img className="w-20" src="/logo-text.svg" alt="Logo" />
+            <Image
+              className="w-20"
+              src="/logo-text.svg"
+              alt="Logo"
+              width={96.25}
+              height={29.726563}
+            />
           </Link>
           <button
             className="text-4xl text-gray-700 sm:hidden"

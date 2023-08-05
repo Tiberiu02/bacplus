@@ -1,12 +1,16 @@
+import Image from "next/image";
 import { FaGithub, FaGlobe, FaLinkedin } from "react-icons/fa6";
 
 export function Authors() {
   return (
     <div className="flex flex-wrap justify-evenly gap-6">
       <div className="mt-4 flex flex-col items-center">
-        <img
+        <Image
           src="/tiberiu.jpg"
           className="max-w-[15rem] rounded-full shadow-lg"
+          width={400}
+          height={400}
+          alt="Tiberiu Mușat"
         />
         <div className="mt-4 text-2xl font-bold">Tiberiu Mușat</div>
         <div className="text-center text-lg">Fondator</div>
@@ -29,9 +33,12 @@ export function Authors() {
       </div>
 
       <div className="mt-4 flex flex-col items-center">
-        <img
+        <Image
           src="/mircea.jpg"
           className="max-w-[15rem] rounded-full shadow-lg"
+          width={400}
+          height={400}
+          alt="Mircea Rebengiuc"
         />
         <div className="mt-4 text-2xl font-bold">Mircea Rebengiuc</div>
         <div className="text-center text-lg">Cofondator</div>
