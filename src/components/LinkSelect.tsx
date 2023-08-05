@@ -34,6 +34,7 @@ export function LinkSelect({
       className={className}
       options={optionsWithLink}
       defaultValue={optionsWithLink.find((o) => o.value == defaultValue)}
+      isSearchable={false}
       onChange={(option) =>
         option && router.replace(option.link, { scroll: false })
       }
