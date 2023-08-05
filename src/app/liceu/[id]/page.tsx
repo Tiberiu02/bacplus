@@ -107,37 +107,34 @@ export default function PaginaLiceu({
           .
         </p>
       )}
-      <div className="my-4 flex justify-end">
-        <ShareButtons />
-      </div>
 
-      <div className="flex w-full flex-col items-center gap-4 xl:flex-row">
-        <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:w-fit xl:flex-col">
-          <SnippetCard
-            title={`Medie Bac ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].medie, 3)}
-            Icon={FaAward}
-          />
-          <SnippetCard
-            title={`Promovare ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].rataPromovare, 1) + "%"}
-            Icon={FaSchoolCircleCheck}
-          />
-          <SnippetCard
-            title={`Candidați Bac ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].candidati, 3)}
-            Icon={FaUserGraduate}
-          />
-          {dataAdm && (
-            <SnippetCard
-              title={`Medie Admitere ${dataAdm[0]}`}
-              value={formtaNumber(dataAdm[1], 3)}
-              Icon={FaPersonCircleCheck}
-            />
-          )}
-        </div>
+      <ShareButtons className="mt-4 self-end max-sm:self-center" />
 
-        <Card className="relative flex w-full flex-col justify-center self-stretch">
+      <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
+        <SnippetCard
+          title={`Medie Bac ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].medie, 3)}
+          Icon={FaAward}
+        />
+        <SnippetCard
+          title={`Promovare ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].rataPromovare, 1) + "%"}
+          Icon={FaSchoolCircleCheck}
+        />
+        <SnippetCard
+          title={`Candidați Bac ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].candidati, 3)}
+          Icon={FaUserGraduate}
+        />
+        {dataAdm && (
+          <SnippetCard
+            title={`Medie Admitere ${dataAdm[0]}`}
+            value={formtaNumber(dataAdm[1], 3)}
+            Icon={FaPersonCircleCheck}
+          />
+        )}
+
+        <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
           <div className="hidden lg:block">
             <MainChart
               rezultateBac={rezultateBac}
@@ -155,7 +152,7 @@ export default function PaginaLiceu({
         </Card>
       </div>
 
-      <div className="mt-1 grid w-full gap-4 self-center overflow-hidden lg:grid-cols-2">
+      <div className="grid w-full gap-4 self-center lg:grid-cols-2">
         <ChartCard
           title={`Distribuție limbi străine ${dataBac[0]}`}
           Icon={IoLanguage}
@@ -479,5 +476,13 @@ function MainChart({
     },
   };
 
-  return <Chart type="line" data={chartData} options={chartOptions} />;
+  return (
+    <div
+      style={{
+        aspectRatio: aspectRatio,
+      }}
+    >
+      <Chart type="line" data={chartData} options={chartOptions} />
+    </div>
+  );
 }

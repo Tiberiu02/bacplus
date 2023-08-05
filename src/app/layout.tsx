@@ -7,7 +7,6 @@ import { twMerge } from "tailwind-merge";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
 import "primereact/resources/primereact.css"; // core css
 import "primeicons/primeicons.css"; // icons
-import "primeflex/primeflex.css"; // css utility
 import { query } from "~/data/dbQuery";
 import Script from "next/script";
 import { env } from "~/env.mjs";

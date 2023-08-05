@@ -60,7 +60,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
   );
 
   const header = (
-    <div className="justify-content-end flex">
+    <div className="flex justify-end">
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText

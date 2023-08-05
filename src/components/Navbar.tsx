@@ -61,7 +61,7 @@ export function Navbar({
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-gray-200 p-4 ",
+          "flex w-full max-w-6xl flex-col bg-gray-200 px-4 py-5",
           isMenuOpen && "shadow-lg"
         )}
       >

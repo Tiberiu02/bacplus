@@ -52,13 +52,13 @@ export function TabelJudete({ data }: { data: Judet[] }) {
     }));
 
   const header = (
-    <div className="justify-content-end flex">
+    <div className="flex justify-end">
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
-          placeholder="Caută școală"
+          placeholder="Caută județ"
         />
       </span>
     </div>

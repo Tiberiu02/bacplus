@@ -95,24 +95,22 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <div className="mb-4 flex flex-col gap-2">
-          <p>
-            Acest clasament conține {scoli.length} de școli generale și a fost
-            realizat folosind rezultatele oficiale la examenul de Evaluare
-            Națională publicate de Ministerul Educației Naționale.
-          </p>
-          <p>
-            Apăsați pe capetele de tabel pentru a sorta școlile după un anumit
-            criteriu.
-          </p>
-          <p>
-            Apăsați pe numele unei școli{judet ? "" : " sau unui județ"} pentru
-            a vedea mai multe statistici despre aceasta.
-          </p>
-        </div>
+        <p>
+          Acest clasament conține {scoli.length} de școli generale și a fost
+          realizat folosind rezultatele oficiale la examenul de Evaluare
+          Națională publicate de Ministerul Educației Naționale.
+        </p>
+        <p>
+          Apăsați pe capetele de tabel pentru a sorta școlile după un anumit
+          criteriu.
+        </p>
+        <p>
+          Apăsați pe numele unei școli{judet ? "" : " sau unui județ"} pentru a
+          vedea mai multe statistici despre aceasta.
+        </p>
 
-        <div className="flex flex-wrap justify-between gap-2">
-          <div className="flex gap-2">
+        <div className="mt-4 flex flex-wrap justify-between gap-4">
+          <div className="flex gap-4">
             <LinkSelect defaultValue={an} options={optionsAni} />
             <LinkSelect
               className="w-48"

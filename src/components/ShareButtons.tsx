@@ -34,9 +34,9 @@ function detectMobile() {
   return check;
 }
 
-export function ShareButtons() {
-  const className =
-    "flex items-center gap-2 rounded-lg px-3 py-[0.6rem] text-sm font-semibold text-white duration-100";
+export function ShareButtons({ className }: { className?: string }) {
+  const btnClassName =
+    "flex items-center gap-2 rounded-lg px-4 py-[0.6rem] text-sm font-semibold text-white duration-100";
 
   const [url, setUrl] = useState("https://bacplus.ro");
   const [isMobile, setIsMobile] = useState(false);
@@ -66,21 +66,27 @@ export function ShareButtons() {
     );
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={twMerge(className, "flex flex-wrap gap-3")}>
       <WhatsappShareButton url={url}>
-        <div className={twMerge(className, "bg-[#25D366] hover:bg-[#55e489]")}>
+        <div
+          className={twMerge(btnClassName, "bg-[#25D366] hover:bg-[#55e489]")}
+        >
           <FaWhatsapp className="text-xl" />
           Share
         </div>
       </WhatsappShareButton>
       <FacebookShareButton url={url}>
-        <div className={twMerge(className, "bg-[#4267B2] hover:bg-[#6286ce]")}>
+        <div
+          className={twMerge(btnClassName, "bg-[#4267B2] hover:bg-[#6286ce]")}
+        >
           <FaFacebook className="text-xl" />
           Share
         </div>
       </FacebookShareButton>
       <FbMessengerBtn>
-        <div className={twMerge(className, "bg-[#008cff] hover:bg-[#42aaff]")}>
+        <div
+          className={twMerge(btnClassName, "bg-[#008cff] hover:bg-[#42aaff]")}
+        >
           <FaFacebookMessenger className="text-xl" />
           Share
         </div>
