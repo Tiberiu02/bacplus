@@ -8,6 +8,7 @@ export function LinkSelect({
   options,
   defaultValue,
   className,
+  ariaLabel,
 }: {
   options: {
     value: string | number;
@@ -16,6 +17,7 @@ export function LinkSelect({
   }[];
   defaultValue: string | number;
   className?: string;
+  ariaLabel?: string;
 }) {
   const router = useRouter();
 
@@ -31,6 +33,7 @@ export function LinkSelect({
 
   return (
     <ReactSelect
+      aria-label={ariaLabel}
       className={className}
       options={optionsWithLink}
       defaultValue={optionsWithLink.find((o) => o.value == defaultValue)}

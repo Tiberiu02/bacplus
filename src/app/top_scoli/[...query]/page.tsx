@@ -111,11 +111,16 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <div className="mt-4 flex flex-wrap justify-between gap-4">
           <div className="flex gap-4">
-            <LinkSelect defaultValue={an} options={optionsAni} />
+            <LinkSelect
+              defaultValue={an}
+              options={optionsAni}
+              ariaLabel="Selectează anul"
+            />
             <LinkSelect
               className="w-48"
               defaultValue={judet?.nume ?? ""}
               options={optionsJudete}
+              ariaLabel="Selectează județul"
             />
           </div>
           <ShareButtons />

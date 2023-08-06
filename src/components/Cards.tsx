@@ -26,7 +26,7 @@ export function SnippetCard({
     <Card className="flex items-center gap-5 py-4">
       <Icon className="shrink-0 text-5xl text-blue-500 opacity-60" />
       <div className="mx-auto flex flex-col items-center gap-1 p-1">
-        <div className="whitespace-nowrap text-xs font-bold opacity-50">
+        <div className="whitespace-nowrap text-xs font-bold text-gray-600">
           {title}
         </div>
         <div className="text-4xl font-bold">{value}</div>

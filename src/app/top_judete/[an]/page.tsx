@@ -64,7 +64,11 @@ export default function Page({ params }: { params: { an: string } }) {
 
         <div className="flex flex-wrap justify-between gap-2">
           <div className="flex gap-2">
-            <LinkSelect defaultValue={an} options={optionsAni} />
+            <LinkSelect
+              defaultValue={an}
+              options={optionsAni}
+              ariaLabel="Selectează anul"
+            />
           </div>
         </div>
         <TabelJudete data={judete} />

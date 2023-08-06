@@ -83,14 +83,14 @@ export function Navbar({
           >
             {isMenuOpen ? <MdOutlineClose /> : <MdMenu />}
           </button>
-          <div className="hidden flex-row gap-4 text-gray-500 sm:flex">
+          <div className="hidden flex-row gap-6 text-gray-600 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
                 href={path
                   .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
                   .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
                 className={
-                  key == activePage ? "text-gray-800" : "hover:text-gray-800"
+                  key == activePage ? "text-gray-900" : "hover:text-gray-900"
                 }
                 key={key}
               >
