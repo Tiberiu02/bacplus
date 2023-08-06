@@ -141,7 +141,7 @@ export default function Home() {
         </p>
       </Section>
 
-      <Section className="bg-gray-200">
+      <Section className="bg-gray-150">
         <h2 className="text-3xl font-bold">Datele Noastre</h2>
 
         <p>Statisticile noastre au fost sintetizate folosind date despre</p>

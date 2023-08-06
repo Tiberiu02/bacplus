@@ -57,12 +57,12 @@ export function Navbar({
 
   return (
     <nav
-      className="z-50 flex flex-col items-center bg-gray-200 drop-shadow-lg"
+      className="z-50 flex flex-col items-center bg-gray-150 drop-shadow-lg"
       ref={animationParent}
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-gray-200 px-4 py-5",
+          "flex w-full max-w-6xl flex-col bg-gray-150 px-4 py-5",
           isMenuOpen && "shadow-lg"
         )}
       >
@@ -90,7 +90,7 @@ export function Navbar({
                   .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
                   .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
                 className={
-                  key == activePage ? "text-gray-900" : "hover:text-gray-900"
+                  key == activePage ? "text-black" : "hover:text-black"
                 }
                 key={key}
               >
@@ -101,14 +101,14 @@ export function Navbar({
         </div>
       </div>
       {isMenuOpen && (
-        <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-500 sm:flex-row">
+        <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-600 sm:flex-row">
           {Object.entries(PAGES).map(([key, { name, path }]) => (
             <div onClick={() => setIsMenuOpen(false)} key={key}>
               <Link
                 href={path
                   .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
                   .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
-                className={key == activePage ? "text-gray-800" : ""}
+                className={key == activePage ? "text-black" : ""}
               >
                 {name}
               </Link>

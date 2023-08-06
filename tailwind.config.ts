@@ -8,6 +8,11 @@ export default {
         lg: "992px",
         xl: "1200px",
       },
+      colors: {
+        gray: {
+          150: "rgb(237,240,242)",
+        },
+      },
     },
   },
   plugins: [],
