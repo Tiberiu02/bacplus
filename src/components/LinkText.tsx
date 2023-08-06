@@ -10,7 +10,7 @@ export function LinkText({
   return (
     <a
       className={twMerge(
-        "text-blue-400 hover:text-blue-600 hover:underline",
+        "font-semibold text-blue-700 hover:text-blue-800 hover:underline",
         className
       )}
       href={href ? href : "/"}

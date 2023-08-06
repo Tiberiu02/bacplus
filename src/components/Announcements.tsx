@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { BsFillSuitHeartFill } from "react-icons/bs";
+import { LinkText } from "./LinkText";
 
 export function Announcements() {
   const showLGBT = Date.now() < new Date("10/01/2023").getTime();
@@ -17,21 +17,16 @@ export function Announcements() {
                 Spune STOP discriminării în România!
               </span>{" "}
               Semnează{" "}
-              <Link
+              <LinkText
                 href="https://acceptromania.ro/petitie/"
                 target="_blank"
-                className="font-semibold italic text-blue-600 hover:underline"
               >
                 petiția
-              </Link>{" "}
+              </LinkText>{" "}
               pentru protejarea tuturor familiilor sau exprimă-ți susținerea pe{" "}
-              <Link
-                href="https://FiiAliat.ro"
-                target="_blank"
-                className="font-semibold italic text-blue-600 hover:underline"
-              >
+              <LinkText href="https://FiiAliat.ro" target="_blank">
                 FiiAliat.ro
-              </Link>
+              </LinkText>
             </div>
           </div>
         </div>

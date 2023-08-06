@@ -11,7 +11,7 @@ import { CountUp } from "~/components/CountUp";
 
 import Image from "next/image";
 
-import backgoundImg from "../../public/hero-bg.jpg";
+import backgoundImg from "../../public/hero-bg.webp";
 import { Authors } from "~/components/Authors";
 import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 
@@ -64,22 +64,24 @@ export default function Home() {
   return (
     <main>
       <div className="relative min-h-screen min-w-full">
-        <Image
-          src={backgoundImg}
-          alt="background"
-          className="absolute left-0 top-0 z-0 h-screen w-screen overflow-hidden object-cover"
-        />
+        <div className="absolute left-0 top-0 z-0 h-screen w-full overflow-hidden">
+          <Image
+            src={backgoundImg}
+            alt="background"
+            className="h-full w-full object-cover blur-sm"
+          />
+        </div>
         <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/70">
           <div className="flex max-w-3xl flex-col gap-4 p-4">
             <h1 className="text-center text-4xl font-extrabold [word-spacing:0.5rem] sm:text-5xl">
               TRANSPARENȚĂ ÎN&nbsp;EDUCAȚIE
             </h1>
-            <h5 className="text-center text-xl font-medium">
+            <h2 className="text-center text-xl font-medium">
               Sporim transparența examenelor de Bacalaureat și Evaluare
               Națională prin statistici la nivel de liceu, școală generală,
               județ sau țară, precum și clasamente ale liceelor, școlilor
               generale și județelor.
-            </h5>
+            </h2>
             <div className="flex flex-row justify-center gap-2">
               <LinkButton
                 className="flex w-24 justify-center"

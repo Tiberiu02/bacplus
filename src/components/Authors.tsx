@@ -6,7 +6,7 @@ export function Authors() {
     <div className="flex flex-wrap justify-evenly gap-6">
       <div className="mt-4 flex flex-col items-center">
         <Image
-          src="/tiberiu.jpg"
+          src="/tiberiu.webp"
           className="max-w-[15rem] rounded-full shadow-lg"
           width={400}
           height={400}
@@ -19,6 +19,7 @@ export function Authors() {
             href="https://www.linkedin.com/in/tiberiu-musat/"
             target="_blank"
             className="opacity-50 transition-all duration-200 hover:scale-125"
+            aria-label="Tiberiu Mușat (LinkedIn)"
           >
             <FaLinkedin className="text-2xl" />
           </a>
@@ -26,6 +27,7 @@ export function Authors() {
             href="https://github.com/Tiberiu02/"
             target="_blank"
             className="opacity-50 transition-all duration-200 hover:scale-125"
+            aria-label="Tiberiu Mușat (GitHub)"
           >
             <FaGithub className="text-2xl" />
           </a>
@@ -34,7 +36,7 @@ export function Authors() {
 
       <div className="mt-4 flex flex-col items-center">
         <Image
-          src="/mircea.jpg"
+          src="/mircea.webp"
           className="max-w-[15rem] rounded-full shadow-lg"
           width={400}
           height={400}
@@ -47,6 +49,7 @@ export function Authors() {
             href="http://mircea.rebengiuc.com/"
             target="_blank"
             className="opacity-50 transition-all duration-200 hover:scale-125"
+            aria-label="Mircea Rebengiuc (Website)"
           >
             <FaGlobe className="text-2xl" />
           </a>
@@ -54,6 +57,7 @@ export function Authors() {
             href="https://github.com/mircea007/"
             target="_blank"
             className="opacity-50 transition-all duration-200 hover:scale-125"
+            aria-label="Mircea Rebengiuc (GitHub)"
           >
             <FaGithub className="text-2xl" />
           </a>

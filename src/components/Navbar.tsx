@@ -67,7 +67,7 @@ export function Navbar({
         )}
       >
         <div className="flex w-full items-center justify-between">
-          <Link href={HOME_PATH}>
+          <Link href={HOME_PATH} aria-label="Acasă">
             <Image
               className="w-20"
               src="/logo-text.svg"
@@ -79,6 +79,7 @@ export function Navbar({
           <button
             className="text-4xl text-gray-700 sm:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Meniu"
           >
             {isMenuOpen ? <MdOutlineClose /> : <MdMenu />}
           </button>

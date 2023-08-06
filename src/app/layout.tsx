@@ -22,7 +22,6 @@ export const metadata: Metadata = {
     width: "device-width",
     height: "device-height",
     initialScale: 1,
-    maximumScale: 1,
     minimumScale: 1,
   },
   openGraph: {
