@@ -36,7 +36,7 @@ function detectMobile() {
 
 export function ShareButtons({ className }: { className?: string }) {
   const btnClassName =
-    "flex items-center gap-2 rounded-lg px-4 py-[0.6rem] text-sm font-semibold text-white duration-100";
+    "flex items-center gap-2 rounded-lg px-4 py-[0.6rem] text-sm font-bold text-white duration-100";
 
   const [url, setUrl] = useState("https://bacplus.ro");
   const [isMobile, setIsMobile] = useState(false);

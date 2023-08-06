@@ -67,6 +67,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
           placeholder="Caută școală"
+          aria-label="Caută școală"
         />
       </span>
     </div>

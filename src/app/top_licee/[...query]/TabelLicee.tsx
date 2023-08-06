@@ -72,6 +72,7 @@ export function TabelLicee({
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
           placeholder="Caută liceu"
+          aria-label="Caută liceu"
         />
       </span>
     </div>

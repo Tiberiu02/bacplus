@@ -59,6 +59,7 @@ export function TabelJudete({ data }: { data: Judet[] }) {
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
           placeholder="Caută județ"
+          aria-label="Caută județ"
         />
       </span>
     </div>

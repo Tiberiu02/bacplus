@@ -17,6 +17,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL(env.WEBSITE_URL),
   title: "BacPlus",
+  description:
+    "Descoperă statistici despre examenele de Bacalaureat și Evaluare Națională la nivel de liceu, școală generală, județ sau țară, precum și clasamente ale liceelor, școlilor generale și județelor.",
   icons: ["/favicon.ico"],
   viewport: {
     width: "device-width",
