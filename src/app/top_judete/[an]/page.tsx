@@ -103,7 +103,8 @@ function getJudete(an: number) {
 
     const obj = judete[result.id_judet];
     if (obj != undefined) {
-      obj.rataPromovareBac += result._count._all / obj.numCandidatiValiziBac;
+      obj.rataPromovareBac +=
+        (result._count._all / obj.numCandidatiValiziBac) * 100;
     }
   });
 
