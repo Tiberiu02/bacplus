@@ -2,6 +2,8 @@ import Image from "next/image";
 import { FaGithub, FaGlobe, FaLinkedin } from "react-icons/fa6";
 
 export function Authors() {
+  const show_mircea = false;
+
   return (
     <div className="flex flex-wrap justify-evenly gap-6">
       <div className="mt-4 flex flex-col items-center">
@@ -34,7 +36,7 @@ export function Authors() {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col items-center">
+      {show_mircea ? (<div className="mt-4 flex flex-col items-center">
         <Image
           src="/mircea.webp"
           className="max-w-[15rem] rounded-full shadow-lg"
@@ -62,7 +64,7 @@ export function Authors() {
             <FaGithub className="text-2xl" />
           </a>
         </div>
-      </div>
+      </div>) : null}
     </div>
   );
 }
