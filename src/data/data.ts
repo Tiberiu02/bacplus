@@ -53,20 +53,6 @@ export type Judet = {
   numCandidatiEn?: number;
 };
 
-function getId(numeLiceu: string, codJudet: string) {
-  return (
-    numeLiceu
-      .normalize("NFD")
-      .toUpperCase()
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^A-Z0-9]/g, " ")
-      .trim()
-      .replace(/ +/g, "_") +
-    "_" +
-    codJudet
-  );
-}
-
 function round(num: number | undefined, decimals: number) {
   if (!num) return undefined;
 
@@ -87,7 +73,16 @@ export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
 
 export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
   return {
-    id: getId(dataArray[3], dataArray[4]),
+    id:
+      dataArray[3]
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, " ")
+        .trim()
+        .replace(/ +/g, "_") +
+      "_" +
+      dataArray[4],
     medieBac: dataArray[0],
     numCandidati: dataArray[1],
     rataPromovare: dataArray[2],
@@ -112,7 +107,16 @@ export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
 
 export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
   return {
-    id: getId(dataArray[0], dataArray[1]),
+    id:
+      dataArray[0]
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, " ")
+        .trim()
+        .replace(/ +/g, "_") +
+      "_" +
+      dataArray[1],
     numeScoala: dataArray[0],
     codJudet: dataArray[1],
     numCandidati: dataArray[2],

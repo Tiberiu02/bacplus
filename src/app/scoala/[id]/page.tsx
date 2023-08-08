@@ -72,7 +72,7 @@ export default function PaginaScoala({
         de Evaluare Națională publicate de Ministerul Educației Naționale.
       </p>
 
-      <ShareButtons className="mt-4 self-end max-sm:self-center" />
+      <ShareButtons className="mt-8 self-end max-sm:self-center" />
 
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard

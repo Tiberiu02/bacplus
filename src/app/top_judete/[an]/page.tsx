@@ -1,7 +1,7 @@
 import { Title } from "~/components/Title";
 import { judetDupaCod } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
-import { TabelJudete } from "./TabelJudete";
+import { TabelJudete } from "../../../components/tables/TabelJudete";
 import { MainContainer } from "~/components/MainContainer";
 import type { Judet } from "~/data/data";
 import type { Metadata } from "next";
@@ -46,7 +46,7 @@ export default function Page({ params }: { params: { an: string } }) {
     <>
       <MainContainer>
         <Title>Clasamentul județelor la Bacalaureat {an}</Title>
-        <div className="mb-4 flex flex-col gap-2">
+        <div className="mb-8 flex flex-col gap-2">
           <p>
             Acest clasament conține toate județele din România și a fost
             realizat folosind rezultatele oficiale la examenele de Bacalaureat
@@ -63,14 +63,14 @@ export default function Page({ params }: { params: { an: string } }) {
         </div>
 
         <div className="flex flex-wrap justify-between gap-2">
-          <div className="flex gap-2">
-            <LinkSelect
-              defaultValue={an}
-              options={optionsAni}
-              ariaLabel="Selectează anul"
-            />
-          </div>
+          <LinkSelect
+            defaultValue={an}
+            options={optionsAni}
+            ariaLabel="Selectează anul"
+            className="w-full md:w-32"
+          />
         </div>
+
         <TabelJudete data={judete} />
       </MainContainer>
     </>

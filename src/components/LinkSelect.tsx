@@ -3,6 +3,7 @@
 import ReactSelect from "react-select";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 
 export function LinkSelect({
   options,
@@ -35,6 +36,9 @@ export function LinkSelect({
     <ReactSelect
       aria-label={ariaLabel}
       className={className}
+      classNames={{
+        control: () => twMerge("!rounded !border-gray-300"),
+      }}
       options={optionsWithLink}
       defaultValue={optionsWithLink.find((o) => o.value == defaultValue)}
       isSearchable={false}

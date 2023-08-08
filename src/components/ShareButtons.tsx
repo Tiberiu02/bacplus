@@ -36,7 +36,7 @@ function detectMobile() {
 
 export function ShareButtons({ className }: { className?: string }) {
   const btnClassName =
-    "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-white duration-100 box-border border-2 border-gray-300 text-black shadow";
+    "flex items-center gap-3 rounded justify-center flex-1 w-full transition-all ease-in-out duration-100 px-3 py-2 text-sm box-border border-[1px] border-gray-300 text-black hover:bg-gray-100";
 
   const [url, setUrl] = useState("https://bacplus.ro");
   const [isMobile, setIsMobile] = useState(false);
@@ -58,30 +58,51 @@ export function ShareButtons({ className }: { className?: string }) {
 
   const FbMessengerBtn: FC<PropsWithChildren> = ({ children }) =>
     isMobile ? (
-      <div onClick={messengerClick}>{children}</div>
+      <div onClick={messengerClick} className="w-full flex-1">
+        {children}
+      </div>
     ) : (
-      <FacebookMessengerShareButton url={url} appId={fbAppId}>
+      <FacebookMessengerShareButton
+        url={url}
+        appId={fbAppId}
+        className="w-full flex-1"
+      >
         {children}
       </FacebookMessengerShareButton>
     );
 
   return (
-    <div className={twMerge(className, "flex flex-wrap gap-3")}>
-      <WhatsappShareButton url={url}>
-        <div className={twMerge(btnClassName, "hover:border-[#55e489]")}>
-          <FaWhatsapp className="rounded-full rounded-bl-[7000px] bg-[#25D366] p-[2px] text-xl text-white" />
+    <div className={twMerge("flex w-full flex-wrap gap-4", className)}>
+      <WhatsappShareButton url={url} className="w-full flex-1">
+        <div
+          className={twMerge(
+            btnClassName,
+            "hover:border-[#55e489] hover:shadow-[0_0_0_1px_#55e489]"
+          )}
+        >
+          <FaWhatsapp className="rounded-full rounded-bl-[7000px] bg-[#25D366] p-[2px] text-lg text-white" />
           Share
         </div>
       </WhatsappShareButton>
-      <FacebookShareButton url={url}>
-        <div className={twMerge(btnClassName, "hover:border-[#6286ce]")}>
-          <FaFacebook className="text-xl text-[#4267B2]" />
+      <FacebookShareButton url={url} className="w-full flex-1">
+        <div
+          className={twMerge(
+            btnClassName,
+            "hover:border-[#6286ce] hover:shadow-[0_0_0_1px_#6286ce]"
+          )}
+        >
+          <FaFacebook className="text-lg text-[#4267B2]" />
           Share
         </div>
       </FacebookShareButton>
       <FbMessengerBtn>
-        <div className={twMerge(btnClassName, "hover:border-[#42aaff]")}>
-          <FaFacebookMessenger className="text-xl text-[#008cff]" />
+        <div
+          className={twMerge(
+            btnClassName,
+            "hover:border-[#42aaff] hover:shadow-[0_0_0_1px_#42aaff]"
+          )}
+        >
+          <FaFacebookMessenger className="text-lg text-[#008cff]" />
           Share
         </div>
       </FbMessengerBtn>

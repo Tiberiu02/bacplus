@@ -83,7 +83,9 @@ function _interpolateHSL(color1: RGB, color2: RGB, factor = 0.5) {
   return hsl2rgb(hsl1);
 }
 
-export function PercentageBar({ value }: { value: number }) {
+export function PercentageBar({ value }: { value?: number }) {
+  if (value == undefined) return null;
+
   const color1 = h2r("#ff3333");
   const color2 = h2r("#88ee88");
 

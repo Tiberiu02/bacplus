@@ -2,7 +2,6 @@ import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 
-import { TabelScoli } from "./TabelScoli";
 import { MainContainer } from "~/components/MainContainer";
 import { scoalaToDataArray } from "~/data/data";
 import type { Scoala } from "~/data/data";
@@ -12,6 +11,7 @@ import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
+import { TabelScoli } from "../../../components/tables/TabelScoli";
 
 export function generateMetadata({
   params,
@@ -109,23 +109,28 @@ export default function Page({ params }: { params: { query: string[] } }) {
           vedea mai multe statistici despre aceasta.
         </p>
 
-        <div className="mt-4 flex flex-wrap justify-between gap-4">
-          <div className="flex gap-4">
+        <div className="mt-8 flex flex-wrap justify-between gap-4">
+          <div className="flex w-full gap-4 md:w-fit">
             <LinkSelect
               defaultValue={an}
               options={optionsAni}
               ariaLabel="Selectează anul"
+              className="w-28 shrink-0"
             />
             <LinkSelect
-              className="w-48"
               defaultValue={judet?.nume ?? ""}
               options={optionsJudete}
               ariaLabel="Selectează județul"
+              className="w-full md:w-48"
             />
           </div>
-          <ShareButtons />
+          <ShareButtons className="md:w-fit" />
         </div>
-        <TabelScoli data={scoli.map(scoalaToDataArray)} />
+
+        <TabelScoli
+          data={scoli.map(scoalaToDataArray)}
+          arataJudet={judet === undefined}
+        />
       </MainContainer>
     </>
   );

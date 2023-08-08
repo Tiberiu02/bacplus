@@ -7,7 +7,12 @@ export function Card({
   className,
 }: PropsWithChildren<{ className?: string }>) {
   return (
-    <div className={twMerge("rounded bg-gray-100 p-6 py-6 shadow", className)}>
+    <div
+      className={twMerge(
+        "rounded border-[1px] border-gray-300 bg-gray-50 p-6 py-6",
+        className
+      )}
+    >
       {children}
     </div>
   );

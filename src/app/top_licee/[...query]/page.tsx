@@ -2,7 +2,7 @@ import { Title } from "~/components/Title";
 import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 
-import { TabelLicee } from "./TabelLicee";
+import { TabelLicee } from "../../../components/tables/TabelLicee";
 import { MainContainer } from "~/components/MainContainer";
 import { liceuToDataArray } from "~/data/data";
 import type { Liceu } from "~/data/data";
@@ -92,7 +92,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <div className="mb-4 flex flex-col gap-4">
+        <div className="mb-8 flex flex-col gap-4">
           <p>
             Acest clasament conține {licee.length} de licee și a fost realizat
             folosind rezultatele oficiale la examenele de Bacalaureat și
@@ -109,24 +109,27 @@ export default function Page({ params }: { params: { query: string[] } }) {
         </div>
 
         <div className="flex flex-wrap justify-between gap-4">
-          <div className="flex gap-4">
+          <div className="flex w-full gap-4 md:w-fit">
             <LinkSelect
               defaultValue={an}
               options={optionsAni}
               ariaLabel="Selectează anul"
+              className="w-28 shrink-0"
             />
             <LinkSelect
-              className="w-48"
               defaultValue={judet?.nume ?? ""}
               options={optionsJudete}
               ariaLabel="Selectează județul"
+              className="w-full md:w-48"
             />
           </div>
-          <ShareButtons />
+          <ShareButtons className="md:w-fit" />
         </div>
+
         <TabelLicee
           data={licee.map(liceuToDataArray)}
           anAdmitere={anAdmitere?.an}
+          arataJudet={judet === undefined}
         />
       </MainContainer>
     </>
@@ -165,7 +168,8 @@ function getLicee(an: number, judet?: string) {
       const liceu = licee[result.id_liceu];
 
       if (liceu && liceu.numCandidatiValizi) {
-        liceu.rataPromovare = result._count._all / liceu.numCandidatiValizi;
+        liceu.rataPromovare =
+          (result._count._all / liceu.numCandidatiValizi) * 100;
       }
     });
 
