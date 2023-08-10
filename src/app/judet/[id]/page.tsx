@@ -12,7 +12,7 @@ import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { JUDETE, judetDupaCod, judetDupaNume } from "~/data/coduriJudete";
+import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";

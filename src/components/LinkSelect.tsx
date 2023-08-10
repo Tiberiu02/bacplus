@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { PiCaretDownBold } from "react-icons/pi";
@@ -41,7 +40,7 @@ export function LinkSelect({
       window.addEventListener("click", listener);
       return () => window.removeEventListener("click", listener);
     }
-  }, [isDropdownOpen, inputRef.current]);
+  }, [isDropdownOpen, inputRef]);
 
   if (!selectedOption) {
     throw new Error(

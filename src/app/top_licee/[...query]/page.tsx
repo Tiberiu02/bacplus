@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
-import { query, ultimulAnBac } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 
 import { TabelLicee } from "../../../components/tables/TabelLicee";
 import { MainContainer } from "~/components/MainContainer";

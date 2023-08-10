@@ -5,7 +5,6 @@ import {
   FaChartSimple,
   FaGraduationCap,
   FaPersonCircleCheck,
-  FaSchool,
   FaSchoolCircleCheck,
   FaSuitcase,
   FaUserGraduate,
@@ -25,7 +24,7 @@ import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import { judetDupaCod } from "~/data/coduriJudete";
 import Link from "next/link";
-import { Button, buttonClassName } from "~/components/Button";
+import { buttonClassName } from "~/components/Button";
 import { twMerge } from "tailwind-merge";
 
 export function generateStaticParams() {

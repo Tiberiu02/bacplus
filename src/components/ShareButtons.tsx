@@ -11,7 +11,7 @@ import { FaWhatsapp, FaFacebook, FaFacebookMessenger } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import type { FC, PropsWithChildren } from "react";
-import { Button, buttonClassName } from "./Button";
+import { buttonClassName } from "./Button";
 
 declare global {
   interface Window {
