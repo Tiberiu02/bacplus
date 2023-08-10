@@ -2,7 +2,10 @@ import { FaAward, FaUserFriends } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
+  FaChartSimple,
+  FaGraduationCap,
   FaPersonCircleCheck,
+  FaSchool,
   FaSchoolCircleCheck,
   FaSuitcase,
   FaUserGraduate,
@@ -10,7 +13,7 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query } from "~/data/dbQuery";
+import { query, ultimulAnBac } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkText } from "~/components/LinkText";
@@ -21,6 +24,9 @@ import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import { judetDupaCod } from "~/data/coduriJudete";
+import Link from "next/link";
+import { Button, buttonClassName } from "~/components/Button";
+import { twMerge } from "tailwind-merge";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -108,7 +114,32 @@ export default function PaginaLiceu({
         </p>
       )}
 
-      <ShareButtons className="mt-8 self-end max-sm:self-center" />
+      <div className="mt-4" />
+
+      <div className="flex w-full flex-wrap gap-4 max-md:hidden">
+        <Link
+          href={`/top_licee/${ultimulAnBac}/${judetDupaCod(codJudet).nume}`}
+          className={twMerge(
+            buttonClassName,
+            "flex flex-1 items-center justify-center gap-3"
+          )}
+        >
+          <FaGraduationCap className="text-xl text-blue-500" />
+          Top licee {judetDupaCod(codJudet).numeIntreg} {ultimulAnBac}
+        </Link>
+        <Link
+          href={`/judet/${judetDupaCod(codJudet).nume}`}
+          className={twMerge(
+            buttonClassName,
+            "flex flex-1 items-center justify-center gap-3"
+          )}
+        >
+          <FaChartSimple className="text-lg text-blue-500" />
+          Statistici generale {judetDupaCod(codJudet).numeIntreg}
+        </Link>
+      </div>
+
+      <ShareButtons />
 
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard

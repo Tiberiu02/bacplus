@@ -1,7 +1,8 @@
-import { FaAward } from "react-icons/fa";
+import { FaAward, FaGraduationCap } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
+  FaChartSimple,
   FaPersonCircleCheck,
   FaSchoolCircleCheck,
   FaUserGraduate,
@@ -9,13 +10,16 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query } from "~/data/dbQuery";
+import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { JUDETE, judetDupaNume } from "~/data/coduriJudete";
+import { JUDETE, judetDupaCod, judetDupaNume } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { twMerge } from "tailwind-merge";
+import { buttonClassName } from "~/components/Button";
 
 export function generateStaticParams() {
   return JUDETE.map((judet) => ({
@@ -62,7 +66,32 @@ export default function PaginaJudet({
         Națională publicate de Ministerul Educației Naționale.
       </p>
 
-      <div className="mt-8 grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
+      <div className="mt-4" />
+
+      <div className="flex w-full gap-4 max-md:flex-col">
+        <Link
+          href={`/top_licee/${ultimulAnBac}/${id}`}
+          className={twMerge(
+            buttonClassName,
+            "flex w-full items-center justify-center gap-3"
+          )}
+        >
+          <FaGraduationCap className="text-xl text-blue-500" />
+          Top licee {numeJudet} {ultimulAnBac}
+        </Link>
+        <Link
+          href={`/top_scoli/${ultimulAnEn}/${id}`}
+          className={twMerge(
+            buttonClassName,
+            "flex w-full items-center justify-center gap-3"
+          )}
+        >
+          <FaChartSimple className="text-xl text-blue-500" />
+          Top școli {numeJudet} {ultimulAnEn}
+        </Link>
+      </div>
+
+      <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard
           title={`Medie Bac ${dataBac[0]}`}
           value={formtaNumber(dataBac[1].medie, 3)}

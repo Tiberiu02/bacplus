@@ -109,19 +109,21 @@ export default function Page({ params }: { params: { query: string[] } }) {
           vedea mai multe statistici despre aceasta.
         </p>
 
-        <div className="mt-8 flex flex-wrap justify-between gap-4">
-          <div className="flex w-full gap-4 md:w-fit">
+        <div className="mt-4" />
+
+        <div className="flex flex-wrap justify-between gap-4">
+          <div className="flex w-full flex-wrap gap-4 md:w-fit">
             <LinkSelect
               defaultValue={an}
               options={optionsAni}
               ariaLabel="Selectează anul"
-              className="w-28 shrink-0"
+              className="w-28 shrink-0 max-md:flex-1"
             />
             <LinkSelect
               defaultValue={judet?.nume ?? ""}
               options={optionsJudete}
               ariaLabel="Selectează județul"
-              className="w-full md:w-48"
+              className="w-48 flex-shrink-0 max-md:flex-grow-[2]"
             />
           </div>
           <ShareButtons className="md:w-fit" />

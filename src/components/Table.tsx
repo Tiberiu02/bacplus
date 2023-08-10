@@ -130,7 +130,7 @@ export function Table<
         onChange={onGlobalFilterChange}
         placeholder={searchPlaceholder}
         aria-label={searchPlaceholder}
-        className="my-[-1px] h-10 w-full rounded"
+        className="my-[-1px] h-9 w-full rounded"
       />
     </span>
   ) : null;
