@@ -61,7 +61,7 @@ export function ShareButtons({ className }: { className?: string }) {
 
   const FbMessengerBtn: FC<PropsWithChildren> = ({ children }) =>
     isMobile ? (
-      <div onClick={messengerClick} className={btnClassName}>
+      <div onClick={messengerClick} className="flex-1">
         {children}
       </div>
     ) : (
@@ -70,7 +70,7 @@ export function ShareButtons({ className }: { className?: string }) {
         appId={fbAppId}
         className="flex-1"
       >
-        <div className={btnClassName}>{children}</div>
+        {children}
       </FacebookMessengerShareButton>
     );
 
@@ -89,8 +89,10 @@ export function ShareButtons({ className }: { className?: string }) {
         </div>
       </FacebookShareButton>
       <FbMessengerBtn>
-        <FaFacebookMessenger className="text-base text-[#008cff]" />
-        Share
+        <div className={btnClassName}>
+          <FaFacebookMessenger className="text-base text-[#008cff]" />
+          Share
+        </div>
       </FbMessengerBtn>
     </div>
   );
