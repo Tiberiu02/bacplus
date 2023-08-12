@@ -83,6 +83,14 @@ function _interpolateHSL(color1: RGB, color2: RGB, factor = 0.5) {
   return hsl2rgb(hsl1);
 }
 
+function dimColor(color: RGB, factor: number): RGB {
+  return [
+    Math.round(color[0] * factor),
+    Math.round(color[1] * factor),
+    Math.round(color[2] * factor),
+  ];
+}
+
 export function PercentageBar({ value }: { value?: number }) {
   if (value == undefined) return null;
 
@@ -91,14 +99,19 @@ export function PercentageBar({ value }: { value?: number }) {
 
   const color = _interpolateHSL(color1, color2, value / 100);
 
+  const borderColor = dimColor(color, 0.8);
+
   return (
     <div
       className={
-        "relative h-6 overflow-hidden rounded-full bg-gray-100 outline outline-2 outline-gray-300"
+        "relative h-6 overflow-hidden rounded-full bg-gray-100 outline outline-2"
       }
+      style={{
+        outlineColor: r2h(borderColor),
+      }}
     >
       <div
-        className="absolute left-0 top-0 h-6 rounded-r-full"
+        className="absolute left-0 top-0 z-0 h-6 rounded-r-full"
         style={{
           width: `calc((100% - 0.75rem) * ${value / 100} + 0.75rem)`,
           backgroundColor: r2h(color),

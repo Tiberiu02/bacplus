@@ -105,13 +105,13 @@ export default function Page({ params }: { params: { query: string[] } }) {
           criteriu.
         </p>
         <p>
-          Apăsați pe numele unei școli{judet ? "" : " sau unui județ"} pentru a
+          Apăsați pe oricare școală{judet ? "" : " sau unui județ"} pentru a
           vedea mai multe statistici despre aceasta.
         </p>
 
         <div className="mt-4" />
 
-        <div className="flex flex-wrap justify-between gap-4">
+        <div className="flex flex-wrap-reverse justify-between gap-4">
           <div className="flex w-full flex-wrap gap-4 md:w-fit">
             <LinkSelect
               defaultValue={an}
@@ -129,10 +129,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
           <ShareButtons className="md:w-fit" />
         </div>
 
-        <TabelScoli
-          data={scoli.map(scoalaToDataArray)}
-          arataJudet={judet === undefined}
-        />
+        <TabelScoli data={scoli.map(scoalaToDataArray)} />
       </MainContainer>
     </>
   );

@@ -103,12 +103,12 @@ export default function Page({ params }: { params: { query: string[] } }) {
             criteriu.
           </p>
           <p>
-            Apăsați pe numele unui liceu{judet ? "" : " sau județ"} pentru a
-            vedea mai multe statistici despre acesta.
+            Apăsați pe oricare liceu{judet ? "" : " sau județ"} pentru a vedea
+            mai multe statistici despre acesta.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-between gap-4">
+        <div className="flex flex-wrap-reverse justify-between gap-4">
           <div className="flex w-full flex-wrap gap-4 md:w-fit">
             <LinkSelect
               defaultValue={an}
@@ -129,7 +129,6 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <TabelLicee
           data={licee.map(liceuToDataArray)}
           anAdmitere={anAdmitere?.an}
-          arataJudet={judet === undefined}
         />
       </MainContainer>
     </>

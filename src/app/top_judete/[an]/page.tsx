@@ -7,6 +7,7 @@ import type { Judet } from "~/data/data";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
 import { notFound } from "next/navigation";
+import { ShareButtons } from "~/components/ShareButtons";
 
 export function generateMetadata({
   params,
@@ -62,13 +63,16 @@ export default function Page({ params }: { params: { an: string } }) {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-between gap-2">
-          <LinkSelect
-            defaultValue={an}
-            options={optionsAni}
-            ariaLabel="Selectează anul"
-            className="w-full md:w-32"
-          />
+        <div className="flex flex-wrap-reverse justify-between gap-4">
+          <div className="flex w-full flex-wrap gap-4 md:w-fit">
+            <LinkSelect
+              defaultValue={an}
+              options={optionsAni}
+              ariaLabel="Selectează anul"
+              className="w-28 shrink-0 max-md:flex-1"
+            />
+          </div>
+          <ShareButtons className="md:w-fit" />
         </div>
 
         <TabelJudete data={judete} />

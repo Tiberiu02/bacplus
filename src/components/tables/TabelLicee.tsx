@@ -1,17 +1,14 @@
 "use client";
 
 import { liceuFromDataArray } from "~/data/data";
-import type { Liceu, LiceuDataArray } from "~/data/data";
-import { judetDupaCod } from "~/data/coduriJudete";
+import type { LiceuDataArray } from "~/data/data";
 import { Table } from "~/components/Table";
 
 export function TabelLicee({
   data,
   anAdmitere,
-  arataJudet,
 }: {
   data: LiceuDataArray[];
-  arataJudet: boolean;
   anAdmitere?: number;
 }) {
   return (
@@ -22,8 +19,9 @@ export function TabelLicee({
       columns={[
         {
           type: "number",
-          header: "Loc",
+          header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
+          tdClassName: "text-gray-500",
         },
         {
           type: "text",
@@ -31,21 +29,9 @@ export function TabelLicee({
           value: (rowData) => rowData.numeLiceu,
           href: (rowData) => `/liceu/${rowData.id}`,
           widthGrow: true,
-          textAlign: "left",
           searchable: true,
+          textAlign: "left",
         },
-        ...(arataJudet
-          ? ([
-              {
-                type: "text",
-                header: "Județ",
-                value: (rowData: Liceu) =>
-                  judetDupaCod(rowData.codJudet).numeIntreg,
-                href: (rowData: Liceu) =>
-                  `/judet/${judetDupaCod(rowData.codJudet).nume}`,
-              },
-            ] as const)
-          : []),
         {
           type: "number",
           header: "Medie Bac",

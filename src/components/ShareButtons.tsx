@@ -38,7 +38,7 @@ function detectMobile() {
 export function ShareButtons({ className }: { className?: string }) {
   const btnClassName = twMerge(
     buttonClassName,
-    "flex items-center gap-3 justify-center w-full"
+    "flex items-center gap-3 justify-center w-full h-10 py-0"
   );
 
   const [url, setUrl] = useState("https://bacplus.ro");

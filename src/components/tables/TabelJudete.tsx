@@ -11,8 +11,9 @@ export function TabelJudete({ data }: { data: Judet[] }) {
       columns={[
         {
           type: "number",
-          header: "Loc",
+          header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
+          tdClassName: "text-gray-500",
         },
         {
           type: "text",

@@ -1,17 +1,10 @@
 "use client";
 
 import { scoalaFromDataArray } from "~/data/data";
-import type { Scoala, ScoalaDataArray } from "~/data/data";
+import type { ScoalaDataArray } from "~/data/data";
 import { Table } from "~/components/Table";
-import { judetDupaCod } from "~/data/coduriJudete";
 
-export function TabelScoli({
-  data,
-  arataJudet,
-}: {
-  data: ScoalaDataArray[];
-  arataJudet?: boolean;
-}) {
+export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
   return (
     <Table
       data={data}
@@ -20,8 +13,9 @@ export function TabelScoli({
       columns={[
         {
           type: "number",
-          header: "Loc",
+          header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
+          tdClassName: "text-gray-500",
         },
         {
           type: "text",
@@ -29,21 +23,9 @@ export function TabelScoli({
           value: (rowData) => rowData.numeScoala,
           href: (rowData) => `/scoala/${rowData.id}`,
           widthGrow: true,
-          textAlign: "left",
           searchable: true,
+          textAlign: "left",
         },
-        ...(arataJudet
-          ? ([
-              {
-                type: "text",
-                header: "Județ",
-                value: (rowData: Scoala) =>
-                  judetDupaCod(rowData.codJudet).numeIntreg,
-                href: (rowData: Scoala) =>
-                  `/judet/${judetDupaCod(rowData.codJudet).nume}`,
-              },
-            ] as const)
-          : []),
         {
           type: "number",
           header: "Medie Evaluare Națională",
