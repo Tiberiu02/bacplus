@@ -190,12 +190,12 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     {column.sortable &&
                       (sortColumnIx == cIx ? (
                         sortOrder == 1 ? (
-                          <FaArrowUpLong className="shrink-0 text-lg" />
+                          <FaArrowUpLong className="shrink-0" />
                         ) : (
-                          <FaArrowDownLong className="shrink-0 text-lg" />
+                          <FaArrowDownLong className="shrink-0" />
                         )
                       ) : (
-                        <FaArrowsUpDown className="shrink-0 text-lg" />
+                        <FaArrowsUpDown className="shrink-0" />
                       ))}
                   </div>
                 </th>
