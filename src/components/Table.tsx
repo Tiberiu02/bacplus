@@ -206,7 +206,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
             className={twMerge(
               "text-center [&>*>*:first-child]:rounded-l [&>*>*:first-child]:border-l-[1px] [&>*>*:last-child]:rounded-r [&>*>*:last-child]:border-r-[1px] [&>*>*]:border-y-[1px] [&>*>*]:border-gray-300 [&>*>*]:px-3 [&>*>*]:py-3 [&>*]:bg-white",
               href
-                ? "cursor-pointer [&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:hover:[&>*]:border-blue-700 [&>*]:hover:[&>*]:bg-gray-50"
+                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer [&>*]:hover:[&>*]:border-blue-700 [&>*]:hover:[&>*]:bg-gray-50"
                 : undefined
             )}
           >
