@@ -105,8 +105,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
           criteriu.
         </p>
         <p>
-          Apăsați pe oricare școală{judet ? "" : " sau unui județ"} pentru a
-          vedea mai multe statistici despre aceasta.
+          Apăsați pe o anumită școală pentru a vedea mai multe statistici despre
+          aceasta.
         </p>
 
         <div className="mt-4" />

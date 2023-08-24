@@ -103,8 +103,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
             criteriu.
           </p>
           <p>
-            Apăsați pe oricare liceu{judet ? "" : " sau județ"} pentru a vedea
-            mai multe statistici despre acesta.
+            Apăsați pe un anumit liceu pentru a vedea mai multe statistici
+            despre acesta.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <TabelLicee
           data={licee.map(liceuToDataArray)}
-          anAdmitere={anAdmitere?.an}
+          anAdmitere={anAdmitere?.an != +an ? anAdmitere?.an : undefined}
         />
       </MainContainer>
     </>

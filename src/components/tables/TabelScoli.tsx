@@ -47,7 +47,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
         },
         {
           type: "number",
-          header: "Absolvenți",
+          header: "Elevi",
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },

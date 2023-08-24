@@ -58,7 +58,7 @@ export default function Page({ params }: { params: { an: string } }) {
             criteriu.
           </p>
           <p>
-            Apăsați pe numele unui județ pentru a vedea mai multe statistici
+            Apăsați pe un anumit județ pentru a vedea mai multe statistici
             despre acesta.
           </p>
         </div>

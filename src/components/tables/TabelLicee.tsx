@@ -47,7 +47,7 @@ export function TabelLicee({
         },
         {
           type: "number",
-          header: "Candidați Bac",
+          header: "Elevi",
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },

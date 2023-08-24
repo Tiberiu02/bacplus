@@ -227,7 +227,10 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                           ? "text-left"
                           : column.textAlign == "right"
                           ? "text-right"
-                          : ""
+                          : "",
+                        column.type == "number" &&
+                          sortColumnIx == cIx &&
+                          "font-semibold"
                       )}
                     >
                       {column.type == "text" ? (
