@@ -24,6 +24,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return pages.map((page) => ({
     url: env.WEBSITE_URL + page,
-    lastModified: new Date(),
   }));
 }
