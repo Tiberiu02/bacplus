@@ -20,8 +20,8 @@ import { buttonClassName } from "~/components/Button";
 import { twMerge } from "tailwind-merge";
 
 export function generateStaticParams() {
-  return query.scoli.map((e) => ({
-    id: e.id_scoala,
+  return query.scoliCuElevi.map((scoala) => ({
+    id: scoala.id_scoala,
   }));
 }
 

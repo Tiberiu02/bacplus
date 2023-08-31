@@ -185,6 +185,10 @@ const queryFunctions = {
         nume_scoala: true,
       },
     }),
+  scoliCuElevi: () =>
+    prisma.en.groupBy({
+      by: ["id_scoala"],
+    }),
   aniBac: () =>
     prisma.bac.findMany({
       select: { an: true },

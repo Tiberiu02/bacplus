@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ]),
     ...query.aniBac.map(({ an }) => `/top_judete/${an}`),
     ...query.licee.map((liceu) => `/liceu/${liceu.id_liceu}`),
-    ...query.scoli.map((scoala) => `/scoala/${scoala.id_scoala}`),
+    ...query.scoliCuElevi.map((scoala) => `/scoala/${scoala.id_scoala}`),
     ...JUDETE.map((judet) => `/judet/${judet.nume}`),
   ];
 
