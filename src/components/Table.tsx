@@ -137,6 +137,11 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
     .map((column) => column.type == "text" && column.href)
     .find((href) => href);
 
+  const filteredData = useMemo(
+    () => data.filter((row) => row.key.includes(globalFilterValue)),
+    [data, globalFilterValue]
+  );
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
@@ -210,52 +215,49 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                 : undefined
             )}
           >
-            {data
-              .filter((row) => row.key.includes(globalFilterValue))
-              .slice(0, showRows)
-              .map((row, rIx) => (
-                <tr
-                  key={rIx}
-                  onClick={href ? () => router.push(href(row, rIx)) : undefined}
-                >
-                  {columns.map((column, cIx) => (
-                    <td
-                      key={cIx}
-                      className={twMerge(
-                        column.tdClassName,
-                        column.textAlign == "left"
-                          ? "text-left"
-                          : column.textAlign == "right"
-                          ? "text-right"
-                          : "",
-                        column.type == "number" &&
-                          sortColumnIx == cIx &&
-                          "font-semibold"
-                      )}
-                    >
-                      {column.type == "text" ? (
-                        column.href ? (
-                          <Link href={column.href(row, rIx)}>
-                            {column.value(row, row._rowIndex)}
-                          </Link>
-                        ) : (
-                          column.value(row, row._rowIndex)
-                        )
-                      ) : column.type == "number" ? (
-                        formtaNumber(column.value(row, row._rowIndex), 2)
-                      ) : column.type == "percentage" ? (
-                        <PercentageBar
-                          value={column.value(row, row._rowIndex) ?? 0}
-                        />
-                      ) : null}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+            {filteredData.slice(0, showRows).map((row, rIx) => (
+              <tr
+                key={rIx}
+                onClick={href ? () => router.push(href(row, rIx)) : undefined}
+              >
+                {columns.map((column, cIx) => (
+                  <td
+                    key={cIx}
+                    className={twMerge(
+                      column.tdClassName,
+                      column.textAlign == "left"
+                        ? "text-left"
+                        : column.textAlign == "right"
+                        ? "text-right"
+                        : "",
+                      column.type == "number" &&
+                        sortColumnIx == cIx &&
+                        "font-semibold"
+                    )}
+                  >
+                    {column.type == "text" ? (
+                      column.href ? (
+                        <Link href={column.href(row, rIx)}>
+                          {column.value(row, row._rowIndex)}
+                        </Link>
+                      ) : (
+                        column.value(row, row._rowIndex)
+                      )
+                    ) : column.type == "number" ? (
+                      formtaNumber(column.value(row, row._rowIndex), 2)
+                    ) : column.type == "percentage" ? (
+                      <PercentageBar
+                        value={column.value(row, row._rowIndex) ?? 0}
+                      />
+                    ) : null}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {showRows < data.length && (
+      {showRows < filteredData.length && (
         <Button
           onClick={() => setShowRows(showRows + SHOW_ROWS_INCREMENT)}
           className="w-fit self-center"
