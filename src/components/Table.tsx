@@ -139,7 +139,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
 
   const filteredData = useMemo(
     () => data.filter((row) => row.key.includes(globalFilterValue)),
-    [data, globalFilterValue]
+    [data, globalFilterValue, sortColumnIx, sortOrder]
   );
 
   return (
