@@ -12,6 +12,8 @@ import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
+import Head from "next/head";
+import { LdJson } from "~/components/LdJson";
 
 export function generateMetadata({
   params,
@@ -86,6 +88,41 @@ export default function Page({ params }: { params: { query: string[] } }) {
   return (
     <>
       <MainContainer>
+        <LdJson
+          name={
+            judet?.numeIntreg
+              ? `Top licee ${judet?.numeIntreg} ${an}`
+              : `Top licee ${an}`
+          }
+          description={`Descoperă cele mai bune licee din ${
+            judet?.numeIntreg ?? "România"
+          } ${an}`}
+          data={licee
+            .filter((a) => a.medieBac)
+            .sort((a, b) =>
+              a.medieBac && b.medieBac ? b.medieBac - a.medieBac : 0
+            )
+            .slice(0, 10)}
+          id={(liceu: Liceu) => liceu.id}
+          columns={[
+            {
+              name: "Nume liceu",
+              value: (liceu: Liceu) => liceu.numeLiceu,
+              type: "string",
+            },
+            {
+              name: "Medie Bac",
+              value: (liceu: Liceu) => liceu.medieBac,
+              type: "decimal",
+            },
+            {
+              name: "Rata de promovare",
+              value: (liceu: Liceu) => liceu.rataPromovare,
+              type: "decimal",
+            },
+          ]}
+        />
+
         <Title>
           Clasamentul liceelor din {judet?.numeIntreg ?? "România"} {an}
         </Title>
@@ -94,17 +131,12 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <div className="mb-8 flex flex-col gap-4">
           <p>
-            Acest clasament conține {licee.length} de licee și a fost realizat
-            folosind rezultatele oficiale la examenele de Bacalaureat și
-            Evaluare Națională publicate de Ministerul Educației Naționale.
+            Acest clasament a fost realizat folosind rezultatele oficiale la
+            Bacalaureat și Admitere.
           </p>
           <p>
-            Apăsați pe capetele de tabel pentru a sorta liceele după un anumit
-            criteriu.
-          </p>
-          <p>
-            Apăsați pe un anumit liceu pentru a vedea mai multe statistici
-            despre acesta.
+            Apasă pe un anumit liceu pentru a vedea mai multe statistici despre
+            acesta.
           </p>
         </div>
 
