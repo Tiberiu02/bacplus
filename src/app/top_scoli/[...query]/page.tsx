@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "../../../components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
+import { LinkText } from "~/components/LinkText";
 
 export function generateMetadata({
   params,
@@ -148,8 +149,11 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <Announcements />
 
         <p>
-          Acest clasament a fost realizat folosind rezultatele oficiale la
-          Evaluare.
+          Acest clasament a fost realizat folosind rezultatele oficiale la{" "}
+          <LinkText href="http://evaluare.edu.ro/" target="_blank">
+            Evaluarea Națională
+          </LinkText>
+          .
         </p>
         <p>
           Apăsați pe o anumită școală pentru a vedea mai multe statistici despre

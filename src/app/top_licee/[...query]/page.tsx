@@ -12,8 +12,8 @@ import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
-import Head from "next/head";
 import { LdJson } from "~/components/LdJson";
+import { LinkText } from "~/components/LinkText";
 
 export function generateMetadata({
   params,
@@ -140,8 +140,15 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <div className="mb-8 flex flex-col gap-4">
           <p>
-            Acest clasament a fost realizat folosind rezultatele oficiale la
-            Bacalaureat și Admitere.
+            Acest clasament a fost realizat folosind rezultatele oficiale la{" "}
+            <LinkText href="http://bacalaureat.edu.ro/" target="_blank">
+              Bacalaureat
+            </LinkText>{" "}
+            și{" "}
+            <LinkText href="http://admitere.edu.ro/" target="_blank">
+              Admitere
+            </LinkText>
+            .
           </p>
           <p>
             Apasă pe un anumit liceu pentru a vedea mai multe statistici despre
