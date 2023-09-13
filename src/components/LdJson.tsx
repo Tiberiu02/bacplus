@@ -24,7 +24,10 @@ export function LdJson<T>({
       "@type": "Organization",
       name: "BacPlus",
     },
-    creator: "W",
+    creator: {
+      "@type": "Organization",
+      name: "BacPlus",
+    },
     license: "https://creativecommons.org/licenses/by/4.0/",
     mainEntity: {
       "@type": "csvw:Table",

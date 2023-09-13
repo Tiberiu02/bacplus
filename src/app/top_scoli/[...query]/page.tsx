@@ -12,6 +12,7 @@ import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "../../../components/tables/TabelScoli";
+import { LdJson } from "~/components/LdJson";
 
 export function generateMetadata({
   params,
@@ -87,6 +88,57 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   return (
     <>
+      <LdJson
+        name={
+          judet?.numeIntreg
+            ? `Top școli generale ${judet?.numeIntreg} ${an}`
+            : `Top școli generale ${an}`
+        }
+        description={`Descoperă cele mai bune școli generale din ${
+          judet?.numeIntreg ?? "România"
+        } conform rezultatelor oficiale la Evaluarea Națională ${an} publicate de Ministerul Educației Naționale.`}
+        data={scoli
+          .filter((a) => a.medieEvaluareNationala)
+          .sort((a, b) =>
+            a.medieEvaluareNationala && b.medieEvaluareNationala
+              ? b.medieEvaluareNationala - a.medieEvaluareNationala
+              : 0
+          )
+          .slice(0, 10)}
+        id={(scoala) => scoala.id}
+        columns={[
+          {
+            name: "Nume scoala",
+            value: (scoala) => scoala.numeScoala,
+            type: "string",
+          },
+          {
+            name: "Medie Evaluare",
+            value: (scoala) =>
+              scoala.medieEvaluareNationala
+                ? Math.round(scoala.medieEvaluareNationala * 100) / 100
+                : undefined,
+            type: "decimal",
+          },
+          {
+            name: "Medie Română",
+            value: (scoala) =>
+              scoala.medieLimbaRomana
+                ? Math.round(scoala.medieLimbaRomana * 100) / 100
+                : undefined,
+            type: "decimal",
+          },
+          {
+            name: "Medie Matematică",
+            value: (scoala) =>
+              scoala.medieMatematica
+                ? Math.round(scoala.medieMatematica * 100) / 100
+                : undefined,
+            type: "decimal",
+          },
+        ]}
+      />
+
       <MainContainer>
         <Title>
           Clasamentul școlilor generale din {judet?.numeIntreg ?? "România"}{" "}
@@ -96,13 +148,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <Announcements />
 
         <p>
-          Acest clasament conține {scoli.length} de școli generale și a fost
-          realizat folosind rezultatele oficiale la examenul de Evaluare
-          Națională publicate de Ministerul Educației Naționale.
-        </p>
-        <p>
-          Apăsați pe capetele de tabel pentru a sorta școlile după un anumit
-          criteriu.
+          Acest clasament a fost realizat folosind rezultatele oficiale la
+          Evaluare.
         </p>
         <p>
           Apăsați pe o anumită școală pentru a vedea mai multe statistici despre

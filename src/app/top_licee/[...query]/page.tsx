@@ -87,51 +87,51 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   return (
     <>
-      <MainContainer>
-        <LdJson
-          name={
-            judet?.numeIntreg
-              ? `Top licee ${judet?.numeIntreg} ${an}`
-              : `Top licee ${an}`
-          }
-          description={`Descoperă cele mai bune licee din ${
-            judet?.numeIntreg ?? "România"
-          } conform rezultatelor oficiale la examenele de Bacalaureat și Evauare Națională ${an} publicate de Ministerul Educației Naționale.`}
-          data={licee
-            .filter((a) => a.medieBac)
-            .sort((a, b) =>
-              a.medieBac && b.medieBac ? b.medieBac - a.medieBac : 0
-            )
-            .slice(0, 10)}
-          id={(liceu: Liceu) => liceu.id}
-          columns={[
-            {
-              name: "Nume liceu",
-              value: (liceu: Liceu) => liceu.numeLiceu,
-              type: "string",
-            },
-            {
-              name: "Medie Bac",
-              value: (liceu: Liceu) =>
-                liceu.medieBac
-                  ? Math.round(liceu.medieBac * 100) / 100
-                  : undefined,
-              type: "decimal",
-            },
-            {
-              name: "Rata de promovare",
-              value: (liceu: Liceu) =>
-                Math.round(liceu.rataPromovare * 100) / 100,
-              type: "decimal",
-            },
-            {
-              name: "Elevi",
-              value: (liceu: Liceu) => liceu.numCandidati,
-              type: "integer",
-            },
-          ]}
-        />
+      <LdJson
+        name={
+          judet?.numeIntreg
+            ? `Top licee ${judet?.numeIntreg} ${an}`
+            : `Top licee ${an}`
+        }
+        description={`Descoperă cele mai bune licee din ${
+          judet?.numeIntreg ?? "România"
+        } conform rezultatelor oficiale la examenele de Bacalaureat și Evauare Națională ${an} publicate de Ministerul Educației Naționale.`}
+        data={licee
+          .filter((a) => a.medieBac)
+          .sort((a, b) =>
+            a.medieBac && b.medieBac ? b.medieBac - a.medieBac : 0
+          )
+          .slice(0, 10)}
+        id={(liceu: Liceu) => liceu.id}
+        columns={[
+          {
+            name: "Nume liceu",
+            value: (liceu: Liceu) => liceu.numeLiceu,
+            type: "string",
+          },
+          {
+            name: "Medie Bac",
+            value: (liceu: Liceu) =>
+              liceu.medieBac
+                ? Math.round(liceu.medieBac * 100) / 100
+                : undefined,
+            type: "decimal",
+          },
+          {
+            name: "Rata de promovare",
+            value: (liceu: Liceu) =>
+              Math.round(liceu.rataPromovare * 100) / 100,
+            type: "decimal",
+          },
+          {
+            name: "Elevi",
+            value: (liceu: Liceu) => liceu.numCandidati,
+            type: "integer",
+          },
+        ]}
+      />
 
+      <MainContainer>
         <Title>
           Clasamentul liceelor din {judet?.numeIntreg ?? "România"} {an}
         </Title>
