@@ -24,6 +24,8 @@ export function LdJson<T>({
       "@type": "Organization",
       name: "BacPlus",
     },
+    creator: "W",
+    license: "https://creativecommons.org/licenses/by/4.0/",
     mainEntity: {
       "@type": "csvw:Table",
       "csvw:tableSchema": {
@@ -35,80 +37,6 @@ export function LdJson<T>({
             "csvw:primaryKey": id(row),
           })),
         })),
-        // [
-        //   {
-        //     "csvw:name": "Year",
-        //     "csvw:datatype": "string",
-        //     "csvw:cells": [
-        //       {
-        //         "csvw:value": "2016",
-        //         "csvw:primaryKey": "2016",
-        //       },
-        //       {
-        //         "csvw:value": "2015",
-        //         "csvw:primaryKey": "2015",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     "csvw:name": "Organization name",
-        //     "csvw:datatype": "string",
-        //     "csvw:cells": [
-        //       {
-        //         "csvw:value": "AMERICAN HUMANE ASSOCIATION",
-        //         "csvw:primaryKey": "2016",
-        //       },
-        //       {
-        //         "csvw:value": "AMERICAN HUMANE ASSOCIATION",
-        //         "csvw:primaryKey": "2015",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     "csvw:name": "Organization address",
-        //     "csvw:datatype": "string",
-        //     "csvw:cells": [
-        //       {
-        //         "csvw:value": "1400 16TH STREET NW",
-        //         "csvw:primaryKey": "2016",
-        //       },
-        //       {
-        //         "csvw:value": "1400 16TH STREET NW",
-        //         "csvw:primaryKey": "2015",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     "csvw:name": "Organization NTEE Code",
-        //     "csvw:datatype": "string",
-        //     "csvw:cells": [
-        //       {
-        //         "csvw:value": "D200",
-        //         "csvw:notes": "Animal Protection and Welfare",
-        //         "csvw:primaryKey": "2016",
-        //       },
-        //       {
-        //         "csvw:value": "D200",
-        //         "csvw:notes": "Animal Protection and Welfare",
-        //         "csvw:primaryKey": "2015",
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     "csvw:name": "Total functional expenses ($)",
-        //     "csvw:datatype": "integer",
-        //     "csvw:cells": [
-        //       {
-        //         "csvw:value": "13800212",
-        //         "csvw:primaryKey": "2016",
-        //       },
-        //       {
-        //         "csvw:value": "13800212",
-        //         "csvw:primaryKey": "2015",
-        //       },
-        //     ],
-        //   },
-        // ],
       },
     },
   };

@@ -96,7 +96,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
           }
           description={`Descoperă cele mai bune licee din ${
             judet?.numeIntreg ?? "România"
-          } ${an}`}
+          } conform rezultatelor oficiale la examenele de Bacalaureat și Evauare Națională ${an} publicate de Ministerul Educației Naționale.`}
           data={licee
             .filter((a) => a.medieBac)
             .sort((a, b) =>
@@ -112,13 +112,22 @@ export default function Page({ params }: { params: { query: string[] } }) {
             },
             {
               name: "Medie Bac",
-              value: (liceu: Liceu) => liceu.medieBac,
+              value: (liceu: Liceu) =>
+                liceu.medieBac
+                  ? Math.round(liceu.medieBac * 100) / 100
+                  : undefined,
               type: "decimal",
             },
             {
               name: "Rata de promovare",
-              value: (liceu: Liceu) => liceu.rataPromovare,
+              value: (liceu: Liceu) =>
+                Math.round(liceu.rataPromovare * 100) / 100,
               type: "decimal",
+            },
+            {
+              name: "Elevi",
+              value: (liceu: Liceu) => liceu.numCandidati,
+              type: "integer",
             },
           ]}
         />
