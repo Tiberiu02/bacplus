@@ -24,7 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const importantPages = new Set([
     "/",
+    `/top_licee/${ultimulAnBac}`,
     ...JUDETE.map((judet) => `/top_licee/${ultimulAnBac}/${judet.nume}`),
+    `/top_scoli/${ultimulAnEn}`,
     ...JUDETE.map((judet) => `/top_scoli/${ultimulAnEn}/${judet.nume}`),
   ]);
 
