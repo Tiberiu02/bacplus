@@ -52,11 +52,15 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   decompressionFn,
   columns,
   searchPlaceholder,
+  searchable,
+  flatHeader,
 }: {
   data: CompressedRowType[];
   decompressionFn?: (compressed: CompressedRowType) => RowType;
   columns: ColumnType<RowType>[];
   searchPlaceholder?: string;
+  searchable?: boolean;
+  flatHeader?: boolean;
 }) {
   type RowTypeExtra = RowType & {
     key: string;
@@ -144,35 +148,36 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
-        <FaMagnifyingGlass className="shrink-0 text-gray-400" />
-        <input
-          className="w-full outline-none"
-          placeholder={searchPlaceholder}
-          onChange={onGlobalFilterChange}
-        />
-      </div>
+      {searchable != false && (
+        <div className="flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
+          <FaMagnifyingGlass className="shrink-0 text-gray-400" />
+          <input
+            className="w-full outline-none"
+            placeholder={searchPlaceholder}
+            onChange={onGlobalFilterChange}
+          />
+        </div>
+      )}
       <div className="-my-2 max-w-full overflow-y-auto">
-        <table className="border-separate border-spacing-y-2">
-          <thead className="[&>*>*:first-child]:rounded-l [&>*>*:first-child]:border-l-[1px] [&>*>*:last-child]:rounded-r [&>*>*:last-child]:border-r-[1px]">
+        <table className="my-2 w-full border-separate border-spacing-y-0">
+          <thead
+            className={
+              flatHeader
+                ? ""
+                : "[&>*>*:first-child]:rounded-l [&>*>*:first-child]:border-l-[1px] [&>*>*:last-child]:rounded-r [&>*>*:last-child]:border-r-[1px]"
+            }
+          >
             <tr>
               {columns.map((column, cIx) => (
                 <th
                   key={cIx}
                   className={twMerge(
                     "select-none border-y-[1px] border-gray-300 bg-gray-50 px-3 py-3",
-                    column.type == "text"
-                      ? column.textAlign == "left"
-                        ? "text-left"
-                        : column.textAlign == "right"
-                        ? "text-right"
-                        : "text-center"
-                      : "",
                     column.sortable && "cursor-pointer",
                     column.sortable &&
                       sortColumnIx == cIx &&
                       "!bg-indigo-50 text-indigo-600",
-                    column.widthGrow ? "w-full" : "w-fit"
+                    column.widthGrow && "w-full"
                   )}
                   onClick={() => {
                     if (column.sortable) {
@@ -190,7 +195,16 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     }
                   }}
                 >
-                  <div className="left-0 flex flex-row items-center gap-1">
+                  <div
+                    className={twMerge(
+                      "left-0 flex flex-row items-center gap-1",
+                      column.textAlign == "left"
+                        ? "justify-left"
+                        : column.textAlign == "right"
+                        ? "justify-right"
+                        : "justify-center"
+                    )}
+                  >
                     {column.header}
                     {column.sortable &&
                       (sortColumnIx == cIx ? (
@@ -209,9 +223,9 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           </thead>
           <tbody
             className={twMerge(
-              "text-center [&>*>*:first-child]:rounded-l [&>*>*:first-child]:border-l-[1px] [&>*>*:last-child]:rounded-r [&>*>*:last-child]:border-r-[1px] [&>*>*]:border-y-[1px] [&>*>*]:border-gray-300 [&>*>*]:px-3 [&>*>*]:py-3 [&>*]:bg-white",
+              "text-center [&>*>*]:border-b-[1px] [&>*>*]:border-gray-300 [&>*>*]:p-3 [&>*]:bg-white",
               href
-                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer [&>*]:hover:[&>*]:border-blue-700 [&>*]:hover:[&>*]:bg-gray-50"
+                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer [&>*]:hover:[&>*]:bg-blue-50"
                 : undefined
             )}
           >

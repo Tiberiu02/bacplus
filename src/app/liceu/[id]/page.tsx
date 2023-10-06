@@ -26,6 +26,7 @@ import { judetDupaCod } from "~/data/coduriJudete";
 import Link from "next/link";
 import { buttonClassName } from "~/components/Button";
 import { twMerge } from "tailwind-merge";
+import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -73,6 +74,7 @@ export default function PaginaLiceu({
     rezultateBac,
     admitere,
     genderData,
+    specializari,
   } = getInfoLiceu(id);
 
   const dataBac = Object.entries(rezultateBac).at(-1);
@@ -165,14 +167,14 @@ export default function PaginaLiceu({
         )}
 
         <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
-          <div className="hidden lg:block">
+          <div className="hidden sm:block">
             <MainChart
               rezultateBac={rezultateBac}
               admitere={admitere}
               aspectRatio={1.87}
             />
           </div>
-          <div className="lg:hidden">
+          <div className="sm:hidden">
             <MainChart
               rezultateBac={rezultateBac}
               admitere={admitere}
@@ -181,6 +183,8 @@ export default function PaginaLiceu({
           </div>
         </Card>
       </div>
+
+      <TabelSpecializari specializari={specializari} />
 
       <div className="grid w-full gap-4 self-center lg:grid-cols-2">
         <ChartCard
@@ -252,6 +256,15 @@ function getInfoLiceu(id: string) {
     website,
     address: adresa,
   } = query.licee.find((result) => result.id_liceu == id) || {};
+
+  const specializari = query.specializariAdm
+    .filter((s) => s.repartizat_id_liceu == id)
+    .map((s) => ({
+      nume: s.repartizat_specializare ?? "",
+      admisi: s._count._all,
+      medie: s._min.medie_adm,
+      an: s.an,
+    }));
 
   const rezultateBac = {} as {
     [an: number]: {
@@ -375,6 +388,7 @@ function getInfoLiceu(id: string) {
     rezultateBac,
     admitere,
     genderData,
+    specializari,
   };
 }
 

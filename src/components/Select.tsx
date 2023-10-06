@@ -6,27 +6,27 @@ import { PiCaretDownBold } from "react-icons/pi";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./Button";
 
-export function LinkSelect({
+export function Select<T>({
   options,
-  defaultValue,
   className,
   ariaLabel,
+  value,
+  onChange,
 }: {
   options: {
-    value: string | number;
+    value: T;
     label: string;
-    link: string;
   }[];
-  defaultValue: string | number;
   className?: string;
   ariaLabel?: string;
+  value: T;
+  onChange: (value: T) => void;
 }) {
-  const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const inputRef = useRef<HTMLButtonElement>(null);
 
-  const selectedOption = options.find((o) => o.value == selectedValue);
+  const selectedOption = options.find((o) => o.value == value);
 
   useEffect(() => {
     const input = inputRef.current;
@@ -43,9 +43,7 @@ export function LinkSelect({
   }, [isDropdownOpen, inputRef]);
 
   if (!selectedOption) {
-    throw new Error(
-      `Could not find option with value ${defaultValue} in options`
-    );
+    throw new Error(`Could not find option with value '${value}' in options`);
   }
 
   return (
@@ -61,7 +59,7 @@ export function LinkSelect({
       {selectedOption.label}
       <div
         className={twMerge(
-          "ml-2 border-l-[1px] border-gray-200 pl-2 text-gray-500",
+          "border-gray-200 pl-2 text-gray-500",
           isDropdownOpen && "-scale-y-100"
         )}
       >
@@ -73,16 +71,14 @@ export function LinkSelect({
           !isDropdownOpen && "hidden"
         )}
       >
-        {options.map((o) => (
-          <Link
+        {options.map((o, ix) => (
+          <span
             className="px-3 py-1 hover:bg-gray-150"
-            href={o.link}
-            scroll={false}
-            onClick={() => setSelectedValue(o.value)}
-            key={o.value}
+            onClick={() => onChange(o.value)}
+            key={ix}
           >
             {o.label}
-          </Link>
+          </span>
         ))}
       </div>
     </Button>

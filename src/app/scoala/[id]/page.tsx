@@ -125,10 +125,10 @@ export default function PaginaScoala({
         />
 
         <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
-          <div className="hidden lg:block">
+          <div className="hidden sm:block">
             <MainChart rezultateEn={rezultateEn} aspectRatio={1.87} />
           </div>
-          <div className="lg:hidden">
+          <div className="sm:hidden">
             <MainChart rezultateEn={rezultateEn} aspectRatio={1} />
           </div>
         </Card>

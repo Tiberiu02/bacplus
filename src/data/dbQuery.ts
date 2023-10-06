@@ -189,6 +189,21 @@ const queryFunctions = {
     prisma.en.groupBy({
       by: ["id_scoala"],
     }),
+  specializariAdm: () =>
+    prisma.en.groupBy({
+      by: ["an", "repartizat_id_liceu", "repartizat_specializare"],
+      _count: {
+        _all: true,
+      },
+      _min: {
+        medie_adm: true,
+      },
+      where: {
+        repartizat_id_liceu: {
+          not: null,
+        },
+      },
+    }),
   aniBac: () =>
     prisma.bac.findMany({
       select: { an: true },
