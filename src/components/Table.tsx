@@ -105,28 +105,31 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           .replace(/[^\w\d ]/g, "") ?? "";
     });
 
-    if (sortColumn) {
-      rows.sort((a, b) => {
-        const aVal = sortColumn.value(a, 0);
-        const bVal = sortColumn.value(b, 0);
-
-        const aNull = aVal === undefined;
-        const bNull = bVal === undefined;
-
-        return bNull || (!aNull && (sortOrder == 1 ? aVal < bVal : aVal > bVal))
-          ? -1
-          : aNull || (sortOrder == 1 ? aVal > bVal : aVal < bVal)
-          ? 1
-          : 0;
-      });
-
-      rows.forEach((row, i) => {
-        row._rowIndex = i;
-      });
-    }
-
     return rows;
-  }, [compressedData, decompressionFn, searchField, sortColumn, sortOrder]);
+  }, [compressedData, decompressionFn, searchField]);
+
+  // It looks like this if could be moved inside the useMemo above, but that would
+  // cause the memo to be recalculated every time the sort order changes, which
+  // would be a lot slower than just sorting the data directly.
+  if (sortColumn) {
+    data.sort((a, b) => {
+      const aVal = sortColumn.value(a, 0);
+      const bVal = sortColumn.value(b, 0);
+
+      const aNull = aVal === undefined;
+      const bNull = bVal === undefined;
+
+      return bNull || (!aNull && (sortOrder == 1 ? aVal < bVal : aVal > bVal))
+        ? -1
+        : aNull || (sortOrder == 1 ? aVal > bVal : aVal < bVal)
+        ? 1
+        : 0;
+    });
+
+    data.forEach((row, i) => {
+      row._rowIndex = i;
+    });
+  }
 
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
@@ -141,6 +144,8 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
     .map((column) => column.type == "text" && column.href)
     .find((href) => href);
 
+  // It looks like this memo has unused dependencies, but it's actually important
+  // that this memo is executed every time the sorting criteria changes.
   const filteredData = useMemo(
     () => data.filter((row) => row.key.includes(globalFilterValue)),
     [data, globalFilterValue, sortColumnIx, sortOrder]
@@ -152,7 +157,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
         <div className="flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
           <FaMagnifyingGlass className="shrink-0 text-gray-400" />
           <input
-            className="w-full outline-none"
+            className="w-full bg-transparent outline-none"
             placeholder={searchPlaceholder}
             onChange={onGlobalFilterChange}
           />

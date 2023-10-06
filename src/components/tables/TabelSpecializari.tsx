@@ -24,7 +24,7 @@ export function TabelSpecializari({
   if (an == 0) return null;
 
   return (
-    <Card className="overflow-hidden border-b-0 p-0">
+    <Card className="overflow-hidden p-0">
       <div className="relative flex max-w-full items-center justify-between gap-4 px-4 py-6 sm:px-6">
         <div className="flex items-center gap-4 ">
           <FaUniversity className="shrink-0 text-3xl text-blue-500 opacity-60" />
@@ -66,6 +66,7 @@ export function TabelSpecializari({
           },
         ]}
       />
+      <div className="mt-[-1px]" />
     </Card>
   );
 }

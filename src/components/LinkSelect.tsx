@@ -51,7 +51,7 @@ export function LinkSelect({
   return (
     <Button
       className={twMerge(
-        "relative flex h-10 items-center justify-between rounded border-[1px] border-gray-300 px-3 text-base transition-all duration-200 hover:border-blue-700 hover:bg-gray-50",
+        "relative flex h-10 items-center justify-between px-3 text-base",
         className
       )}
       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
