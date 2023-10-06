@@ -19,7 +19,7 @@ export function TabelSpecializari({
   specializari: Specializare[];
 }) {
   const ani = [...new Set(specializari.map((e) => e.an))].sort((a, b) => b - a);
-  const [an, setAn] = useState(ani[0]);
+  const [an, setAn] = useState(ani[0] || 0);
 
   return (
     <Card className="overflow-hidden border-b-0 p-0">

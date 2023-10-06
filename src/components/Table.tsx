@@ -105,28 +105,28 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           .replace(/[^\w\d ]/g, "") ?? "";
     });
 
+    if (sortColumn) {
+      rows.sort((a, b) => {
+        const aVal = sortColumn.value(a, 0);
+        const bVal = sortColumn.value(b, 0);
+
+        const aNull = aVal === undefined;
+        const bNull = bVal === undefined;
+
+        return bNull || (!aNull && (sortOrder == 1 ? aVal < bVal : aVal > bVal))
+          ? -1
+          : aNull || (sortOrder == 1 ? aVal > bVal : aVal < bVal)
+          ? 1
+          : 0;
+      });
+
+      rows.forEach((row, i) => {
+        row._rowIndex = i;
+      });
+    }
+
     return rows;
-  }, [compressedData, decompressionFn, searchField]);
-
-  if (sortColumn) {
-    data.sort((a, b) => {
-      const aVal = sortColumn.value(a, 0);
-      const bVal = sortColumn.value(b, 0);
-
-      const aNull = aVal === undefined;
-      const bNull = bVal === undefined;
-
-      return bNull || (!aNull && (sortOrder == 1 ? aVal < bVal : aVal > bVal))
-        ? -1
-        : aNull || (sortOrder == 1 ? aVal > bVal : aVal < bVal)
-        ? 1
-        : 0;
-    });
-
-    data.forEach((row, i) => {
-      row._rowIndex = i;
-    });
-  }
+  }, [compressedData, decompressionFn, searchField, sortColumn, sortOrder]);
 
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 

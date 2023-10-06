@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { PiCaretDownBold } from "react-icons/pi";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./Button";
 
-export function Select<T>({
+export function Select<T extends string | number>({
   options,
   className,
   ariaLabel,
