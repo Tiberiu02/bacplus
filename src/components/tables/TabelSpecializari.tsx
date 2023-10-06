@@ -21,6 +21,8 @@ export function TabelSpecializari({
   const ani = [...new Set(specializari.map((e) => e.an))].sort((a, b) => b - a);
   const [an, setAn] = useState(ani[0] || 0);
 
+  if (an == 0) return null;
+
   return (
     <Card className="overflow-hidden border-b-0 p-0">
       <div className="relative flex max-w-full items-center justify-between gap-4 px-4 py-6 sm:px-6">
