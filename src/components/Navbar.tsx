@@ -57,13 +57,13 @@ export function Navbar({
 
   return (
     <nav
-      className="z-50 flex flex-col items-center bg-gray-150 drop-shadow-lg"
+      className="z-50 flex flex-col items-center border-b-[1px] border-gray-300 bg-gray-50"
       ref={animationParent}
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-gray-150 px-4 py-5",
-          isMenuOpen && "shadow-lg"
+          "flex w-full max-w-6xl flex-col bg-transparent px-4 py-5",
+          isMenuOpen && "border-b-[1px] border-gray-300"
         )}
       >
         <div className="flex w-full items-center justify-between">
