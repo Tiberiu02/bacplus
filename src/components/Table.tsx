@@ -237,7 +237,16 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
             {filteredData.slice(0, showRows).map((row, rIx) => (
               <tr
                 key={rIx}
-                onClick={href ? () => router.push(href(row, rIx)) : undefined}
+                onClick={
+                  href
+                    ? (e) => {
+                        e.preventDefault();
+                        e.ctrlKey
+                          ? window.open(href(row, rIx), "_blank")
+                          : router.push(href(row, rIx));
+                      }
+                    : undefined
+                }
               >
                 {columns.map((column, cIx) => (
                   <td
