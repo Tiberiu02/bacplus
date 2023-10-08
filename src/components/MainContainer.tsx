@@ -8,7 +8,7 @@ export function MainContainer({
   return (
     <div
       className={twMerge(
-        "mx-auto flex w-full max-w-6xl flex-col gap-4 px-3",
+        "mx-auto flex w-full max-w-6xl flex-col gap-4 overflow-x-hidden px-3",
         className
       )}
     >

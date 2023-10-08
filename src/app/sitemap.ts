@@ -7,7 +7,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     "/",
     "/contact",
-    "/download",
     ...query.aniBac.flatMap(({ an }) => [
       `/top_licee/${an}`,
       ...JUDETE.map((judet) => `/top_licee/${an}/${judet.nume}`),
@@ -19,7 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...query.aniBac.map(({ an }) => `/top_judete/${an}`),
     ...query.licee.map((liceu) => `/liceu/${liceu.id_liceu}`),
     ...query.scoliCuElevi.map((scoala) => `/scoala/${scoala.id_scoala}`),
-    ...JUDETE.map((judet) => `/judet/${judet.nume}`),
   ];
 
   const importantPages = new Set([

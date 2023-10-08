@@ -50,14 +50,14 @@ const SHOW_ROWS_INCREMENT = 25;
 export function Table<CompressedRowType, RowType = CompressedRowType>({
   data: compressedData,
   decompressionFn,
-  columns,
+  columns: columnsPossiblyFalse,
   searchPlaceholder,
   searchable,
   flatHeader,
 }: {
   data: CompressedRowType[];
   decompressionFn?: (compressed: CompressedRowType) => RowType;
-  columns: ColumnType<RowType>[];
+  columns: (ColumnType<RowType> | false)[];
   searchPlaceholder?: string;
   searchable?: boolean;
   flatHeader?: boolean;
@@ -68,6 +68,10 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   };
 
   const router = useRouter();
+
+  const columns = columnsPossiblyFalse.filter(
+    (column) => column
+  ) as ColumnType<RowType>[];
 
   const searchField = columns.find(
     (column) => column.type == "text" && column.searchable
@@ -163,7 +167,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           />
         </div>
       )}
-      <div className="-my-2 max-w-full overflow-y-auto">
+      <div className="-mx-4 -mt-2 w-[calc(100%+2rem)] overflow-y-auto px-4">
         <table className="my-2 w-full border-separate border-spacing-y-0">
           <thead
             className={
@@ -182,7 +186,12 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     column.sortable &&
                       sortColumnIx == cIx &&
                       "!bg-indigo-50 text-indigo-600",
-                    column.widthGrow && "w-full"
+                    column.widthGrow && "w-full",
+                    column.textAlign == "left"
+                      ? "text-left"
+                      : column.textAlign == "right"
+                      ? "text-right"
+                      : "text-center"
                   )}
                   onClick={() => {
                     if (column.sortable) {
@@ -288,7 +297,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
       {showRows < filteredData.length && (
         <Button
           onClick={() => setShowRows(showRows + SHOW_ROWS_INCREMENT)}
-          className="w-fit self-center"
+          className="-mt-2 w-fit self-center"
         >
           Mai multe
         </Button>

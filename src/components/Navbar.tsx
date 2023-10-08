@@ -20,17 +20,9 @@ const PAGES = {
     name: "Școli",
     path: "/top_scoli/${ultimulAnEn}",
   },
-  counties: {
-    name: "Județe",
-    path: "/top_judete/${ultimulAnBac}",
-  },
   national: {
     name: "Național",
     path: "/national",
-  },
-  download: {
-    name: "Download",
-    path: "/download",
   },
   about: {
     name: "Contact",

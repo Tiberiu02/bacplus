@@ -43,13 +43,13 @@ export function TabelJudete({ data }: { data: Judet[] }) {
           value: (rowData) => rowData.numCandidatiBac,
           sortable: true,
         },
-        {
+        data.some((rowData) => rowData.medieEn != undefined) && {
           type: "number",
           header: "Medie Evaluare Națională",
           value: (rowData) => rowData.medieEn,
           sortable: true,
         },
-        {
+        data.some((rowData) => rowData.numCandidatiEn != undefined) && {
           type: "number",
           header: "Candidați Evaluare Națională",
           value: (rowData) => rowData.numCandidatiEn,

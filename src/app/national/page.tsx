@@ -15,6 +15,9 @@ import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { notFound } from "next/navigation";
+import { judetDupaCod } from "~/data/coduriJudete";
+import { Judet } from "~/data/data";
+import { TopJudete } from "~/components/TopJudete";
 
 export function generateMetadata({
   params,
@@ -42,6 +45,8 @@ export default function PaginaNational() {
     .at(-1);
 
   if (!dataBac) notFound();
+
+  const judete = getJudete();
 
   return (
     <MainContainer>
@@ -112,7 +117,81 @@ export default function PaginaNational() {
           />
         </ChartCard>
       </div>
+
+      <Title>Clasamentul județelor</Title>
+      <div className="mb-8 flex flex-col gap-2">
+        <p>
+          Acest clasament a fost realizat folosind rezultatele oficiale la
+          Bacalaureat și Evaluare.
+        </p>
+        <p>
+          Apăsați pe un anumit județ pentru a vedea mai multe statistici despre
+          acesta.
+        </p>
+      </div>
+
+      <TopJudete data={judete} />
     </MainContainer>
+  );
+}
+
+function getJudete() {
+  const judete = {} as {
+    [an: number]: {
+      [id: string]: Judet;
+    };
+  };
+
+  query.bacJudete.forEach((result) => {
+    if (result.id_judet === null) return;
+
+    const d = judete[result.an] ?? {};
+    judete[result.an] = d;
+
+    d[result.id_judet] = {
+      id: result.id_judet,
+      nume: judetDupaCod(result.id_judet).nume,
+      numeIntreg: judetDupaCod(result.id_judet).numeIntreg,
+      medieBac: result._avg.my_medie ?? undefined,
+      numCandidatiBac: result._count._all,
+      numCandidatiValiziBac: result._count.my_medie,
+      rataPromovareBac: 0,
+      medieEn: undefined,
+      numCandidatiEn: undefined,
+    };
+  });
+
+  query.promovatiBac.forEach((result) => {
+    if (result.id_judet === null) return;
+
+    const d = judete[result.an];
+    if (!d) return;
+
+    const obj = d[result.id_judet];
+    if (obj != undefined) {
+      obj.rataPromovareBac +=
+        (result._count._all / obj.numCandidatiValiziBac) * 100;
+    }
+  });
+
+  query.enJudete.forEach((result) => {
+    if (result.id_judet === null) return;
+
+    const d = judete[result.an];
+    if (!d) return;
+
+    const obj = d[result.id_judet];
+    if (obj != undefined) {
+      obj.medieEn = result._avg.medie_en ?? undefined;
+      obj.numCandidatiEn = result._count._all;
+    }
+  });
+
+  return Object.fromEntries(
+    Object.entries(judete).map(([an, judete]) => [
+      Number(an),
+      Object.values(judete),
+    ])
   );
 }
 
