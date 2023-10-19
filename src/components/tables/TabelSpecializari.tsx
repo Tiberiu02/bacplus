@@ -66,7 +66,7 @@ export function TabelSpecializari({
           },
         ]}
       />
-      <div className="mt-[-1px]" />
+      <div className="mt-[calc(-0.5rem-1px)]" />
     </Card>
   );
 }
