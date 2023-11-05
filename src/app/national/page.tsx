@@ -58,7 +58,7 @@ export default function PaginaNational() {
         Naționale.
       </p>
 
-      <div className="mt-8 grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
+      <div className="mt-8 grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] xl:grid-cols-4 xl:grid-rows-[auto_auto] 2xl:grid-flow-col 2xl:grid-cols-[auto_1fr] 2xl:grid-rows-4">
         <SnippetCard
           title={`Medie Bac ${dataBac[0]}`}
           value={formtaNumber(dataBac[1].medie, 3)}
@@ -82,11 +82,11 @@ export default function PaginaNational() {
           />
         )}
 
-        <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
-          <div className="hidden lg:block">
+        <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 xl:max-2xl:col-span-4">
+          <div className="hidden xl:block">
             <MainChart rezultateBac={rezultateBac} aspectRatio={1.87} />
           </div>
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <MainChart rezultateBac={rezultateBac} aspectRatio={1} />
           </div>
         </Card>
