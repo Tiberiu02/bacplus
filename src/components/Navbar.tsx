@@ -46,10 +46,16 @@ export function Navbar({
   const activePage = Object.entries(PAGES).find(
     ([_, { path }]) => path.split("/")[1] == currentPath.split("/")[1]
   )?.[0];
+  const isHomePage = currentPath == HOME_PATH;
+
+  console.log(currentPath, isHomePage);
 
   return (
     <nav
-      className="z-50 flex flex-col items-center border-b-[1px] border-gray-300 bg-gray-50"
+      className={twMerge(
+        "z-50 flex flex-col items-center border-b-[1px] border-gray-300 bg-gray-50",
+        isHomePage && "fixed left-0 top-0 w-full bg-opacity-90 backdrop-blur-sm"
+      )}
       ref={animationParent}
     >
       <div

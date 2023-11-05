@@ -68,7 +68,7 @@ export default function Home() {
           <Image
             src={backgoundImg}
             alt="background"
-            className="-mt-1 h-full w-full object-cover blur-sm"
+            className="h-full w-full object-cover blur-sm"
           />
         </div>
         <div className="absolute flex min-h-screen min-w-full flex-row items-center justify-center bg-white/70">
