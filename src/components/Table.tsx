@@ -167,7 +167,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           />
         </div>
       )}
-      <div className="-mx-4 -mt-2 w-[calc(100%+2rem)] overflow-y-auto px-4">
+      <div className="-mx-3 -mt-2 w-[calc(100%+1.5rem)] overflow-y-auto px-3">
         <table className="my-2 w-full border-separate border-spacing-y-0">
           <thead
             className={
