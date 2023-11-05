@@ -12,19 +12,25 @@ export default function contact() {
         <p>
           Toate datele de pe acest site au fost sintetizate folosind informații
           publicate de Ministerul Educației Naționale pe{" "}
-          <LinkText href="http://static.bacalaureat.edu.ro/2023/">
+          <LinkText
+            target="_blank"
+            href="http://static.bacalaureat.edu.ro/2023/"
+          >
             bacalaureat.edu.ro
           </LinkText>
           ,{" "}
-          <LinkText href="https://data.gov.ro/en/organization/men">
+          <LinkText
+            target="_blank"
+            href="https://data.gov.ro/en/organization/men"
+          >
             data.gov.ro
           </LinkText>
           ,{" "}
-          <LinkText href="http://static.admitere.edu.ro/">
+          <LinkText target="_blank" href="http://static.admitere.edu.ro/">
             admitere.edu.ro
           </LinkText>
           {" și "}
-          <LinkText href="http://static.evaluare.edu.ro/">
+          <LinkText target="_blank" href="http://static.evaluare.edu.ro/">
             evaluare.edu.ro.
           </LinkText>
         </p>
@@ -54,7 +60,10 @@ export default function contact() {
           De asemenea, facem publice programele create de noi pentru a descărca
           rezultatele și a crea această bază de date unificată. Le puteți accesa
           pe GitHub{" "}
-          <LinkText href="https://github.com/Tiberiu02/bacplus-data">
+          <LinkText
+            href="https://github.com/Tiberiu02/bacplus-data"
+            target="_blank"
+          >
             aici
           </LinkText>
           .
