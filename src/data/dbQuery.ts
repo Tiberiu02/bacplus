@@ -169,6 +169,69 @@ const queryFunctions = {
         medie_adm: true,
       },
     }),
+  bacRomana: () =>
+    prisma.bac.groupBy({
+      by: ["an", "id_liceu"],
+      _avg: {
+        lr_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        lr_final: {
+          not: null,
+        },
+      },
+    }),
+  bacLimbaMaterna: () =>
+    prisma.bac.groupBy({
+      by: ["an", "id_liceu", "limba_materna"],
+      _avg: {
+        lm_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        lm_final: {
+          not: null,
+        },
+        limba_materna: {
+          not: null,
+        },
+      },
+    }),
+  bacDisciplineObligatorii: () =>
+    prisma.bac.groupBy({
+      by: ["an", "id_liceu", "disciplina_obligatorie"],
+      _avg: {
+        do_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        do_final: {
+          not: null,
+        },
+      },
+    }),
+  bacDisciplineAlegere: () =>
+    prisma.bac.groupBy({
+      by: ["an", "id_liceu", "disciplina_alegere"],
+      _avg: {
+        do_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        da_final: {
+          not: null,
+        },
+      },
+    }),
   licee: () =>
     prisma.licee.findMany({
       select: {

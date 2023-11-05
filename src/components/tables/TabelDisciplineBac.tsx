@@ -3,20 +3,20 @@
 import { useState } from "react";
 import { Table } from "../Table";
 import { Card } from "../Cards";
-import { FaUniversity } from "react-icons/fa";
 import { Select } from "../Select";
+import { FaGraduationCap } from "react-icons/fa6";
 
-export function TabelSpecializari({
-  specializari,
+export function TabelDisciplineBac({
+  discipline,
 }: {
-  specializari: {
+  discipline: {
     nume: string;
-    admisi: number;
+    elevi: number;
     medie: number | null;
     an: number;
   }[];
 }) {
-  const ani = [...new Set(specializari.map((e) => e.an))].sort((a, b) => b - a);
+  const ani = [...new Set(discipline.map((e) => e.an))].sort((a, b) => b - a);
   const [an, setAn] = useState(ani[0] || 0);
 
   if (an == 0) return null;
@@ -25,9 +25,9 @@ export function TabelSpecializari({
     <Card className="overflow-hidden p-0">
       <div className="relative flex max-w-full items-center justify-between gap-4 px-4 py-6 sm:px-6">
         <div className="flex items-center gap-4 ">
-          <FaUniversity className="shrink-0 text-3xl text-blue-500 opacity-60" />
+          <FaGraduationCap className="shrink-0 text-3xl text-blue-500 opacity-60" />
           <div className="text-xl font-semibold opacity-90">
-            Admitere specializări
+            Rezultate bacalaureat
           </div>
         </div>
         <Select
@@ -39,27 +39,29 @@ export function TabelSpecializari({
         />
       </div>
       <Table
-        data={specializari.filter((e) => e.an === an)}
+        data={discipline.filter((e) => e.an === an)}
         searchable={false}
         flatHeader
         columns={[
           {
             type: "text",
             value: (e) => e.nume,
-            header: "Specializare",
+            header: "Disciplină",
             textAlign: "left",
-          },
-          {
-            type: "number",
-            value: (e) => e.medie ?? undefined,
-            header: "Ultima medie",
             sortable: true,
+            primarySortOrder: "ASC",
             defaultSortingColumn: true,
           },
           {
             type: "number",
-            value: (e) => e.admisi,
-            header: "Elevi admiși",
+            value: (e) => e.medie ?? undefined,
+            header: "Medie",
+            sortable: true,
+          },
+          {
+            type: "number",
+            value: (e) => e.elevi,
+            header: "Elevi",
             sortable: true,
           },
         ]}

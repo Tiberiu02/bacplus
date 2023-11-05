@@ -27,6 +27,7 @@ import Link from "next/link";
 import { buttonClassName } from "~/components/Button";
 import { twMerge } from "tailwind-merge";
 import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
+import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -75,6 +76,7 @@ export default function PaginaLiceu({
     admitere,
     genderData,
     specializari,
+    disciplineBac,
   } = getInfoLiceu(id);
 
   const dataBac = Object.entries(rezultateBac).at(-1);
@@ -245,6 +247,8 @@ export default function PaginaLiceu({
           </ChartCard>
         )}
       </div>
+
+      <TabelDisciplineBac discipline={disciplineBac} />
     </MainContainer>
   );
 }
@@ -265,6 +269,41 @@ function getInfoLiceu(id: string) {
       medie: s._min.medie_adm,
       an: s.an,
     }));
+
+  const disciplineBac = [
+    ...query.bacRomana
+      .filter((s) => s.id_liceu == id)
+      .map((s) => ({
+        nume: "Limba română",
+        medie: s._avg.lr_final,
+        elevi: s._count._all,
+        an: s.an,
+      })),
+    ...query.bacLimbaMaterna
+      .filter((s) => s.id_liceu == id)
+      .map((s) => ({
+        nume: s.limba_materna ?? "",
+        medie: s._avg.lm_final,
+        elevi: s._count._all,
+        an: s.an,
+      })),
+    ...query.bacDisciplineObligatorii
+      .filter((s) => s.id_liceu == id)
+      .map((s) => ({
+        nume: s.disciplina_obligatorie,
+        medie: s._avg.do_final,
+        elevi: s._count._all,
+        an: s.an,
+      })),
+    ...query.bacDisciplineAlegere
+      .filter((s) => s.id_liceu == id)
+      .map((s) => ({
+        nume: s.disciplina_alegere,
+        medie: s._avg.do_final,
+        elevi: s._count._all,
+        an: s.an,
+      })),
+  ];
 
   const rezultateBac = {} as {
     [an: number]: {
@@ -389,6 +428,7 @@ function getInfoLiceu(id: string) {
     admitere,
     genderData,
     specializari,
+    disciplineBac,
   };
 }
 
