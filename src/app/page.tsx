@@ -130,8 +130,8 @@ export default function Home() {
           rezultate. Publicarea rezultatelor online a constituit un pas
           important în procesul de digitalizare. Noi ne-am propus să ducem
           digitalizarea la nivelul următor prin sintetizarea și publicarea de
-          date statistice precum clasamentele județelor și ale liceelor, dar și
-          informații detaliate despre fiecare județ și liceu.
+          date statistice precum clasamente ale liceelor și școlilor, dar și
+          informații detaliate despre fiecare liceu și școală.
         </p>
 
         <p>
@@ -193,23 +193,22 @@ export default function Home() {
         <h2 className="text-3xl font-bold">Câteva Cuvinte Despre Noi</h2>
 
         <p>
-          După ani petrecuți în sistemul educațional, am ajuns să îl cunoaștem
-          îndeaproape, cu bune și cu rele.
+          După mulți ani petrecuți în sistemul educațional, am ajuns să îl
+          cunoaștem îndeaproape, cu bune și cu rele.
         </p>
 
         <p>
           Suntem doi tineri programatori dornici să aducă o schimbare pozitivă
           asupra sistemului în care s-au format. Credem în tehnologie și în
-          potențialul acesteia de a revoluționa actul educațional. Modurile în
-          care tehnologia poate îmbunătăți sistemul actual sunt infinite, dar am
+          rolul pe care aceasta îl poate avea în actul educațional. Sunt multe
+          moduri în care tehnologia poate îmbunătăți sistemul actual, dar am
           ales să începem cu transparentizarea examenului de bacalaureat.
         </p>
 
         <p>
           Suntem conștienți că publicarea acestor statistici reprezintă doar un
           pas mic. De aceea, ne dorim să extindem platforma și în alte arii ale
-          examenului de bacalaureat (pe termen scurt) sau ale educației (pe
-          termen lung).
+          educației.
         </p>
 
         <Authors />
