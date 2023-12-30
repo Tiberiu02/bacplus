@@ -10,6 +10,12 @@ export function generateMetadata(): Metadata {
   return {
     title: `Calculator Admitere ${ultimulAnEn} | Bac Plus`,
     description: `Află ce șanse ai să intri la liceul dorit în funcție de media obținută la admitere.`,
+
+    openGraph: {
+      title: "Calculator Admitere ${ultimulAnEn}",
+      description:
+        "Află ce șanse ai să intri la liceul dorit în funcție de media obținută la admitere.",
+    },
   };
 }
 
@@ -93,8 +99,6 @@ export default function Calculator() {
         </p>
 
         <ShareButtons className="my-4" />
-
-        {/* {JSON.stringify(licee, null, 2)} */}
 
         <CalculatorAdmitere
           ierarhie={ierarhie[ultimulAnEn]!}

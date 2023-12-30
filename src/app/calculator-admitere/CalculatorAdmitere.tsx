@@ -56,7 +56,7 @@ export function CalculatorAdmitere({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-lg font-semibold">Medie admitere 2024</div>
+      <div className="text-lg font-semibold">Medie admitere {anCurent}</div>
 
       <div
         className={twMerge(
