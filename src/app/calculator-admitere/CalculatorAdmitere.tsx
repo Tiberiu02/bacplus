@@ -88,6 +88,7 @@ export function CalculatorAdmitere({
             {liceeFiltered.length ? (
               liceeFiltered.map(([liceu, date]) => (
                 <button
+                  key={liceu}
                   className="w-full cursor-pointer px-3 py-2 text-left duration-150 hover:bg-gray-100"
                   onClick={() => {
                     setLiceuSelectat(liceu);
@@ -186,16 +187,16 @@ function probabilitate(pozitie: number, ultimaPozitie: number) {
 }
 
 function normalcdf(mean: number, sigma: number, to: number) {
-  var z = (to - mean) / Math.sqrt(2 * sigma * sigma);
-  var t = 1 / (1 + 0.3275911 * Math.abs(z));
-  var a1 = 0.254829592;
-  var a2 = -0.284496736;
-  var a3 = 1.421413741;
-  var a4 = -1.453152027;
-  var a5 = 1.061405429;
-  var erf =
+  const z = (to - mean) / Math.sqrt(2 * sigma * sigma);
+  const t = 1 / (1 + 0.3275911 * Math.abs(z));
+  const a1 = 0.254829592;
+  const a2 = -0.284496736;
+  const a3 = 1.421413741;
+  const a4 = -1.453152027;
+  const a5 = 1.061405429;
+  const erf =
     1 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
-  var sign = 1;
+  let sign = 1;
   if (z < 0) {
     sign = -1;
   }

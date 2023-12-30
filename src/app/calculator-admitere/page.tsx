@@ -13,12 +13,13 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function () {
+export default function Calculator() {
   const ierarhie = query.ierarhieAdm.reduce((acc, i) => {
     const { an, id_judet, medie_adm } = i;
     if (!acc[an]) acc[an] = {};
 
-    if (!acc[an]![id_judet]) acc[an]![id_judet] = new Array(901).fill(0);
+    if (!acc[an]![id_judet])
+      acc[an]![id_judet] = new Array<number>(901).fill(0);
 
     const ix = Math.round(medie_adm! * 100 - 100);
 

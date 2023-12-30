@@ -2,7 +2,7 @@ export function groupBy<T, D extends string>(
   data: T[],
   discriminator: (item: T) => D
 ) {
-  const result: { [key in D]: T[] } = {} as any;
+  const result = {} as { [key in D]: T[] };
   data.forEach((item) => {
     const key = discriminator(item);
     if (!result[key]) {
@@ -10,6 +10,5 @@ export function groupBy<T, D extends string>(
     }
     result[key].push(item);
   });
-  console.log(result);
   return Object.entries(result) as [D, T[]][];
 }
