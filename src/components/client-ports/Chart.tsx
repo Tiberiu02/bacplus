@@ -8,7 +8,7 @@ export const Chart: FC<ComponentProps<typeof ChartPrimeReact>> = (props) => {
 
   useEffect(() => {
     const onResize = () => {
-      console.log("rerendering");
+      console.log("rerendering chart");
       setLastRerender(Date.now());
     };
 

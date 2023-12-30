@@ -48,8 +48,6 @@ export function Navbar({
   )?.[0];
   const isHomePage = currentPath == HOME_PATH;
 
-  console.log(currentPath, isHomePage);
-
   return (
     <nav
       className={twMerge(
