@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import { formtaNumber } from "~/data/formatNumber";
 
 type RGB = [number, number, number];
@@ -91,7 +92,13 @@ function dimColor(color: RGB, factor: number): RGB {
   ];
 }
 
-export function PercentageBar({ value }: { value?: number }) {
+export function PercentageBar({
+  value,
+  className,
+}: {
+  value?: number;
+  className?: string;
+}) {
   if (value == undefined) return null;
 
   const color1 = h2r("#ff3333");
@@ -103,9 +110,10 @@ export function PercentageBar({ value }: { value?: number }) {
 
   return (
     <div
-      className={
-        "relative h-6 overflow-hidden rounded-full bg-gray-100 outline outline-2"
-      }
+      className={twMerge(
+        "relative h-6 overflow-hidden rounded-full bg-gray-100 outline outline-2",
+        className
+      )}
       style={{
         outlineColor: r2h(borderColor),
       }}

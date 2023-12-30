@@ -267,6 +267,13 @@ const queryFunctions = {
         },
       },
     }),
+  ierarhieAdm: () =>
+    prisma.en.groupBy({
+      by: ["an", "id_judet", "medie_adm"],
+      _count: {
+        _all: true,
+      },
+    }),
   aniBac: () =>
     prisma.bac.findMany({
       select: { an: true },
