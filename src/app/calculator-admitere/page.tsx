@@ -5,16 +5,20 @@ import { Title } from "~/components/Title";
 import { CalculatorAdmitere } from "./CalculatorAdmitere";
 import { query, ultimulAnEn } from "~/data/dbQuery";
 import { DateLicee, Ierarhie } from "./data";
+import { env } from "~/env.mjs";
 
 export function generateMetadata(): Metadata {
   return {
     title: `Calculator Admitere ${ultimulAnEn} | Bac Plus`,
-    description: `Află ce șanse ai să intri la liceul dorit în funcție de media obținută la admitere.`,
+    description: `Află ce șanse ai să intri la liceul dorit în funcție de media obținută la Evaluare.`,
 
     openGraph: {
-      title: "Calculator Admitere ${ultimulAnEn}",
+      title: `Calculator Admitere ${ultimulAnEn}`,
       description:
-        "Află ce șanse ai să intri la liceul dorit în funcție de media obținută la admitere.",
+        "Află ce șanse ai să intri la liceul dorit în funcție de media obținută la Evaluare.",
+      siteName: "Bac Plus",
+      images: ["/og-banner.jpg"],
+      url: env.WEBSITE_URL,
     },
   };
 }
@@ -22,17 +26,21 @@ export function generateMetadata(): Metadata {
 export default function Calculator() {
   const ierarhie = query.ierarhieAdm.reduce((acc, i) => {
     const { an, id_judet, medie_adm } = i;
+
+    if (!an || !id_judet || !medie_adm) return acc;
+
     if (!acc[an]) acc[an] = {};
 
     if (!acc[an]![id_judet])
       acc[an]![id_judet] = new Array<number>(901).fill(0);
 
-    const ix = Math.round(medie_adm! * 100 - 100);
+    const ix = Math.round(medie_adm * 100 - 100);
 
-    acc[an]![id_judet]![ix] = i._count._all;
-
-    if (ix < 0 || ix > 900)
+    if (ix < 0 || ix > 900) {
       console.error(`Invalid index ${ix} for ${i.id_judet}`);
+    } else {
+      acc[an]![id_judet]![ix] = i._count._all;
+    }
 
     return acc;
   }, {} as { [an: number]: Ierarhie });
@@ -50,10 +58,6 @@ export default function Calculator() {
     const medie = s._min.medie_adm;
 
     if (!liceu || !medie) return acc;
-
-    const nume = query.licee.find((l) => l.id_liceu === liceu)?.nume_liceu;
-
-    // if (!nume) console.error(`No nume for ${liceu}`);
 
     const judet = liceu.split("_").at(-1);
 
@@ -82,13 +86,13 @@ export default function Calculator() {
         <Title>Calculator Admitere {ultimulAnEn}</Title>
         <p>
           Află ce șanse ai să intri la liceul dorit în funcție de media obținută
-          la admitere.
+          la Evaluare.
         </p>
         <p>
           <b>Cum functionează?</b> După ce introduci media obținută la admitere
           și alegi liceul dorit, calculatorul va calcula poziția ta în ierarhia
           județeană din {ultimulAnEn} și o va compara cu poziția ultimului elev
-          admis la liceul respectiv în {ultimulAnEn - 1} și {ultimulAnEn - 2}.
+          admis la liceul respectiv în anul anterior.
         </p>
         <p>
           <b>Atenție!</b> Acest calculator este doar o estimare și nu garantează
@@ -105,6 +109,8 @@ export default function Calculator() {
           licee={licee}
           anCurent={ultimulAnEn}
         />
+
+        <div className="h-screen" />
       </MainContainer>
     </>
   );

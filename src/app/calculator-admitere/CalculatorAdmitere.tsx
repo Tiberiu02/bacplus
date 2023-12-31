@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FaMagnifyingGlass, FaRegPenToSquare } from "react-icons/fa6";
 import { twMerge } from "tailwind-merge";
-import { DateLicee, Ierarhie } from "./data";
+import type { DateLicee, Ierarhie } from "./data";
 import { judetDupaCod } from "~/data/coduriJudete";
 import unidecode from "unidecode";
 import { Card } from "~/components/Cards";
@@ -72,41 +72,45 @@ export function CalculatorAdmitere({
           onChange={(e) => updateMedie(e.target.value)}
         />
       </div>
+      {medieValid && (
+        <>
+          <div className="mt-4 text-lg font-semibold">
+            Selecteaza liceul dorit
+          </div>
 
-      <div className="mt-4 text-lg font-semibold">Liceu dorit</div>
-
-      <div className="relative flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
-        <FaMagnifyingGlass className="shrink-0 text-gray-400" />
-        <input
-          className="w-full bg-transparent outline-none"
-          placeholder="Caută liceul dorit"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {search.length > 0 && (
-          <div className="absolute left-0 right-0 top-[100%] z-10 mt-1 flex flex-col items-start rounded border-[1px] border-gray-300 bg-white">
-            {liceeFiltered.length ? (
-              liceeFiltered.map(([liceu, date]) => (
-                <button
-                  key={liceu}
-                  className="w-full cursor-pointer px-3 py-2 text-left duration-150 hover:bg-gray-100"
-                  onClick={() => {
-                    setLiceuSelectat(liceu);
-                    setSearch("");
-                  }}
-                >
-                  {numeLiceu(liceu)}
-                </button>
-              ))
-            ) : (
-              <div className="px-3 py-2 italic text-gray-500">
-                Nu a fost găsit niciun liceu
+          <div className="relative flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
+            <FaMagnifyingGlass className="shrink-0 text-gray-400" />
+            <input
+              className="w-full bg-transparent outline-none"
+              placeholder="Caută liceul dorit"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search.length > 0 && (
+              <div className="absolute left-0 right-0 top-[100%] z-10 mt-1 flex flex-col items-start rounded border-[1px] border-gray-300 bg-white">
+                {liceeFiltered.length ? (
+                  liceeFiltered.map(([liceu, date]) => (
+                    <button
+                      key={liceu}
+                      className="w-full cursor-pointer px-3 py-2 text-left duration-150 hover:bg-gray-100"
+                      onClick={() => {
+                        setLiceuSelectat(liceu);
+                        setSearch("");
+                      }}
+                    >
+                      {numeLiceu(liceu)}
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-3 py-2 italic text-gray-500">
+                    Nu a fost găsit niciun liceu
+                  </div>
+                )}
               </div>
             )}
           </div>
-        )}
-      </div>
-
+        </>
+      )}
       {liceuSelectat && medieValid && (
         <InfoLiceu
           idLiceu={liceuSelectat}
@@ -153,34 +157,35 @@ function InfoLiceu({
         {egalitate > 0 && ` (la egalitate cu încă ${egalitate} elevi)`}
       </div>
 
-      {groupBy(liceu!, (s) => s.specializare).map(([specializare, lista]) => (
-        <div className="mt-6" key={specializare}>
-          <div className="font-bold">{specializare}</div>
-          <ul className="ml-4 mt-2 list-inside list-disc">
-            {lista.map((a) => (
-              <li key={`${a.an}-${a.specializare}`}>
-                Ultima poziție {a.an}:{" "}
-                <span className="font-medium">{a.pozitie}</span> (medie:{" "}
-                {a.medie}, locuri: {a.locuri})
-              </li>
-            ))}
-          </ul>
-          <div className="ml-0 mt-2 flex items-center gap-3">
-            <div>Șanse de admitere:</div>
-            <PercentageBar
-              className="inline-block w-20 text-center"
-              value={probabilitate(pozitie, lista.at(-1)!.pozitie)}
-            />
+      <div className="grid-cols-2 lg:grid">
+        {groupBy(liceu!, (s) => s.specializare).map(([specializare, lista]) => (
+          <div className="mt-6" key={specializare}>
+            <div className="font-bold">{specializare}</div>
+            <ul className="ml-4 mt-2 list-inside list-disc">
+              {lista.map((a) => (
+                <li key={`${a.an}-${a.specializare}`}>
+                  Ultima poziție {a.an}:{" "}
+                  <span className="font-medium">{a.pozitie}</span> (medie:{" "}
+                  {a.medie}, locuri: {a.locuri})
+                </li>
+              ))}
+            </ul>
+            <div className="ml-0 mt-2 flex items-center gap-3">
+              <div>Șanse de admitere:</div>
+              <PercentageBar
+                className="inline-block w-20 text-center"
+                value={probabilitate(pozitie, lista.at(-1)!.pozitie)}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </Card>
   );
 }
 
 function probabilitate(pozitie: number, ultimaPozitie: number) {
-  const diferenta = ultimaPozitie - pozitie;
-  let p = normalcdf(0, pozitie / 5, diferenta);
+  let p = normalcdf(0, Math.log(1.5), Math.log(ultimaPozitie / pozitie));
   p = Math.round(p * 100);
   p = Math.max(5, Math.min(95, p));
   return p;

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { DynamicRedirect } from "~/components/DynamicRedirect";
 import { query, ultimulAnBac } from "~/data/dbQuery";
 
@@ -8,10 +9,12 @@ export default function Page() {
   }));
 
   return (
-    <DynamicRedirect
-      paramName="name"
-      data={licee}
-      fallback={`/top_licee/${ultimulAnBac}`}
-    />
+    <Suspense>
+      <DynamicRedirect
+        paramName="name"
+        data={licee}
+        fallback={`/top_licee/${ultimulAnBac}`}
+      />
+    </Suspense>
   );
 }

@@ -7,7 +7,7 @@
     "dev": "next dev",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
-    "start": "next start",
+    "start": "npx serve@latest out",
     "deploy": "npx ts-node bunny/index.ts"
   },
   "dependencies": {

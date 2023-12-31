@@ -1,6 +1,6 @@
 "use client";
 
-import { Judet } from "~/data/data";
+import type { Judet } from "~/data/data";
 import { TabelJudete } from "./tables/TabelJudete";
 import { ShareButtons } from "./ShareButtons";
 import { Select } from "./Select";

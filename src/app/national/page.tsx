@@ -16,7 +16,7 @@ import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { notFound } from "next/navigation";
 import { judetDupaCod } from "~/data/coduriJudete";
-import { Judet } from "~/data/data";
+import type { Judet } from "~/data/data";
 import { TopJudete } from "~/components/TopJudete";
 
 export function generateMetadata({

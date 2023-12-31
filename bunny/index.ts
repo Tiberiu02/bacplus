@@ -281,6 +281,8 @@ async function uploadFiles(
     .sync(`${rootFolder}/**/*`, { nodir: true })
     .map((file) => path.relative(rootFolder, file));
 
+  console.log(`Uploading ${files.length} files...`);
+
   const progressBar = new cliProgress.SingleBar(
     {
       format:
@@ -344,7 +346,8 @@ async function main() {
   const [, , pullZoneName] = process.argv;
 
   if (!pullZoneName) {
-    throw new Error("Usage: npx run deploy <pull-zone-name>");
+    console.error("Usage: npx run deploy <pull-zone-name>");
+    process.exit(1);
   }
 
   const storageZone = await createStorageZone(pullZoneName);
