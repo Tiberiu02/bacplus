@@ -61,7 +61,7 @@ export default function PaginaNational() {
       <div className="mt-8 grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] xl:grid-cols-4 xl:grid-rows-[auto_auto] 2xl:grid-flow-col 2xl:grid-cols-[auto_1fr] 2xl:grid-rows-4">
         <SnippetCard
           title={`Medie Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].medie, 3)}
+          value={formtaNumber(dataBac[1].medie, 2)}
           Icon={FaAward}
         />
         <SnippetCard
@@ -71,13 +71,13 @@ export default function PaginaNational() {
         />
         <SnippetCard
           title={`Candidați Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].candidati, 3)}
+          value={formtaNumber(dataBac[1].candidati, 2)}
           Icon={FaUserGraduate}
         />
         {dataAdm && (
           <SnippetCard
             title={`Medie Evaluare ${dataAdm[0]}`}
-            value={formtaNumber(dataAdm[1].medieEn, 3)}
+            value={formtaNumber(dataAdm[1].medieEn, 2)}
             Icon={FaPersonCircleCheck}
           />
         )}

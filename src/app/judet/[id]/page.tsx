@@ -94,7 +94,7 @@ export default function PaginaJudet({
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard
           title={`Medie Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].medie, 3)}
+          value={formtaNumber(dataBac[1].medie, 2)}
           Icon={FaAward}
         />
         <SnippetCard
@@ -104,13 +104,13 @@ export default function PaginaJudet({
         />
         <SnippetCard
           title={`Candidați Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].candidati, 3)}
+          value={dataBac[1].candidati.toString()}
           Icon={FaUserGraduate}
         />
         {dataAdm && (
           <SnippetCard
             title={`Medie Evaluare ${dataAdm[0]}`}
-            value={formtaNumber(dataAdm[1].medieEn, 3)}
+            value={formtaNumber(dataAdm[1].medieEn, 2)}
             Icon={FaPersonCircleCheck}
           />
         )}
