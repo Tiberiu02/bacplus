@@ -1,10 +1,10 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { MainContainer } from "~/components/MainContainer";
 import { ShareButtons } from "~/components/ShareButtons";
 import { Title } from "~/components/Title";
 import { CalculatorAdmitere } from "./CalculatorAdmitere";
 import { query, ultimulAnEn } from "~/data/dbQuery";
-import { DateLicee, Ierarhie } from "./data";
+import type { DateLicee, Ierarhie } from "./data";
 import { env } from "~/env.mjs";
 
 export function generateMetadata(): Metadata {
@@ -29,26 +29,29 @@ export default function Calculator() {
 
     if (!an || !id_judet || !medie_adm) return acc;
 
-    if (!acc[an]) acc[an] = {};
+    let accAn = acc[an];
 
-    if (!acc[an]![id_judet])
-      acc[an]![id_judet] = new Array<number>(901).fill(0);
+    if (!accAn) accAn = acc[an] = {};
+
+    let accJudet = accAn[id_judet];
+
+    if (!accJudet) accJudet = accAn[id_judet] = new Array<number>(901).fill(0);
 
     const ix = Math.round(medie_adm * 100 - 100);
 
     if (ix < 0 || ix > 900) {
       console.error(`Invalid index ${ix} for ${i.id_judet}`);
     } else {
-      acc[an]![id_judet]![ix] = i._count._all;
+      accJudet[ix] = i._count._all;
     }
 
     return acc;
   }, {} as { [an: number]: Ierarhie });
 
-  Object.entries(ierarhie).forEach(([an, ierarhie]) => {
-    Object.entries(ierarhie).forEach(([judet, ierarhie]) => {
+  Object.entries(ierarhie).forEach(([_an, ierarhie]) => {
+    Object.entries(ierarhie).forEach(([_judet, ierarhie]) => {
       for (let i = ierarhie.length - 2; i >= 0; i--) {
-        ierarhie[i] += ierarhie[i + 1]!;
+        ierarhie[i] += ierarhie[i + 1] || 0;
       }
     });
   });
@@ -63,15 +66,15 @@ export default function Calculator() {
 
     if (!judet) return acc;
 
-    const pozitie = ierarhie[s.an]![judet]![Math.round(medie * 100 - 100)];
+    const pozitie = ierarhie[s.an]?.[judet]?.[Math.round(medie * 100 - 100)];
 
     if (!pozitie) throw new Error(`No pozitie for ${liceu} ${medie} ${judet}`);
 
     if (!acc[liceu]) acc[liceu] = [];
 
-    acc[liceu]!.push({
+    acc[liceu]?.push({
       an: s.an,
-      specializare: s.repartizat_specializare!,
+      specializare: s.repartizat_specializare || "",
       locuri: s._count._all,
       medie: medie,
       pozitie,
@@ -79,6 +82,10 @@ export default function Calculator() {
 
     return acc;
   }, {} as DateLicee);
+
+  const ierarhieUltimulAn = ierarhie[ultimulAnEn];
+
+  if (!ierarhieUltimulAn) throw new Error(`No ierarhie for ${ultimulAnEn}`);
 
   return (
     <>
@@ -105,7 +112,7 @@ export default function Calculator() {
         <ShareButtons className="my-4" />
 
         <CalculatorAdmitere
-          ierarhie={ierarhie[ultimulAnEn]!}
+          ierarhie={ierarhieUltimulAn}
           licee={licee}
           anCurent={ultimulAnEn}
         />

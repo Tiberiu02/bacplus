@@ -13,13 +13,15 @@ import { PercentageBar } from "~/components/PercentageBar";
 
 function numeLiceu(id: string) {
   const nume = id.split("_");
-  const judet = judetDupaCod(nume.at(-1)!).nume;
+  const codJudet = nume.at(-1) || "";
+  const judet = judetDupaCod(codJudet).nume;
   return nume.slice(0, -1).join(" ") + ", " + judet;
 }
 
 function keyLiceu(id: string) {
   const nume = id.split("_");
-  const judet = judetDupaCod(nume.at(-1)!).nume;
+  const codJudet = nume.at(-1) || "";
+  const judet = judetDupaCod(codJudet).nume;
   return nume.slice(0, -1).join("") + judet;
 }
 
@@ -89,7 +91,7 @@ export function CalculatorAdmitere({
             {search.length > 0 && (
               <div className="absolute left-0 right-0 top-[100%] z-10 mt-1 flex flex-col items-start rounded border-[1px] border-gray-300 bg-white">
                 {liceeFiltered.length ? (
-                  liceeFiltered.map(([liceu, date]) => (
+                  liceeFiltered.map(([liceu, _date]) => (
                     <button
                       key={liceu}
                       className="w-full cursor-pointer px-3 py-2 text-left duration-150 hover:bg-gray-100"
@@ -138,12 +140,18 @@ function InfoLiceu({
   anCurent: number;
 }) {
   const liceu = licee[idLiceu];
-  const judet = judetDupaCod(idLiceu.split("_").at(-1)!);
+  const codJudet = idLiceu.split("_").at(-1) || "";
+  const judet = judetDupaCod(codJudet);
 
-  const pozitie =
-    (ierarhie[judet.id]![Math.round(medie * 100 - 100) + 1] ?? 0) + 1;
+  if (!liceu) throw new Error(`Liceul ${idLiceu} nu exista in baza de date!`);
+
+  const ierarhieJudet = ierarhie[judet.id];
+
+  if (!ierarhieJudet) throw new Error(`Nu exista ierarhia pentru ${judet.id}`);
+
+  const pozitie = (ierarhieJudet[Math.round(medie * 100 - 100) + 1] ?? 0) + 1;
   const egalitate =
-    (ierarhie[judet.id]![Math.round(medie * 100 - 100)] ?? 0) - pozitie;
+    (ierarhieJudet[Math.round(medie * 100 - 100)] ?? 0) - pozitie;
 
   return (
     <Card className="mt-4">
@@ -158,27 +166,29 @@ function InfoLiceu({
       </div>
 
       <div className="grid-cols-2 lg:grid">
-        {groupBy(liceu!, (s) => s.specializare).map(([specializare, lista]) => (
-          <div className="mt-6" key={specializare}>
-            <div className="font-bold">{specializare}</div>
-            <ul className="ml-4 mt-2 list-inside list-disc">
-              {lista.map((a) => (
-                <li key={`${a.an}-${a.specializare}`}>
-                  Ultima poziție {a.an}:{" "}
-                  <span className="font-medium">{a.pozitie}</span> (medie:{" "}
-                  {a.medie}, locuri: {a.locuri})
-                </li>
-              ))}
-            </ul>
-            <div className="ml-0 mt-2 flex items-center gap-3">
-              <div>Șanse de admitere:</div>
-              <PercentageBar
-                className="inline-block w-20 text-center"
-                value={probabilitate(pozitie, lista.at(-1)!.pozitie)}
-              />
+        {groupBy(liceu, (s) => s.specializare).map(
+          ([specializare, rezultate]) => (
+            <div className="mt-6" key={specializare}>
+              <div className="font-bold">{specializare}</div>
+              <ul className="ml-4 mt-2 list-inside list-disc">
+                {rezultate.map((a) => (
+                  <li key={`${a.an}-${a.specializare}`}>
+                    Ultima poziție {a.an}:{" "}
+                    <span className="font-medium">{a.pozitie}</span> (medie:{" "}
+                    {a.medie}, locuri: {a.locuri})
+                  </li>
+                ))}
+              </ul>
+              <div className="ml-0 mt-2 flex items-center gap-3">
+                <div>Șanse de admitere:</div>
+                <PercentageBar
+                  className="inline-block w-20 text-center"
+                  value={probabilitate(pozitie, rezultate.at(-1)?.pozitie ?? 0)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
     </Card>
   );
