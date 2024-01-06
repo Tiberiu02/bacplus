@@ -120,7 +120,7 @@ export default function PaginaScoala({
         />
         <SnippetCard
           title={`Absolvenți ${data[0]}`}
-          value={data[1].candidati.toString()}
+          value={formtaNumber(data[1].candidati, 0)}
           Icon={FaUserGraduate}
         />
 

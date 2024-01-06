@@ -66,12 +66,12 @@ export default function PaginaNational() {
         />
         <SnippetCard
           title={`Promovare Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].rataPromovare, 1) + "%"}
+          value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
           Icon={FaSchoolCircleCheck}
         />
         <SnippetCard
           title={`Candidați Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].candidati, 2)}
+          value={formtaNumber(dataBac[1].candidati, 0)}
           Icon={FaUserGraduate}
         />
         {dataAdm && (

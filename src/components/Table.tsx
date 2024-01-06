@@ -28,6 +28,7 @@ type ColumnType<T> =
           | {
               type: "number";
               value: (rowData: T, rowIndex: number) => number | undefined;
+              decimals: number;
             }
           | {
               type: "percentage";
@@ -281,7 +282,10 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                         column.value(row, row._rowIndex)
                       )
                     ) : column.type == "number" ? (
-                      formtaNumber(column.value(row, row._rowIndex), 2)
+                      formtaNumber(
+                        column.value(row, row._rowIndex),
+                        column.decimals
+                      )
                     ) : column.type == "percentage" ? (
                       <PercentageBar
                         value={column.value(row, row._rowIndex) ?? 0}

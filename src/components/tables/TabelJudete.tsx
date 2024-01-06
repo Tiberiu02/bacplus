@@ -11,6 +11,7 @@ export function TabelJudete({ data }: { data: Judet[] }) {
       columns={[
         {
           type: "number",
+          decimals: 0,
           header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
           tdClassName: "text-gray-500",
@@ -26,6 +27,7 @@ export function TabelJudete({ data }: { data: Judet[] }) {
         },
         {
           type: "number",
+          decimals: 2,
           header: "Medie Bacalaureat",
           value: (rowData) => rowData.medieBac,
           sortable: true,
@@ -39,6 +41,7 @@ export function TabelJudete({ data }: { data: Judet[] }) {
         },
         {
           type: "number",
+          decimals: 0,
           header: "Candidați Bacalaureat",
           value: (rowData) => rowData.numCandidatiBac,
           sortable: true,
@@ -46,12 +49,14 @@ export function TabelJudete({ data }: { data: Judet[] }) {
         data.some((rowData) => rowData.medieEn != undefined) && {
           type: "number",
           header: "Medie Evaluare Națională",
+          decimals: 2,
           value: (rowData) => rowData.medieEn,
           sortable: true,
         },
         data.some((rowData) => rowData.numCandidatiEn != undefined) && {
           type: "number",
           header: "Candidați Evaluare Națională",
+          decimals: 0,
           value: (rowData) => rowData.numCandidatiEn,
           sortable: true,
         },

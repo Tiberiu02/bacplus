@@ -51,6 +51,7 @@ export function TabelSpecializari({
           },
           {
             type: "number",
+            decimals: 2,
             value: (e) => e.medie ?? undefined,
             header: "Ultima medie",
             sortable: true,
@@ -59,6 +60,7 @@ export function TabelSpecializari({
           {
             type: "number",
             value: (e) => e.admisi,
+            decimals: 0,
             header: "Elevi admiși",
             sortable: true,
           },

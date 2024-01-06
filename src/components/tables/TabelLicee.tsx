@@ -19,6 +19,7 @@ export function TabelLicee({
       columns={[
         {
           type: "number",
+          decimals: 0,
           header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
           tdClassName: "text-gray-500",
@@ -35,6 +36,7 @@ export function TabelLicee({
         {
           type: "number",
           header: "Medie Bac",
+          decimals: 2,
           value: (rowData) => rowData.medieBac,
           sortable: true,
           defaultSortingColumn: true,
@@ -47,12 +49,14 @@ export function TabelLicee({
         },
         {
           type: "number",
+          decimals: 0,
           header: "Elevi",
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },
         {
           type: "number",
+          decimals: 2,
           header: `Medie admitere ${anAdmitere ?? ""}`,
           value: (rowData) => rowData.medieAdm,
           sortable: true,

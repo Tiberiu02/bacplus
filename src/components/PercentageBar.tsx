@@ -125,7 +125,7 @@ export function PercentageBar({
           backgroundColor: r2h(color),
         }}
       />
-      <div className="relative">{formtaNumber(value, 1)}%</div>
+      <div className="relative">{formtaNumber(value, 1, 0)}%</div>
     </div>
   );
 }

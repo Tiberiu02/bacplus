@@ -104,7 +104,7 @@ export default function PaginaJudet({
         />
         <SnippetCard
           title={`Candidați Bac ${dataBac[0]}`}
-          value={dataBac[1].candidati.toString()}
+          value={formtaNumber(dataBac[1].candidati, 0)}
           Icon={FaUserGraduate}
         />
         {dataAdm && (

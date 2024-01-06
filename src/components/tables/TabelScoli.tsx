@@ -13,6 +13,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
       columns={[
         {
           type: "number",
+          decimals: 0,
           header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
           tdClassName: "text-gray-500",
@@ -28,6 +29,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
         },
         {
           type: "number",
+          decimals: 2,
           header: "Medie Evaluare Națională",
           value: (rowData) => rowData.medieEvaluareNationala,
           sortable: true,
@@ -35,18 +37,21 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
         },
         {
           type: "number",
+          decimals: 2,
           header: "Medie Limba Română",
           value: (rowData) => rowData.medieLimbaRomana,
           sortable: true,
         },
         {
           type: "number",
+          decimals: 2,
           header: "Medie Matematică",
           value: (rowData) => rowData.medieMatematica,
           sortable: true,
         },
         {
           type: "number",
+          decimals: 0,
           header: "Elevi",
           value: (rowData) => rowData.numCandidati,
           sortable: true,

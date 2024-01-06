@@ -55,12 +55,14 @@ export function TabelDisciplineBac({
           {
             type: "number",
             value: (e) => e.medie ?? undefined,
+            decimals: 2,
             header: "Medie",
             sortable: true,
           },
           {
             type: "number",
             value: (e) => e.elevi,
+            decimals: 0,
             header: "Elevi",
             sortable: true,
           },
