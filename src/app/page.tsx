@@ -193,16 +193,16 @@ export default function Home() {
         <h2 className="text-3xl font-bold">Câteva Cuvinte Despre Noi</h2>
 
         <p>
-          După mulți ani petrecuți în sistemul educațional, am ajuns să îl
+          După cei 12 ani petrecuți în sistemul educațional, am ajuns să îl
           cunoaștem îndeaproape, cu bune și cu rele.
         </p>
 
         <p>
-          Suntem doi tineri programatori dornici să aducă o schimbare pozitivă
-          asupra sistemului în care s-au format. Credem în tehnologie și în
-          rolul pe care aceasta îl poate avea în actul educațional. Sunt multe
-          moduri în care tehnologia poate îmbunătăți sistemul actual, dar am
-          ales să începem cu transparentizarea examenului de bacalaureat.
+          Suntem doi tineri dornici să aducă o schimbare pozitivă asupra
+          sistemului în care s-au format. Credem în tehnologie și în rolul pe
+          care aceasta îl poate avea în actul educațional. Sunt multe moduri în
+          care tehnologia poate îmbunătăți sistemul actual, dar am ales să
+          începem cu transparentizarea examenului de bacalaureat.
         </p>
 
         <p>
