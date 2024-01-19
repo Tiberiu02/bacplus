@@ -14,7 +14,6 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Button } from "./Button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 type ColumnType<T> =
   | (

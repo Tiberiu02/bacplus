@@ -1,8 +1,7 @@
-import { FaAward, FaSchool, FaUserFriends } from "react-icons/fa";
+import { FaAward, FaUserFriends } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
-  FaSchool as FaSchool6,
   FaPersonCircleCheck,
   FaSchoolCircleCheck,
   FaSuitcase,
@@ -11,7 +10,7 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
@@ -20,10 +19,7 @@ import { Card, ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
-import { judetDupaCod } from "~/data/coduriJudete";
 import Link from "next/link";
-import { buttonClassName } from "~/components/Button";
-import { twMerge } from "tailwind-merge";
 import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
 import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
 
@@ -67,6 +63,7 @@ export default function PaginaLiceu({
 }) {
   const {
     numeLiceu,
+    gimnaziu,
     website,
     adresa,
     codJudet,
@@ -85,6 +82,19 @@ export default function PaginaLiceu({
   return (
     <MainContainer>
       <Title>{numeLiceu}</Title>
+
+      {gimnaziu && (
+        <div className="border-inset -mt-2 mb-2 flex gap-4 shadow-[inset_0_-1px_0_rgb(229,231,235)]">
+          <div className="w-24 border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
+            Liceu
+          </div>
+          <Link href={`/scoala/${id}`} replace={true}>
+            <div className="w-24 border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+              Gimnaziu
+            </div>
+          </Link>
+        </div>
+      )}
 
       <Announcements />
 
@@ -115,29 +125,6 @@ export default function PaginaLiceu({
       )}
 
       <div className="mt-4" />
-
-      <div className="flex w-full flex-wrap gap-4 text-center max-sm:flex-col">
-        <Link
-          href={`/top_licee/${ultimulAnBac}/${judetDupaCod(codJudet).nume}`}
-          className={twMerge(
-            buttonClassName,
-            "flex flex-1 items-center justify-center gap-3"
-          )}
-        >
-          <FaSchool6 className="shrink-0 text-xl text-blue-500" />
-          Vezi top licee {judetDupaCod(codJudet).numeIntreg} {ultimulAnBac}
-        </Link>
-        <Link
-          href={`/top_scoli/${ultimulAnEn}/${judetDupaCod(codJudet).nume}`}
-          className={twMerge(
-            buttonClassName,
-            "flex flex-1 items-center justify-center gap-3"
-          )}
-        >
-          <FaSchool className="shrink-0 text-lg text-blue-500" />
-          Vezi top școli {judetDupaCod(codJudet).numeIntreg} {ultimulAnEn}
-        </Link>
-      </div>
 
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard
@@ -255,6 +242,8 @@ function getInfoLiceu(id: string) {
     website,
     address: adresa,
   } = query.licee.find((result) => result.id_liceu == id) || {};
+
+  const gimnaziu = query.scoli.some((result) => result.id_scoala == id);
 
   const specializari = query.specializariAdm
     .filter((s) => s.repartizat_id_liceu == id)
@@ -416,6 +405,7 @@ function getInfoLiceu(id: string) {
 
   return {
     numeLiceu,
+    gimnaziu,
     website,
     adresa,
     codJudet,

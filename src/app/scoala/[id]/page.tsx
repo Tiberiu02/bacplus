@@ -1,17 +1,12 @@
-import { FaAward, FaSchool } from "react-icons/fa";
+import { FaAward } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
-import {
-  FaPenNib,
-  FaUserGraduate,
-  FaSchool as FaSchool6,
-} from "react-icons/fa6";
+import { FaPenNib, FaUserGraduate } from "react-icons/fa6";
 import { TbMathFunction } from "react-icons/tb";
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
+import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { judetDupaCod } from "~/data/coduriJudete";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { Card, ChartCard, SnippetCard } from "~/components/Cards";
@@ -19,8 +14,6 @@ import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
-import { buttonClassName } from "~/components/Button";
-import { twMerge } from "tailwind-merge";
 
 export function generateStaticParams() {
   return query.scoliCuElevi.map((scoala) => ({
@@ -60,7 +53,7 @@ export default function PaginaScoala({
 }: {
   params: { id: string };
 }) {
-  const { numeScoala, codJudet, rezultateEn } = getInfoScoala(id);
+  const { numeScoala, codJudet, rezultateEn, liceu } = getInfoScoala(id);
 
   const data = Object.entries(rezultateEn).at(-1);
 
@@ -69,6 +62,19 @@ export default function PaginaScoala({
   return (
     <MainContainer>
       <Title>{numeScoala}</Title>
+
+      {liceu && (
+        <div className="border-inset -mt-2 mb-2 flex gap-4 shadow-[inset_0_-1px_0_rgb(229,231,235)]">
+          <Link href={`/liceu/${id}`} replace={true}>
+            <div className="w-24 border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+              Liceu
+            </div>
+          </Link>
+          <div className="w-24 border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
+            Gimnaziu
+          </div>
+        </div>
+      )}
 
       <Announcements />
 
@@ -79,29 +85,6 @@ export default function PaginaScoala({
       </p>
 
       <div className="mt-4" />
-
-      <div className="flex w-full flex-wrap gap-4 text-center max-sm:flex-col">
-        <Link
-          href={`/top_scoli/${ultimulAnEn}/${judetDupaCod(codJudet).nume}`}
-          className={twMerge(
-            buttonClassName,
-            "flex flex-1 items-center justify-center gap-3"
-          )}
-        >
-          <FaSchool className="text-xl text-blue-500" />
-          Top școli {judetDupaCod(codJudet).numeIntreg} {ultimulAnEn}
-        </Link>
-        <Link
-          href={`/top_licee/${ultimulAnBac}/${judetDupaCod(codJudet).nume}`}
-          className={twMerge(
-            buttonClassName,
-            "flex flex-1 items-center justify-center gap-3"
-          )}
-        >
-          <FaSchool6 className="text-xl text-blue-500" />
-          Top licee {judetDupaCod(codJudet).numeIntreg} {ultimulAnBac}
-        </Link>
-      </div>
 
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard
@@ -157,6 +140,8 @@ function getInfoScoala(id: string) {
   const { nume_afisat: numeScoala } =
     query.scoli.find((result) => result.id_scoala == id) || {};
 
+  const liceu = query.licee.some((result) => result.id_liceu == id);
+
   const rezultateEn = {} as {
     [an: number]: {
       medieEvaluareNationala?: number;
@@ -199,6 +184,7 @@ function getInfoScoala(id: string) {
   });
 
   return {
+    liceu,
     rezultateEn,
     codJudet,
     numeScoala,
