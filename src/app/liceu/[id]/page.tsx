@@ -1,9 +1,8 @@
-import { FaAward, FaUserFriends } from "react-icons/fa";
+import { FaAward, FaSchool, FaUserFriends } from "react-icons/fa";
 import { IoLanguage } from "react-icons/io5";
 import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
 import {
-  FaChartSimple,
-  FaGraduationCap,
+  FaSchool as FaSchool6,
   FaPersonCircleCheck,
   FaSchoolCircleCheck,
   FaSuitcase,
@@ -12,9 +11,8 @@ import {
 import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query, ultimulAnBac } from "~/data/dbQuery";
+import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
-import { ShareButtons } from "~/components/ShareButtons";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -42,11 +40,11 @@ export function generateMetadata({
 }): Metadata {
   const numeLiceu = query.licee.find(
     (e) => e.id_liceu == params.id
-  )?.nume_liceu;
+  )?.nume_afisat;
 
   if (!numeLiceu) return {};
 
-  const title = `${numeLiceu} | Bac Plus`;
+  const title = `${numeLiceu}`;
   const description = `Descoperă informații detaliate despre ${numeLiceu}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`;
 
   return {
@@ -91,10 +89,9 @@ export default function PaginaLiceu({
       <Announcements />
 
       <p>
-        Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b> din{" "}
-        {judetDupaCod(codJudet).numeIntreg}, bazate pe rezultatele la examenele
-        de Bacalaureat și Evaluare Națională publicate de Ministerul Educației
-        Naționale.
+        Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b>,
+        bazate pe rezultatele la examenele de Bacalaureat și Evaluare Națională
+        publicate de Ministerul Educației Naționale.
       </p>
       {(website || adresa) && (
         <p>
@@ -119,7 +116,7 @@ export default function PaginaLiceu({
 
       <div className="mt-4" />
 
-      <div className="flex w-full flex-wrap gap-4 max-md:hidden">
+      <div className="flex w-full flex-wrap gap-4 text-center max-sm:flex-col">
         <Link
           href={`/top_licee/${ultimulAnBac}/${judetDupaCod(codJudet).nume}`}
           className={twMerge(
@@ -127,22 +124,20 @@ export default function PaginaLiceu({
             "flex flex-1 items-center justify-center gap-3"
           )}
         >
-          <FaGraduationCap className="text-xl text-blue-500" />
-          Top licee {judetDupaCod(codJudet).numeIntreg} {ultimulAnBac}
+          <FaSchool6 className="shrink-0 text-xl text-blue-500" />
+          Vezi top licee {judetDupaCod(codJudet).numeIntreg} {ultimulAnBac}
         </Link>
         <Link
-          href={`/judet/${judetDupaCod(codJudet).nume}`}
+          href={`/top_scoli/${ultimulAnEn}/${judetDupaCod(codJudet).nume}`}
           className={twMerge(
             buttonClassName,
             "flex flex-1 items-center justify-center gap-3"
           )}
         >
-          <FaChartSimple className="text-lg text-blue-500" />
-          Statistici generale {judetDupaCod(codJudet).numeIntreg}
+          <FaSchool className="shrink-0 text-lg text-blue-500" />
+          Vezi top școli {judetDupaCod(codJudet).numeIntreg} {ultimulAnEn}
         </Link>
       </div>
-
-      <ShareButtons />
 
       <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
         <SnippetCard
@@ -256,7 +251,7 @@ export default function PaginaLiceu({
 function getInfoLiceu(id: string) {
   const codJudet = query.bac.find((result) => result.id_liceu == id)?.id_judet;
   const {
-    nume_liceu: numeLiceu,
+    nume_afisat: numeLiceu,
     website,
     address: adresa,
   } = query.licee.find((result) => result.id_liceu == id) || {};

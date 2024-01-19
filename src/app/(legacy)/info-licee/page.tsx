@@ -4,7 +4,7 @@ import { query, ultimulAnBac } from "~/data/dbQuery";
 
 export default function Page() {
   const licee = query.licee.map((liceu) => ({
-    value: liceu.nume_liceu,
+    value: liceu.nume_afisat,
     redirect: `/liceu/${liceu.id_liceu}`,
   }));
 

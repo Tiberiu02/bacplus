@@ -17,7 +17,7 @@ export function generateMetadata({
   const { an } = params;
 
   return {
-    title: `Top județe la Bac ${an} | Bac Plus`,
+    title: `Top județe la Bac ${an}`,
     description: `Descoperă topul județelor la examenul de Bacalaureat ${an}`,
   };
 }

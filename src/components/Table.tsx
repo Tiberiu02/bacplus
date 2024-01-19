@@ -68,8 +68,6 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
     _rowIndex: number;
   };
 
-  const router = useRouter();
-
   const columns = columnsPossiblyFalse.filter(
     (column) => column
   ) as ColumnType<RowType>[];
@@ -103,11 +101,9 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
 
     rows.forEach((row) => {
       row.key =
-        searchField
-          ?.value(row, 0)
-          ?.toString()
+        unidecode(searchField?.value(row, 0)?.toString() || "")
           .toLowerCase()
-          .replace(/[^\w\d ]/g, "") ?? "";
+          .replace(/[^\w\d]/g, "") ?? "";
     });
 
     return rows;
@@ -118,7 +114,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   const onGlobalFilterChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = unidecode(e.target.value)
       .toLowerCase()
-      .replace(/[^\w\d ]/g, "");
+      .replace(/[^\w\d]/g, "");
     setGlobalFilterValue(value);
   };
 
@@ -245,9 +241,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                   href
                     ? (e) => {
                         e.preventDefault();
-                        e.ctrlKey
-                          ? window.open(href(row, rIx), "_blank")
-                          : router.push(href(row, rIx));
+                        window.open(href(row, rIx), "_blank");
                       }
                     : undefined
                 }
@@ -269,7 +263,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                   >
                     {column.type == "text" ? (
                       column.href ? (
-                        <Link href={column.href(row, rIx)}>
+                        <Link href={column.href(row, rIx)} target="_blank">
                           {column.value(row, row._rowIndex)}
                         </Link>
                       ) : (

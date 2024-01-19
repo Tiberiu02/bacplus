@@ -236,7 +236,7 @@ const queryFunctions = {
     prisma.licee.findMany({
       select: {
         id_liceu: true,
-        nume_liceu: true,
+        nume_afisat: true,
         website: true,
         address: true,
       },
@@ -245,7 +245,7 @@ const queryFunctions = {
     prisma.scoli.findMany({
       select: {
         id_scoala: true,
-        nume_scoala: true,
+        nume_afisat: true,
       },
     }),
   scoliCuElevi: () =>

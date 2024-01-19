@@ -19,17 +19,7 @@ import { judetDupaCod } from "~/data/coduriJudete";
 import type { Judet } from "~/data/data";
 import { TopJudete } from "~/components/TopJudete";
 
-export function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Metadata {
-  const numeLiceu = query.licee.find(
-    (e) => e.id_liceu == params.id
-  )?.nume_liceu;
-
-  if (!numeLiceu) return {};
-
+export function generateMetadata(): Metadata {
   return {
     title: `Statistici Naționale | Bac Plus`,
     description: `Vezi informații despre starea educației în România la nivel național, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`,

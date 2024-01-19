@@ -26,8 +26,8 @@ export function generateMetadata({
   if (!an) return {};
 
   const title = numeIntregJudet
-    ? `Top licee ${numeIntregJudet} ${an} | Bac Plus`
-    : `Top licee ${an} | Bac Plus`;
+    ? `Top licee ${numeIntregJudet} ${an}`
+    : `Top licee ${an}`;
 
   const description = `Descoperă cele mai bune licee din ${
     numeIntregJudet ?? "România"
@@ -241,7 +241,7 @@ function getLicee(an: number, judet?: string) {
   query.licee.forEach((liceu) => {
     const obj = licee[liceu.id_liceu];
     if (obj != undefined) {
-      obj.numeLiceu = liceu.nume_liceu;
+      obj.numeLiceu = liceu.nume_afisat;
     }
   });
 

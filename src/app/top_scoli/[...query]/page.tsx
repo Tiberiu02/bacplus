@@ -26,8 +26,8 @@ export function generateMetadata({
   if (!an) return {};
 
   const title = numeIntregJudet
-    ? `Top școli generale ${numeIntregJudet} ${an} | Bac Plus`
-    : `Top școli generale ${an} | Bac Plus`;
+    ? `Top școli generale ${numeIntregJudet} ${an}`
+    : `Top școli generale ${an}`;
 
   const description = `Descoperă cele mai bune școli generale din ${
     numeIntregJudet ?? "România"
@@ -215,7 +215,7 @@ function getScoli(an: number, judet?: string) {
   query.scoli.forEach((scoala) => {
     const obj = scoli[scoala.id_scoala];
     if (obj != undefined) {
-      obj.numeScoala = scoala.nume_scoala;
+      obj.numeScoala = scoala.nume_afisat;
     }
   });
 

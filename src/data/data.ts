@@ -15,7 +15,8 @@ export type LiceuDataArray = [
   number, // rataPromovare
   string, // numeLiceu
   string, // codJudet
-  number | undefined // medieAdm
+  number | undefined, // medieAdm
+  string | undefined // idLiceu
 ];
 
 export type Scoala = {
@@ -38,7 +39,8 @@ export type ScoalaDataArray = [
   number | undefined, // medieLimbaMaterna
   number | undefined, // medieMatematica
   number | undefined, // medieAbsolvire
-  number | undefined // medieEvaluareNationala
+  number | undefined, // medieEvaluareNationala
+  string | undefined // idScoala
 ];
 
 export type Judet = {
@@ -61,6 +63,17 @@ function round(num: number | undefined, decimals: number) {
 }
 
 export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
+  const idSintetic =
+    liceu.numeLiceu
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, " ")
+      .trim()
+      .replace(/ +/g, "_") +
+    "_" +
+    liceu.codJudet;
+
   return [
     liceu.medieBac ? round(liceu.medieBac, 3) : undefined,
     liceu.numCandidati,
@@ -68,12 +81,14 @@ export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
     liceu.numeLiceu,
     liceu.codJudet,
     liceu.medieAdm,
+    idSintetic == liceu.id ? undefined : liceu.id,
   ];
 }
 
 export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
   return {
     id:
+      dataArray[6] ??
       dataArray[3]
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -81,8 +96,8 @@ export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
         .replace(/[^A-Z0-9]/g, " ")
         .trim()
         .replace(/ +/g, "_") +
-      "_" +
-      dataArray[4],
+        "_" +
+        dataArray[4],
     medieBac: dataArray[0],
     numCandidati: dataArray[1],
     rataPromovare: dataArray[2],
@@ -93,6 +108,17 @@ export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
 }
 
 export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
+  const idSintetic =
+    scoala.numeScoala
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, " ")
+      .trim()
+      .replace(/ +/g, "_") +
+    "_" +
+    scoala.codJudet;
+
   return [
     scoala.numeScoala,
     scoala.codJudet,
@@ -102,12 +128,14 @@ export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
     round(scoala.medieMatematica, 3),
     round(scoala.medieAbsolvire, 3),
     round(scoala.medieEvaluareNationala, 3),
+    idSintetic == scoala.id ? undefined : scoala.id,
   ];
 }
 
 export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
   return {
     id:
+      dataArray[8] ??
       dataArray[0]
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -115,8 +143,8 @@ export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
         .replace(/[^A-Z0-9]/g, " ")
         .trim()
         .replace(/ +/g, "_") +
-      "_" +
-      dataArray[1],
+        "_" +
+        dataArray[1],
     numeScoala: dataArray[0],
     codJudet: dataArray[1],
     numCandidati: dataArray[2],

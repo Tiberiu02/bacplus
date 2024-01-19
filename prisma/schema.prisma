@@ -9,14 +9,16 @@ datasource db {
 }
 
 model licee {
-  id_liceu   String  @id
-  nume_liceu String
-  address    String?
-  website    String?
-  facebook   String?
-  instagram  String?
-  wikipedia  String?
-  bac        bac[]
+  id_liceu    String   @id
+  nume_liceu  String
+  nume_afisat String
+  rank        Decimal?
+  address     String?
+  website     String?
+  facebook    String?
+  instagram   String?
+  wikipedia   String?
+  bac         bac[]
 }
 
 model bac {
@@ -72,5 +74,6 @@ model en {
 model scoli {
   id_scoala   String  @id
   nume_scoala String
+  nume_afisat String
   cod_siiir   String?
 }

@@ -104,7 +104,7 @@ const uploadFile = async (
 ) => {
   const readStream = fs.createReadStream(sourcePath);
 
-  const options = {
+  const options: https.RequestOptions = {
     method: "PUT",
     host: storageZone.StorageHostname,
     path: `/${storageZone.Name}/${destinationPath}`,
@@ -126,6 +126,7 @@ const uploadFile = async (
     });
 
     req.on("error", (error) => {
+      console.log(`Error uploading ${destinationPath}: ${error.message}`);
       if (retries <= 0) {
         reject(error);
       } else {
@@ -167,6 +168,7 @@ async function deleteStorageZone(storageZone: StorageZone) {
     headers: {
       AccessKey: ACCESS_KEY,
     },
+    timeout: 600000,
   };
 
   const response = await fetch(url, options);
@@ -318,7 +320,7 @@ async function uploadFiles(
       const response = await uploadFile(
         destinationPath,
         sourcePath,
-        5,
+        15,
         storageZone
       );
 
