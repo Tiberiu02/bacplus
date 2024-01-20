@@ -4,7 +4,6 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { PiCaretDownBold } from "react-icons/pi";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "./Button";
 
 export function LinkSelect({
   options,
@@ -49,24 +48,21 @@ export function LinkSelect({
   }
 
   return (
-    <Button
+    <button
       className={twMerge(
-        "relative flex h-10 items-center justify-between px-3 text-base",
+        "relative flex h-10 items-center rounded px-2 text-base hover:bg-blue-50",
         className
       )}
       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       aria-label={ariaLabel}
-      btnRef={inputRef}
+      ref={inputRef}
     >
-      {selectedOption.label}
       <div
-        className={twMerge(
-          "ml-2 border-l-[1px] border-gray-200 pl-2 text-gray-500",
-          isDropdownOpen && "-scale-y-100"
-        )}
+        className={twMerge("mr-2 text-sm", isDropdownOpen && "-scale-y-100")}
       >
         <PiCaretDownBold />
       </div>
+      {selectedOption.label}
       <div
         className={twMerge(
           "absolute left-0 top-full z-50 mt-1 flex max-h-64 w-full flex-col overflow-auto rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
@@ -75,7 +71,7 @@ export function LinkSelect({
       >
         {options.map((o) => (
           <Link
-            className="px-3 py-1 hover:bg-gray-150"
+            className="px-3 py-1 pl-4 hover:bg-gray-150"
             href={o.link}
             scroll={false}
             onClick={() => setSelectedValue(o.value)}
@@ -86,6 +82,6 @@ export function LinkSelect({
           </Link>
         ))}
       </div>
-    </Button>
+    </button>
   );
 }

@@ -64,13 +64,13 @@ export default function PaginaScoala({
       <Title>{numeScoala}</Title>
 
       {liceu && (
-        <div className="border-inset -mt-2 mb-2 flex gap-4 shadow-[inset_0_-1px_0_rgb(229,231,235)]">
+        <div className="-mt-2 mb-12 flex w-full justify-center gap-4">
           <Link href={`/liceu/${id}`} replace={true}>
-            <div className="w-24 border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+            <div className="border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
               Liceu
             </div>
           </Link>
-          <div className="w-24 border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
+          <div className="border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
             Gimnaziu
           </div>
         </div>

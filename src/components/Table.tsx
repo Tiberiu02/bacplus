@@ -6,10 +6,10 @@ import unidecode from "unidecode";
 import { formtaNumber } from "~/data/formatNumber";
 import { PercentageBar } from "./PercentageBar";
 import {
-  FaArrowDownLong,
-  FaArrowUpLong,
-  FaArrowsUpDown,
   FaMagnifyingGlass,
+  FaSort,
+  FaSortDown,
+  FaSortUp,
 } from "react-icons/fa6";
 import { twMerge } from "tailwind-merge";
 import { Button } from "./Button";
@@ -148,7 +148,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   return (
     <div className="flex flex-col gap-4">
       {searchable != false && (
-        <div className="flex h-10 items-center gap-4 rounded border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
+        <div className="flex h-10 items-center gap-4 rounded-full border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
           <FaMagnifyingGlass className="shrink-0 text-gray-400" />
           <input
             className="w-full bg-transparent outline-none"
@@ -159,23 +159,15 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
       )}
       <div className="-mx-3 -mt-2 w-[calc(100%+1.5rem)] overflow-y-auto px-3">
         <table className="my-2 w-full border-separate border-spacing-y-0">
-          <thead
-            className={
-              flatHeader
-                ? ""
-                : "[&>*>*:first-child]:rounded-l [&>*>*:first-child]:border-l-[1px] [&>*>*:last-child]:rounded-r [&>*>*:last-child]:border-r-[1px]"
-            }
-          >
+          <thead>
             <tr>
               {columns.map((column, cIx) => (
                 <th
                   key={cIx}
                   className={twMerge(
-                    "select-none border-y-[1px] border-gray-300 bg-gray-50 px-3 py-3",
+                    "select-none border-b-[1px] border-gray-200 px-3 py-3",
                     column.sortable && "cursor-pointer",
-                    column.sortable &&
-                      sortColumnIx == cIx &&
-                      "!bg-indigo-50 text-indigo-600",
+                    column.sortable && sortColumnIx == cIx && "text-blue-600",
                     column.widthGrow && "w-full",
                     column.textAlign == "left"
                       ? "text-left"
@@ -201,7 +193,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                 >
                   <div
                     className={twMerge(
-                      "left-0 flex flex-row items-center gap-1",
+                      "left-0 flex flex-row items-center gap-2",
                       column.textAlign == "left"
                         ? "justify-left"
                         : column.textAlign == "right"
@@ -213,12 +205,12 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     {column.sortable &&
                       (sortColumnIx == cIx ? (
                         sortOrder == 1 ? (
-                          <FaArrowUpLong className="shrink-0" />
+                          <FaSortUp className="shrink-0 text-sm" />
                         ) : (
-                          <FaArrowDownLong className="shrink-0" />
+                          <FaSortDown className="shrink-0 text-sm" />
                         )
                       ) : (
-                        <FaArrowsUpDown className="shrink-0" />
+                        <FaSort className="shrink-0 text-sm" />
                       ))}
                   </div>
                 </th>
@@ -227,7 +219,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           </thead>
           <tbody
             className={twMerge(
-              "text-center [&>*>*]:border-b-[1px] [&>*>*]:border-gray-300 [&>*>*]:p-3 [&>*]:bg-white",
+              "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-8 [&>*]:bg-white",
               href
                 ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer [&>*]:hover:[&>*]:bg-blue-50"
                 : undefined

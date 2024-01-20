@@ -25,7 +25,7 @@ const PAGES = {
     path: "/national",
   },
   about: {
-    name: "Contact",
+    name: "Despre",
     path: "/contact",
   },
 };
@@ -51,21 +51,32 @@ export function Navbar({
   return (
     <nav
       className={twMerge(
-        "z-50 flex flex-col items-center border-b-[1px] border-gray-300 bg-gray-50",
-        isHomePage && "fixed left-0 top-0 w-full bg-opacity-90 backdrop-blur-sm"
+        "z-50 flex flex-col items-center",
+        isHomePage &&
+          "fixed left-0 top-0 w-full bg-white bg-opacity-90 backdrop-blur-sm"
       )}
       ref={animationParent}
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-transparent px-4 py-5",
-          isMenuOpen && "border-b-[1px] border-gray-300"
+          "flex w-full max-w-6xl flex-col bg-transparent px-4 py-5"
         )}
       >
         <div className="flex w-full items-center justify-between">
-          <Link href={HOME_PATH} aria-label="Acasă">
+          <Link
+            href={HOME_PATH}
+            aria-label="Acasă"
+            className="flex items-center gap-2 text-lg"
+          >
             <Image
-              className="w-20"
+              className="hidden w-4"
+              src="/logo.svg"
+              alt="Logo"
+              width={20}
+              height={20}
+            />
+            <Image
+              className="w-16"
               src="/logo-text.svg"
               alt="Logo"
               width={96.25}
@@ -79,13 +90,16 @@ export function Navbar({
           >
             {isMenuOpen ? <MdOutlineClose /> : <MdMenu />}
           </button>
-          <div className="hidden flex-row gap-6 text-gray-600 sm:flex">
+          <div className="hidden flex-row gap-6 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
                 href={path}
-                className={
-                  key == activePage ? "text-black" : "hover:text-black"
-                }
+                className={twMerge(
+                  "py-1",
+                  key == activePage
+                    ? "border-b-2 border-black font-semibold"
+                    : "hover:text-black"
+                )}
                 key={key}
               >
                 {name}
@@ -95,7 +109,7 @@ export function Navbar({
         </div>
       </div>
       {isMenuOpen && (
-        <div className="flex flex-col items-center gap-4 p-4 text-xl text-gray-600 sm:flex-row">
+        <div className="flex flex-col items-center gap-4 p-4 text-xl sm:flex-row">
           {Object.entries(PAGES).map(([key, { name, path }]) => (
             <div onClick={() => setIsMenuOpen(false)} key={key}>
               <Link

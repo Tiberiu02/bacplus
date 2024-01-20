@@ -3,7 +3,6 @@
 import { twMerge } from "tailwind-merge";
 import { PiCaretDownBold } from "react-icons/pi";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "./Button";
 
 export function Select<T extends string | number>({
   options,
@@ -46,24 +45,21 @@ export function Select<T extends string | number>({
   }
 
   return (
-    <Button
+    <button
       className={twMerge(
-        "relative flex h-10 items-center justify-between px-3 text-base",
+        "relative flex h-10 items-center rounded px-2 text-base hover:bg-blue-50",
         className
       )}
       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       aria-label={ariaLabel}
-      btnRef={inputRef}
+      ref={inputRef}
     >
-      {selectedOption.label}
       <div
-        className={twMerge(
-          "border-gray-200 pl-2 text-gray-500",
-          isDropdownOpen && "-scale-y-100"
-        )}
+        className={twMerge("mr-2 text-sm", isDropdownOpen && "-scale-y-100")}
       >
         <PiCaretDownBold />
       </div>
+      {selectedOption.label}
       <div
         className={twMerge(
           "absolute left-0 top-full z-50 mt-1 flex max-h-64 w-full flex-col overflow-auto rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
@@ -80,6 +76,6 @@ export function Select<T extends string | number>({
           </span>
         ))}
       </div>
-    </Button>
+    </button>
   );
 }

@@ -41,12 +41,6 @@ export default function PaginaNational() {
   return (
     <MainContainer>
       <Title>Statistici la nivel național</Title>
-      <p>
-        Pe această pagină puteți vedea informații despre starea educației în
-        România la nivel național, bazate pe rezultatele oficiale la examenele
-        de Bacalaureat și Evaluare Națională publicate de Ministerul Educației
-        Naționale.
-      </p>
 
       <div className="mt-8 grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] xl:grid-cols-4 xl:grid-rows-[auto_auto] 2xl:grid-flow-col 2xl:grid-cols-[auto_1fr] 2xl:grid-rows-4">
         <SnippetCard
@@ -109,16 +103,6 @@ export default function PaginaNational() {
       </div>
 
       <Title>Clasamentul județelor</Title>
-      <div className="mb-8 flex flex-col gap-2">
-        <p>
-          Acest clasament a fost realizat folosind rezultatele oficiale la
-          Bacalaureat și Evaluare.
-        </p>
-        <p>
-          Apăsați pe un anumit județ pentru a vedea mai multe statistici despre
-          acesta.
-        </p>
-      </div>
 
       <TopJudete data={judete} />
     </MainContainer>

@@ -8,7 +8,7 @@ export default function contact() {
   return (
     <>
       <MainContainer>
-        <Title>Download</Title>
+        <Title>Despre</Title>
         <p>
           Toate datele de pe acest site au fost sintetizate folosind informații
           publicate de Ministerul Educației Naționale pe{" "}

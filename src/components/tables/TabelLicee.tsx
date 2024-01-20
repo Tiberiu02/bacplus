@@ -22,7 +22,7 @@ export function TabelLicee({
           decimals: 0,
           header: "",
           value: (rowData, rowIndex) => rowIndex + 1,
-          tdClassName: "text-gray-500",
+          tdClassName: "text-gray-500 pr-",
         },
         {
           type: "text",
@@ -32,6 +32,7 @@ export function TabelLicee({
           widthGrow: true,
           searchable: true,
           textAlign: "left",
+          tdClassName: "min-w-[14rem] [text-wrap:balance]",
         },
         {
           type: "number",

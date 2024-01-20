@@ -84,25 +84,24 @@ export default function PaginaLiceu({
       <Title>{numeLiceu}</Title>
 
       {gimnaziu && (
-        <div className="border-inset -mt-2 mb-2 flex gap-4 shadow-[inset_0_-1px_0_rgb(229,231,235)]">
-          <div className="w-24 border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
+        <div className="-mt-2 mb-12 flex w-full justify-center gap-4">
+          <div className="border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
             Liceu
           </div>
           <Link href={`/scoala/${id}`} replace={true}>
-            <div className="w-24 border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+            <div className="border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
               Gimnaziu
             </div>
           </Link>
         </div>
       )}
 
-      <Announcements />
-
       <p>
         Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b>,
         bazate pe rezultatele la examenele de Bacalaureat și Evaluare Națională
         publicate de Ministerul Educației Naționale.
       </p>
+
       {(website || adresa) && (
         <p>
           Pentru mai multe informații despre acest liceu, puteți{" "}
@@ -123,6 +122,8 @@ export default function PaginaLiceu({
           .
         </p>
       )}
+
+      <Announcements />
 
       <div className="mt-4" />
 

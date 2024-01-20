@@ -7,12 +7,10 @@ import { MainContainer } from "~/components/MainContainer";
 import { liceuToDataArray } from "~/data/data";
 import type { Liceu } from "~/data/data";
 import type { Metadata } from "next";
-import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { Announcements } from "~/components/Announcements";
 import { LdJson } from "~/components/LdJson";
-import { LinkText } from "~/components/LinkText";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
 
@@ -85,7 +83,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
   const optionsJudete = [
     {
       value: "",
-      label: "Național",
+      label: "Toate județele",
       link: an == ultimulAnBac ? "/top_licee" : `/top_licee/${an}`,
     },
     ...JUDETE.map((j) => ({
@@ -146,45 +144,25 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Clasamentul liceelor din {judet?.numeIntreg ?? "România"} {an}
+          Clasamentul liceelor {judet && `din ${judet.numeIntreg}`} la
+          Bacalaureat și Admitere
         </Title>
 
         <Announcements />
 
-        <div className="mb-8 flex flex-col gap-4">
-          <p>
-            Acest clasament a fost realizat folosind rezultatele oficiale la{" "}
-            <LinkText href="http://bacalaureat.edu.ro/" target="_blank">
-              Bacalaureat
-            </LinkText>{" "}
-            și{" "}
-            <LinkText href="http://admitere.edu.ro/" target="_blank">
-              Admitere
-            </LinkText>
-            .
-          </p>
-          <p>
-            Apasă pe un anumit liceu pentru a vedea mai multe statistici despre
-            acesta.
-          </p>
-        </div>
-
         <div className="flex flex-wrap-reverse justify-between gap-4">
-          <div className="flex w-full flex-wrap gap-4 md:w-fit">
-            <LinkSelect
-              defaultValue={an}
-              options={optionsAni}
-              ariaLabel="Selectează anul"
-              className="w-28 shrink-0 max-md:flex-1"
-            />
-            <LinkSelect
-              defaultValue={judet?.nume ?? ""}
-              options={optionsJudete}
-              ariaLabel="Selectează județul"
-              className="w-48 flex-shrink-0 max-md:flex-grow-[2]"
-            />
-          </div>
-          <ShareButtons className="md:w-fit" />
+          <LinkSelect
+            defaultValue={judet?.nume ?? ""}
+            options={optionsJudete}
+            ariaLabel="Selectează județul"
+            className="w-48 flex-shrink-0"
+          />
+          <LinkSelect
+            defaultValue={an}
+            options={optionsAni}
+            ariaLabel="Selectează anul"
+            className="w-fit shrink-0"
+          />
         </div>
 
         <TabelLicee

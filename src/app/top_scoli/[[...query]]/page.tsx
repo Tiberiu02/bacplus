@@ -6,13 +6,11 @@ import { MainContainer } from "~/components/MainContainer";
 import { scoalaToDataArray } from "~/data/data";
 import type { Scoala } from "~/data/data";
 import type { Metadata } from "next";
-import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "../../../components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
-import { LinkText } from "~/components/LinkText";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
 
@@ -83,7 +81,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
   const optionsJudete = [
     {
       value: "",
-      label: "Național",
+      label: "Toate județele",
       link: an == ultimulAnEn ? "/top_scoli" : `/top_scoli/${an}`,
     },
     ...JUDETE.map((j) => ({
@@ -151,42 +149,27 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Clasamentul școlilor generale din {judet?.numeIntreg ?? "România"}{" "}
-          {an}
+          Clasamentul școlilor generale {judet && `din ${judet.numeIntreg}`} la
+          Evaluarea Națională
         </Title>
 
         <Announcements />
 
-        <p>
-          Acest clasament a fost realizat folosind rezultatele oficiale la{" "}
-          <LinkText href="http://evaluare.edu.ro/" target="_blank">
-            Evaluarea Națională
-          </LinkText>
-          .
-        </p>
-        <p>
-          Apăsați pe o anumită școală pentru a vedea mai multe statistici despre
-          aceasta.
-        </p>
-
         <div className="mt-4" />
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
-          <div className="flex w-full flex-wrap gap-4 md:w-fit">
-            <LinkSelect
-              defaultValue={an}
-              options={optionsAni}
-              ariaLabel="Selectează anul"
-              className="w-28 shrink-0 max-md:flex-1"
-            />
-            <LinkSelect
-              defaultValue={judet?.nume ?? ""}
-              options={optionsJudete}
-              ariaLabel="Selectează județul"
-              className="w-48 flex-shrink-0 max-md:flex-grow-[2]"
-            />
-          </div>
-          <ShareButtons className="md:w-fit" />
+          <LinkSelect
+            defaultValue={judet?.nume ?? ""}
+            options={optionsJudete}
+            ariaLabel="Selectează județul"
+            className="w-48 flex-shrink-0 max-md:flex-grow-[2]"
+          />
+          <LinkSelect
+            defaultValue={an}
+            options={optionsAni}
+            ariaLabel="Selectează anul"
+            className="shrink-0 max-md:flex-1"
+          />
         </div>
 
         <TabelScoli data={scoli.map(scoalaToDataArray)} />

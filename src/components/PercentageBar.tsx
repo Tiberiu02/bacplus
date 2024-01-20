@@ -92,6 +92,46 @@ function dimColor(color: RGB, factor: number): RGB {
   ];
 }
 
+const CircularProgress = ({
+  radius,
+  thickness,
+  percentage,
+  className,
+}: {
+  radius: number;
+  thickness: number;
+  percentage: number;
+  className?: string;
+}) => {
+  const normalizedRadius = radius - thickness / 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const greenLength = (percentage / 100) * circumference;
+  const redLength = circumference - greenLength;
+
+  return (
+    <svg className={className} viewBox="0 0 100 100">
+      <circle
+        stroke="#FFB0B0" // red
+        fill="transparent"
+        strokeWidth={thickness}
+        strokeDasharray={`0 ${greenLength - 10} ${redLength + 10}`}
+        r={normalizedRadius}
+        cx={radius}
+        cy={radius}
+      />
+      <circle
+        stroke="#90EC8E" // green
+        fill="transparent"
+        strokeWidth={thickness}
+        strokeDasharray={`${greenLength} ${redLength}`}
+        r={normalizedRadius}
+        cx={radius}
+        cy={radius}
+      />
+    </svg>
+  );
+};
+
 export function PercentageBar({
   value,
   className,
@@ -110,22 +150,18 @@ export function PercentageBar({
 
   return (
     <div
-      className={twMerge(
-        "relative h-6 overflow-hidden rounded-full bg-gray-100 outline outline-2",
-        className
-      )}
+      className={twMerge("mx-auto flex w-20 items-center gap-2", className)}
       style={{
         outlineColor: r2h(borderColor),
       }}
     >
-      <div
-        className="absolute left-0 top-0 z-0 h-6 rounded-r-full"
-        style={{
-          width: `calc((100% - 0.75rem) * ${value / 100} + 0.75rem)`,
-          backgroundColor: r2h(color),
-        }}
+      <CircularProgress
+        radius={50}
+        thickness={30}
+        percentage={value}
+        className="h-4 w-4 shrink-0"
       />
-      <div className="relative">{formtaNumber(value, 1, 0)}%</div>
+      <div>{formtaNumber(value, 1, 0)}%</div>
     </div>
   );
 }
