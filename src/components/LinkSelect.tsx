@@ -80,6 +80,7 @@ export function LinkSelect({
             scroll={false}
             onClick={() => setSelectedValue(o.value)}
             key={o.value}
+            replace={true}
           >
             {o.label}
           </Link>

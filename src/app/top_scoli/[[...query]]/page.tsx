@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { query } from "~/data/dbQuery";
+import { query, ultimulAnEn } from "~/data/dbQuery";
 
 import { MainContainer } from "~/components/MainContainer";
 import { scoalaToDataArray } from "~/data/data";
@@ -9,28 +9,26 @@ import type { Metadata } from "next";
 import { ShareButtons } from "~/components/ShareButtons";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
-import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "../../../components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
 import { LinkText } from "~/components/LinkText";
+import { parseParamsTop } from "~/data/parseParamsTop";
+import { redirect } from "next/navigation";
 
 export function generateMetadata({
   params,
 }: {
   params: { query: string[] };
 }): Metadata {
-  const [an, numeJudet] = params.query;
-  const numeIntregJudet = JUDETE.find((j) => j.nume === numeJudet)?.numeIntreg;
+  const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
 
-  if (!an) return {};
-
-  const title = numeIntregJudet
-    ? `Top școli generale ${numeIntregJudet} ${an}`
+  const title = judet?.numeIntreg
+    ? `Top școli generale ${judet?.numeIntreg} ${an}`
     : `Top școli generale ${an}`;
 
   const description = `Descoperă cele mai bune școli generale din ${
-    numeIntregJudet ?? "România"
+    judet?.numeIntreg ?? "România"
   } ${an}`;
 
   return {
@@ -47,43 +45,54 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const params = query.aniEn
-    .map(({ an }) => an.toString())
-    .flatMap((an) => [
-      { query: [an] },
-      ...JUDETE.map((judet) => ({
-        query: [an, judet.nume],
-      })),
-    ]);
+  const params = [
+    [],
+    ...JUDETE.map((judet) => [judet.nume]),
+    ...query.aniEn.map(({ an }) => [an]),
+    ...query.aniEn.flatMap(({ an }) => JUDETE.map((judet) => [judet.nume, an])),
+    ...JUDETE.map((judet) => [ultimulAnEn, judet.nume]),
+  ];
 
-  return params;
+  return params.map((params) => ({
+    query: params.map((p) => p.toString()),
+  }));
 }
 
 export default function Page({ params }: { params: { query: string[] } }) {
-  const [an, numeJudet] = params.query;
+  const [an, judet, reversed] = parseParamsTop(params.query, ultimulAnEn);
 
-  if (!an) notFound();
+  if (reversed) {
+    redirect(
+      "/top_licee" +
+        (judet ? "/" + judet.nume : "") +
+        (an == ultimulAnEn ? "" : "/" + an.toString())
+    );
+  }
 
-  const judet = JUDETE.find((j) => j.nume === numeJudet);
-
-  const scoli = getScoli(parseInt(an), judet?.id);
+  const scoli = getScoli(an, judet?.id);
 
   const optionsAni = query.aniEn.map(({ an }) => ({
     value: `${an}`,
     label: `${an}`,
-    link: `/top_scoli/${an}${judet ? "/" + judet.nume : ""}`,
+    link:
+      "/top_scoli" +
+      (judet ? "/" + judet.nume : "") +
+      (an == ultimulAnEn ? "" : "/" + an.toString()),
   }));
 
   const optionsJudete = [
     {
       value: "",
       label: "Național",
-      link: `/top_scoli/${an}`,
+      link: an == ultimulAnEn ? "/top_scoli" : `/top_scoli/${an}`,
     },
     ...JUDETE.map((j) => ({
       value: j.nume,
       label: j.numeIntreg,
-      link: `/top_scoli/${an}/${j.nume}`,
+      link:
+        an == ultimulAnEn
+          ? `/top_scoli/${j.nume}`
+          : `/top_scoli/${j.nume}/${an}`,
     })),
   ];
 

@@ -185,7 +185,7 @@ async function updatePullZone(pullZone: PullZone, storageZone: StorageZone) {
 
   const oldStorageZoneId = pullZone.StorageZoneId;
 
-  // Disable smart cache
+  // Update storage zone
   {
     const url = `https://api.bunny.net/pullzone/${pullZone.Id}`;
     const options = {
@@ -195,13 +195,16 @@ async function updatePullZone(pullZone: PullZone, storageZone: StorageZone) {
         "content-type": "application/json",
         AccessKey: ACCESS_KEY,
       },
-      body: JSON.stringify({ EnableSmartCache: false }),
+      body: JSON.stringify({
+        OriginType: 2,
+        StorageZoneId: storageZone.Id,
+      }),
     };
 
     const response = await fetch(url, options);
 
     if (response.status !== 200) {
-      throw new Error(`Error disabling smart cache: ${await response.text()}`);
+      throw new Error(`Error updating storage zone: ${await response.text()}`);
     }
   }
 
@@ -223,31 +226,7 @@ async function updatePullZone(pullZone: PullZone, storageZone: StorageZone) {
     }
   }
 
-  // Update storage zone
-  {
-    const url = `https://api.bunny.net/pullzone/${pullZone.Id}`;
-    const options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        AccessKey: ACCESS_KEY,
-      },
-      body: JSON.stringify({
-        OriginType: 2,
-        StorageZoneId: storageZone.Id,
-        EnableSmartCache: true,
-      }),
-    };
-
-    const response = await fetch(url, options);
-
-    if (response.status !== 200) {
-      throw new Error(`Error updating storage zone: ${await response.text()}`);
-    }
-  }
-
-  // Get old storage zone
+  // Delete old storage zone (if not used by other pull zones)
   {
     const url = `https://api.bunny.net/storagezone/${oldStorageZoneId}`;
     const options = {

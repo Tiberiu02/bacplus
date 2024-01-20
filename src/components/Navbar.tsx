@@ -14,11 +14,11 @@ import Image from "next/image";
 const PAGES = {
   highshools: {
     name: "Licee",
-    path: "/top_licee/${ultimulAnBac}",
+    path: "/top_licee",
   },
   schools: {
     name: "Școli",
-    path: "/top_scoli/${ultimulAnEn}",
+    path: "/top_scoli",
   },
   national: {
     name: "Național",
@@ -82,9 +82,7 @@ export function Navbar({
           <div className="hidden flex-row gap-6 text-gray-600 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
               <Link
-                href={path
-                  .replaceAll("${ultimulAnBac}", ultimulAnBac.toString())
-                  .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
+                href={path}
                 className={
                   key == activePage ? "text-black" : "hover:text-black"
                 }

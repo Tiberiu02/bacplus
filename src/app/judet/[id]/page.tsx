@@ -70,7 +70,7 @@ export default function PaginaJudet({
 
       <div className="flex w-full gap-4 max-md:flex-col">
         <Link
-          href={`/top_licee/${ultimulAnBac}/${id}`}
+          href={`/top_licee/${id}`}
           className={twMerge(
             buttonClassName,
             "flex w-full items-center justify-center gap-3"
@@ -80,7 +80,7 @@ export default function PaginaJudet({
           Top licee {numeJudet} {ultimulAnBac}
         </Link>
         <Link
-          href={`/top_scoli/${ultimulAnEn}/${id}`}
+          href={`/top_scoli/${id}`}
           className={twMerge(
             buttonClassName,
             "flex w-full items-center justify-center gap-3"

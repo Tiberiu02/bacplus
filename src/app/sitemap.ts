@@ -1,15 +1,14 @@
 import type { MetadataRoute } from "next";
 import { JUDETE } from "~/data/coduriJudete";
-import { ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { env } from "~/env.mjs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     "/",
-    `/top_licee/${ultimulAnBac}`,
-    ...JUDETE.map((judet) => `/top_licee/${ultimulAnBac}/${judet.nume}`),
-    `/top_scoli/${ultimulAnEn}`,
-    ...JUDETE.map((judet) => `/top_scoli/${ultimulAnEn}/${judet.nume}`),
+    `/top_licee`,
+    ...JUDETE.map((judet) => `/top_licee/${judet.nume}`),
+    `/top_scoli`,
+    ...JUDETE.map((judet) => `/top_scoli/${judet.nume}`),
   ];
 
   return pages.map((page) => ({
