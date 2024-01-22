@@ -23,17 +23,15 @@ type ColumnType<T> =
           href?: (rowData: T, rowIndex: number) => string;
           searchable?: boolean;
         }
-      | (
-          | {
-              type: "number";
-              value: (rowData: T, rowIndex: number) => number | undefined;
-              decimals: number;
-            }
-          | {
-              type: "percentage";
-              value: (rowData: T, rowIndex: number) => number | undefined;
-            }
-        )
+      | {
+          type: "number";
+          value: (rowData: T, rowIndex: number) => number | undefined;
+          decimals: number;
+        }
+      | {
+          type: "percentage";
+          value: (rowData: T, rowIndex: number) => number | undefined;
+        }
     ) & {
       header: string;
       sortable?: boolean;
@@ -42,6 +40,7 @@ type ColumnType<T> =
       widthGrow?: boolean;
       textAlign?: "left" | "center" | "right";
       tdClassName?: string;
+      customRender?: (rowData: T, rowIndex: number) => JSX.Element;
     };
 
 const SHOW_ROWS_DEFAULT = 50;
@@ -53,14 +52,12 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   columns: columnsPossiblyFalse,
   searchPlaceholder,
   searchable,
-  flatHeader,
 }: {
   data: CompressedRowType[];
   decompressionFn?: (compressed: CompressedRowType) => RowType;
   columns: (ColumnType<RowType> | false)[];
   searchPlaceholder?: string;
   searchable?: boolean;
-  flatHeader?: boolean;
 }) {
   type RowTypeExtra = RowType & {
     key: string;
@@ -221,7 +218,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
             className={twMerge(
               "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-8 [&>*]:bg-white",
               href
-                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer [&>*]:hover:[&>*]:bg-blue-50"
+                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer"
                 : undefined
             )}
           >
@@ -255,10 +252,16 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     {column.type == "text" ? (
                       column.href ? (
                         <Link href={column.href(row, rIx)} target="_blank">
-                          {column.value(row, row._rowIndex)}
+                          {(column.customRender ?? column.value)(
+                            row,
+                            row._rowIndex
+                          )}
                         </Link>
                       ) : (
-                        column.value(row, row._rowIndex)
+                        (column.customRender ?? column.value)(
+                          row,
+                          row._rowIndex
+                        )
                       )
                     ) : column.type == "number" ? (
                       formtaNumber(

@@ -13,6 +13,7 @@ import { TabelScoli } from "../../../components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
+import { icons } from "~/data/icons";
 
 export function generateMetadata({
   params,
@@ -201,6 +202,7 @@ function getScoli(an: number, judet?: string) {
         medieMatematica: result._avg.ma_final ?? undefined,
         medieAbsolvire: result._avg.medie_abs ?? undefined,
         medieEvaluareNationala: result._avg.medie_en ?? undefined,
+        icon: icons[result.id_scoala] ?? false,
       };
     });
 

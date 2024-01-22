@@ -15,7 +15,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
           type: "number",
           decimals: 0,
           header: "",
-          value: (rowData, rowIndex) => rowIndex + 1,
+          value: (_rowData, rowIndex) => rowIndex + 1,
           tdClassName: "text-gray-500",
         },
         {
@@ -26,6 +26,19 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
           widthGrow: true,
           searchable: true,
           textAlign: "left",
+          tdClassName: "min-w-[14rem] [text-wrap:balance]",
+          customRender: (rowData) => (
+            <>
+              {rowData.icon && (
+                <img
+                  src={`/icons-32/${rowData.id}.png`}
+                  alt=""
+                  className="mr-2 inline-block h-5 w-5 transition-opacity duration-200 group-hover:opacity-50"
+                />
+              )}
+              {rowData.numeScoala}
+            </>
+          ),
         },
         {
           type: "number",

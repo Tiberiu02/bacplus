@@ -41,7 +41,6 @@ export function TabelSpecializari({
       <Table
         data={specializari.filter((e) => e.an === an)}
         searchable={false}
-        flatHeader
         columns={[
           {
             type: "text",

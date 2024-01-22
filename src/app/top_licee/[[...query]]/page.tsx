@@ -13,6 +13,7 @@ import { Announcements } from "~/components/Announcements";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
+import { icons } from "~/data/icons";
 
 export function generateMetadata({
   params,
@@ -195,6 +196,7 @@ function getLicee(an: number, judet?: string) {
         rataPromovare: 0,
         numeLiceu: "",
         codJudet: result.id_liceu.split("_").at(-1) ?? "",
+        icon: icons[result.id_liceu] ?? false,
       };
     });
 

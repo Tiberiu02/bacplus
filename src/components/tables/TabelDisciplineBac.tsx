@@ -41,7 +41,6 @@ export function TabelDisciplineBac({
       <Table
         data={discipline.filter((e) => e.an === an)}
         searchable={false}
-        flatHeader
         columns={[
           {
             type: "text",

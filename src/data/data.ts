@@ -7,6 +7,7 @@ export type Liceu = {
   rataPromovare: number;
   codJudet: string;
   medieAdm?: number;
+  icon: boolean;
 };
 
 export type LiceuDataArray = [
@@ -16,7 +17,8 @@ export type LiceuDataArray = [
   string, // numeLiceu
   string, // codJudet
   number | undefined, // medieAdm
-  string | undefined // idLiceu
+  string | undefined, // idLiceu
+  boolean // icon
 ];
 
 export type Scoala = {
@@ -29,6 +31,7 @@ export type Scoala = {
   medieMatematica?: number;
   medieAbsolvire?: number;
   medieEvaluareNationala?: number;
+  icon: boolean;
 };
 
 export type ScoalaDataArray = [
@@ -40,7 +43,8 @@ export type ScoalaDataArray = [
   number | undefined, // medieMatematica
   number | undefined, // medieAbsolvire
   number | undefined, // medieEvaluareNationala
-  string | undefined // idScoala
+  string | undefined, // idScoala
+  boolean // icon
 ];
 
 export type Judet = {
@@ -82,6 +86,7 @@ export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
     liceu.codJudet,
     liceu.medieAdm,
     idSintetic == liceu.id ? undefined : liceu.id,
+    liceu.icon,
   ];
 }
 
@@ -104,6 +109,7 @@ export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
     numeLiceu: dataArray[3],
     codJudet: dataArray[4],
     medieAdm: dataArray[5],
+    icon: dataArray[7],
   };
 }
 
@@ -129,6 +135,7 @@ export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
     round(scoala.medieAbsolvire, 3),
     round(scoala.medieEvaluareNationala, 3),
     idSintetic == scoala.id ? undefined : scoala.id,
+    scoala.icon,
   ];
 }
 
@@ -153,5 +160,6 @@ export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
     medieMatematica: dataArray[5],
     medieAbsolvire: dataArray[6],
     medieEvaluareNationala: dataArray[7],
+    icon: dataArray[9],
   };
 }
