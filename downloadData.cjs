@@ -32,28 +32,24 @@ let bar = new cliProgress.SingleBar(
 );
 
 let fSize = 0;
-let tries = 0;
 
-while (fSize == 0 && tries < 2) {
-  const download = wget.download(DOWNLOAD_URL, OUTPUT_FILE, {});
-  download.on("error", (err) => {
-    console.log(err);
-  });
-  download.on("start", (fileSize) => {
-    bar.start(Math.round((fileSize / 1_000_000) * 10) / 10, 0);
-    fSize = fileSize;
-  });
-  download.on("end", (output) => {
-    bar.stop();
-    console.log(
-      `Download Completed! DB size: ${
-        Math.round((fSize / 1_000_000) * 10) / 10
-      } MB`
-    );
-  });
-  download.on("progress", (progress) => {
-    typeof progress === "number";
-    bar.update(Math.round(((progress * fSize) / 1_000_000) * 10) / 10);
-  });
-  tries++;
-}
+const download = wget.download(DOWNLOAD_URL, OUTPUT_FILE, {});
+download.on("error", (err) => {
+  console.log(err);
+});
+download.on("start", (fileSize) => {
+  bar.start(Math.round((fileSize / 1_000_000) * 10) / 10, 0);
+  fSize = fileSize;
+});
+download.on("end", (output) => {
+  bar.stop();
+  console.log(
+    `Download Completed! DB size: ${
+      Math.round((fSize / 1_000_000) * 10) / 10
+    } MB`
+  );
+});
+download.on("progress", (progress) => {
+  typeof progress === "number";
+  bar.update(Math.round(((progress * fSize) / 1_000_000) * 10) / 10);
+});
