@@ -48,18 +48,18 @@ export function TabelLicee({
         },
         {
           type: "number",
-          decimals: 2,
-          header: `Medie admitere ${anAdmitere ?? ""}`,
-          value: (rowData) => rowData.medieAdm,
-          sortable: true,
-        },
-        {
-          type: "number",
           header: "Medie Bac",
           decimals: 2,
           value: (rowData) => rowData.medieBac,
           sortable: true,
           defaultSortingColumn: true,
+        },
+        {
+          type: "number",
+          decimals: 2,
+          header: `Medie admitere ${anAdmitere ?? ""}`,
+          value: (rowData) => rowData.medieAdm,
+          sortable: true,
         },
         {
           type: "percentage",
