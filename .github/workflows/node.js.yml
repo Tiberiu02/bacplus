@@ -10,11 +10,11 @@ on:
     branches: [ "main" ]
 
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
-  DB_DOWNLOAD_URL: ${{ secrets.DB_DOWNLOAD_URL }}
-  DB_DOWNLOAD_PATH: ${{ secrets.DB_DOWNLOAD_PATH }}
-  WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
+  DATABASE_URL: ${{ vars.DATABASE_URL }}
+  GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+  DB_DOWNLOAD_URL: ${{ vars.DB_DOWNLOAD_URL }}
+  DB_DOWNLOAD_PATH: ${{ vars.DB_DOWNLOAD_PATH }}
+  WEBSITE_URL: ${{ vars.WEBSITE_URL }}
   BUNNY_ACCESS_KEY: ${{ secrets.BUNNY_ACCESS_KEY }}
   
 jobs:
