@@ -20,14 +20,14 @@ const PAGES = {
     name: "Școli",
     path: "/top_scoli",
   },
-  national: {
-    name: "Național",
-    path: "/national",
-  },
-  about: {
-    name: "Despre",
-    path: "/contact",
-  },
+  // national: {
+  //   name: "Național",
+  //   path: "/national",
+  // },
+  // about: {
+  //   name: "Despre",
+  //   path: "/contact",
+  // },
 };
 
 const HOME_PATH = "/";

@@ -3,7 +3,7 @@ import { CurrentYear } from "./CurrentYear";
 export function Footer() {
   return (
     <div className="mt-auto">
-      <div className="mt-4 w-full p-3 text-center">
+      <div className="mt-16 w-full p-3 text-center">
         © <CurrentYear />{" "}
         <a href="https://bacplus.ro/" className="hover:underline">
           BacPlus.ro

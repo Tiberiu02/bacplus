@@ -143,7 +143,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   }, [data, globalFilterValue, sortColumn, sortOrder]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       {searchable != false && (
         <div className="flex h-10 items-center gap-4 rounded-full border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
           <FaMagnifyingGlass className="shrink-0 text-gray-400" />
@@ -162,7 +162,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                 <th
                   key={cIx}
                   className={twMerge(
-                    "select-none border-b-[1px] border-gray-200 px-3 py-3",
+                    "select-none border-b-[1px] border-gray-200 px-3 py-3 font-semibold",
                     column.sortable && "cursor-pointer",
                     column.sortable && sortColumnIx == cIx && "text-blue-600",
                     column.widthGrow && "w-full",
@@ -216,7 +216,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           </thead>
           <tbody
             className={twMerge(
-              "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-8 [&>*]:bg-white",
+              "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-3 [&>*]:bg-white",
               href
                 ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer"
                 : undefined
@@ -246,7 +246,8 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                         : "",
                       column.type == "number" &&
                         sortColumnIx == cIx &&
-                        "font-semibold"
+                        "font-medium",
+                      column.sortable && "!pr-8"
                     )}
                   >
                     {column.type == "text" ? (

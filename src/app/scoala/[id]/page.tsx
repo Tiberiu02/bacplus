@@ -1,20 +1,18 @@
-import { FaAward } from "react-icons/fa";
-import { IoLanguage } from "react-icons/io5";
-import { FaPenNib, FaUserGraduate } from "react-icons/fa6";
-import { TbMathFunction } from "react-icons/tb";
-import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import { query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
-import { Card, ChartCard, SnippetCard } from "~/components/Cards";
+import { ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
 import { largeIcons } from "~/data/icons";
+import { LinkText } from "~/components/LinkText";
+import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
+import { ierarhieScoli } from "~/data/ierarhie";
 
 export function generateStaticParams() {
   return query.scoliCuElevi.map((scoala) => ({
@@ -54,7 +52,8 @@ export default function PaginaScoala({
 }: {
   params: { id: string };
 }) {
-  const { numeScoala, codJudet, rezultateEn, liceu } = getInfoScoala(id);
+  const { numeScoala, codJudet, rezultateEn, liceu, website, address } =
+    getInfoScoala(id);
 
   const data = Object.entries(rezultateEn).at(-1);
 
@@ -62,83 +61,83 @@ export default function PaginaScoala({
 
   return (
     <MainContainer>
-      {largeIcons[id] && (
-        <img
-          src={`/icons-lg/${id}.webp`}
-          alt={numeScoala}
-          className="mx-auto -mb-4 mt-12 h-40 w-40"
-        />
-      )}
+      <div className="flex w-full flex-col items-center gap-32">
+        <div className="mt-12 flex w-full flex-col items-center gap-8 ">
+          {largeIcons[id] && (
+            <img
+              src={`/icons-lg/${id}.webp`}
+              alt={numeScoala}
+              className="mx-auto h-40 w-40"
+            />
+          )}
 
-      <Title>{numeScoala}</Title>
+          <Title className="!my-0">{numeScoala}</Title>
 
-      {liceu && (
-        <div className="-mt-2 mb-12 flex w-full justify-center gap-4">
-          <Link href={`/liceu/${id}`} replace={true}>
-            <div className="border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
-              Liceu
+          {(website || address) && (
+            <div className="flex flex-col items-center gap-1">
+              {website && (
+                <LinkText href={website} target="_blank">
+                  {new URL(website).hostname}
+                </LinkText>
+              )}
+              {address && (
+                <i className="w-[16rem] text-center [text-wrap:balance]">
+                  {address}
+                </i>
+              )}
             </div>
-          </Link>
-          <div className="border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
-            Gimnaziu
-          </div>
+          )}
+
+          {liceu && (
+            <div className="flex w-full justify-center gap-4 pb-2">
+              <Link href={`/liceu/${id}`} replace={true} scroll={false}>
+                <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+                  Liceu
+                </div>
+              </Link>
+              <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
+                Gimnaziu
+              </div>
+            </div>
+          )}
         </div>
-      )}
 
-      <Announcements />
+        <Announcements />
 
-      <p>
-        Pe această pagină puteți vedea informații despre <b>{numeScoala}</b>,
-        bazate pe rezultatele la examenul de Evaluare Națională publicate de
-        Ministerul Educației Naționale.
-      </p>
-
-      <div className="mt-4" />
-
-      <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
-        <SnippetCard
-          title={`Medie Evaluare ${data[0]}`}
-          value={formtaNumber(data[1].medieEvaluareNationala, 2)}
-          Icon={FaAward}
-        />
-        <SnippetCard
-          title={`Medie română ${data[0]}`}
-          value={formtaNumber(data[1].medieLimbaRomana, 2)}
-          Icon={FaPenNib}
-        />
-        <SnippetCard
-          title={`Medie matematică ${data[0]}`}
-          value={formtaNumber(data[1].medieMatematica, 2)}
-          Icon={TbMathFunction}
-        />
-        <SnippetCard
-          title={`Absolvenți ${data[0]}`}
-          value={formtaNumber(data[1].candidati, 0)}
-          Icon={FaUserGraduate}
-        />
-
-        <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
-          <div className="hidden sm:block">
-            <MainChart rezultateEn={rezultateEn} aspectRatio={1.87} />
-          </div>
-          <div className="sm:hidden">
-            <MainChart rezultateEn={rezultateEn} aspectRatio={1} />
-          </div>
-        </Card>
-      </div>
-
-      <div className="grid w-full gap-4 self-center lg:grid-cols-2">
-        <ChartCard
-          title={`Distribuție limbi materne ${data[0]}`}
-          Icon={IoLanguage}
-        >
-          <PieChart
-            data={Object.entries(data[1].limbiMaterne).map(([limba, e]) => ({
-              name: limba,
-              value: e.candidati,
-            }))}
+        <div className="mx-auto grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4 sm:gap-x-16">
+          <SnippetCard
+            title={`Medie Evaluare ${data[0]}`}
+            value={formtaNumber(data[1].medieEvaluareNationala, 2)}
           />
-        </ChartCard>
+          <SnippetCard
+            title={`Medie română ${data[0]}`}
+            value={formtaNumber(data[1].medieLimbaRomana, 2)}
+          />
+          <SnippetCard
+            title={`Medie matematică ${data[0]}`}
+            value={formtaNumber(data[1].medieMatematica, 2)}
+          />
+          <SnippetCard
+            title={`Absolvenți ${data[0]}`}
+            value={formtaNumber(data[1].candidati, 0)}
+          />
+        </div>
+
+        <TabelDateIstoriceScoala
+          rezultateEn={rezultateEn}
+          ierarhie={ierarhieScoli[id] ?? {}}
+        />
+
+        <div className="flex flex-col items-center">
+          <ChartCard title={`Limbi materne ${data[0]}`}>
+            <PieChart
+              data={Object.entries(data[1].limbiMaterne).map(([limba, e]) => ({
+                name: limba,
+                value: e.candidati,
+              }))}
+            />
+          </ChartCard>
+        </div>
       </div>
     </MainContainer>
   );
@@ -149,7 +148,7 @@ function getInfoScoala(id: string) {
   const { nume_afisat: numeScoala } =
     query.scoli.find((result) => result.id_scoala == id) || {};
 
-  const liceu = query.licee.some((result) => result.id_liceu == id);
+  const liceu = query.licee.find((result) => result.id_liceu == id);
 
   const rezultateEn = {} as {
     [an: number]: {
@@ -193,161 +192,11 @@ function getInfoScoala(id: string) {
   });
 
   return {
-    liceu,
+    liceu: liceu != undefined,
     rezultateEn,
     codJudet,
     numeScoala,
+    website: liceu?.website,
+    address: liceu?.address,
   };
-}
-
-function MainChart({
-  rezultateEn: data,
-  aspectRatio,
-}: {
-  rezultateEn: {
-    [an: string]: {
-      candidati: number;
-      medieEvaluareNationala?: number;
-      medieLimbaRomana?: number;
-      medieMatematica?: number;
-      medieLimbaMaterna?: number;
-      medieAbsolvire?: number;
-    };
-  };
-  aspectRatio: number;
-}) {
-  const entries = Object.entries(data).sort();
-
-  const chartData = {
-    labels: entries.map((e) => e[0]),
-    datasets: [
-      {
-        label: "Medie Evaluare Națională",
-        data: entries.map((e) => e[1].medieEvaluareNationala),
-        fill: false,
-        backgroundColor: "#FD8A8A",
-        borderColor: "#FD8A8A",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Medie limba română",
-        data: entries.map((e) => e[1].medieLimbaRomana),
-        fill: false,
-        backgroundColor: "#FDAD35",
-        borderColor: "#FDAD35",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Medie absolvire",
-        data: entries.map((e) => e[1].medieAbsolvire),
-        fill: false,
-        backgroundColor: "#FF5575",
-        borderColor: "#FF5575",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Medie matematică",
-        data: entries.map((e) => e[1].medieMatematica),
-        fill: false,
-        backgroundColor: "#FD46AD",
-        borderColor: "#FD46AD",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Medie limba maternă",
-        data: entries.map((e) => e[1].medieLimbaMaterna),
-        fill: false,
-        backgroundColor: "#ff8552",
-        borderColor: "#ff8552",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Absolvenți",
-        data: entries.map((e) => e[1].candidati),
-        fill: false,
-        borderColor: "#9EA1D4",
-        backgroundColor: "#9EA1D4",
-        tension: 0.4,
-        yAxisID: "y1",
-      },
-    ],
-  };
-  const chartOptions = {
-    plugins: {
-      legend: {
-        labels: {
-          color: "#000",
-        },
-      },
-    },
-    aspectRatio: aspectRatio,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "#555",
-        },
-        grid: {
-          color: "#bbb",
-        },
-      },
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-        max: 10,
-
-        ticks: {
-          color: "#f75",
-        },
-        grid: {
-          color: "#bbb",
-        },
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
-
-        ticks: {
-          color: "#7E81D4",
-          precision: 0,
-        },
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-      y2: {
-        type: "linear",
-        display: false,
-        min: 0,
-        max: 102,
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-    },
-  };
-
-  return (
-    <div
-      style={{
-        aspectRatio: aspectRatio,
-      }}
-    >
-      <Chart type="line" data={chartData} options={chartOptions} />
-    </div>
-  );
 }

@@ -1,13 +1,3 @@
-import { FaAward, FaUserFriends } from "react-icons/fa";
-import { IoLanguage } from "react-icons/io5";
-import { LuMessagesSquare as TbMessageLanguage } from "react-icons/lu";
-import {
-  FaPersonCircleCheck,
-  FaSchoolCircleCheck,
-  FaSuitcase,
-  FaUserGraduate,
-} from "react-icons/fa6";
-import { Chart } from "~/components/client-ports/Chart";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import { query } from "~/data/dbQuery";
@@ -15,7 +5,7 @@ import { formtaNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
-import { Card, ChartCard, SnippetCard } from "~/components/Cards";
+import { ChartCard, SnippetCard } from "~/components/Cards";
 import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
@@ -23,6 +13,9 @@ import Link from "next/link";
 import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
 import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
 import { largeIcons } from "~/data/icons";
+import { twMerge } from "tailwind-merge";
+import { TabelDateIstoriceLiceu } from "~/components/tables/TabelDateIstoriceLiceu";
+import { ierarhieLicee } from "~/data/ierarhie";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -82,165 +75,140 @@ export default function PaginaLiceu({
 
   return (
     <MainContainer>
-      {largeIcons[id] && (
-        <img
-          src={`/icons-lg/${id}.webp`}
-          alt={numeLiceu}
-          className="mx-auto -mb-4 mt-12 h-40 w-40"
-        />
-      )}
+      <div className="flex w-full flex-col items-center gap-32">
+        <div className="mt-12 flex w-full flex-col items-center gap-8">
+          {largeIcons[id] && (
+            <img
+              src={`/icons-lg/${id}.webp`}
+              alt={numeLiceu}
+              className="mx-auto h-40 w-40"
+            />
+          )}
 
-      <Title>{numeLiceu}</Title>
+          <Title className="!my-0">{numeLiceu}</Title>
 
-      {gimnaziu && (
-        <div className="-mt-2 mb-12 flex w-full justify-center gap-4">
-          <div className="border-collapse border-b-2 border-black px-1 py-2 text-center font-semibold">
-            Liceu
-          </div>
-          <Link href={`/scoala/${id}`} replace={true}>
-            <div className="border-black px-1 py-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
-              Gimnaziu
+          {(website || adresa) && (
+            <div className="flex flex-col items-center gap-1">
+              {website && (
+                <LinkText href={website} target="_blank">
+                  {new URL(website).hostname}
+                </LinkText>
+              )}
+              {adresa && (
+                <i className="w-[16rem] text-center [text-wrap:balance]">
+                  {adresa}
+                </i>
+              )}
             </div>
-          </Link>
+          )}
+
+          {gimnaziu && (
+            <div className="flex w-full justify-center gap-4 pb-2">
+              <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
+                Liceu
+              </div>
+              <Link href={`/scoala/${id}`} replace={true} scroll={false}>
+                <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+                  Gimnaziu
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
-      )}
 
-      <p>
-        Pe această pagină puteți vedea informații despre <b>{numeLiceu}</b>,
-        bazate pe rezultatele la examenele de Bacalaureat și Evaluare Națională
-        publicate de Ministerul Educației Naționale.
-      </p>
+        <Announcements />
 
-      {(website || adresa) && (
-        <p>
-          Pentru mai multe informații despre acest liceu, puteți{" "}
-          {website && (
-            <>
-              să accesați site-ul oficial al liceului,{" "}
-              <LinkText href={website} target="_blank">
-                {new URL(website).hostname}
-              </LinkText>
-            </>
+        <div
+          className={twMerge(
+            `mx-auto grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4 sm:gap-x-16`,
+            !dataAdm && "sm:grid-cols-3"
           )}
-          {website && adresa && <>, sau </>}
-          {adresa && (
-            <>
-              să vizitați liceul la adresa <i>{adresa}</i>
-            </>
-          )}
-          .
-        </p>
-      )}
-
-      <Announcements />
-
-      <div className="mt-4" />
-
-      <div className="grid w-full grid-cols-1 gap-4 self-center sm:grid-cols-2 sm:grid-rows-[audo_auto_auto] lg:grid-cols-4 lg:grid-rows-[auto_auto] xl:grid-flow-col xl:grid-cols-[auto_1fr] xl:grid-rows-4">
-        <SnippetCard
-          title={`Medie Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].medie, 2)}
-          Icon={FaAward}
-        />
-        <SnippetCard
-          title={`Promovare ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
-          Icon={FaSchoolCircleCheck}
-        />
-        <SnippetCard
-          title={`Candidați Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].candidati, 0)}
-          Icon={FaUserGraduate}
-        />
-        {dataAdm && (
+        >
           <SnippetCard
-            title={`Medie Admitere ${dataAdm[0]}`}
-            value={formtaNumber(dataAdm[1], 2)}
-            Icon={FaPersonCircleCheck}
+            title={`Medie Bac ${dataBac[0]}`}
+            value={formtaNumber(dataBac[1].medie, 2)}
           />
-        )}
-
-        <Card className="row-span-4 flex flex-col justify-center sm:col-span-2 lg:max-xl:col-span-4">
-          <div className="hidden sm:block">
-            <MainChart
-              rezultateBac={rezultateBac}
-              admitere={admitere}
-              aspectRatio={1.87}
+          {dataAdm && (
+            <SnippetCard
+              title={`Medie Admitere ${dataAdm[0]}`}
+              value={formtaNumber(dataAdm[1], 2)}
             />
-          </div>
-          <div className="sm:hidden">
-            <MainChart
-              rezultateBac={rezultateBac}
-              admitere={admitere}
-              aspectRatio={1}
-            />
-          </div>
-        </Card>
-      </div>
-
-      <TabelSpecializari specializari={specializari} />
-
-      <div className="grid w-full gap-4 self-center lg:grid-cols-2">
-        <ChartCard
-          title={`Distribuție limbi străine ${dataBac[0]}`}
-          Icon={IoLanguage}
-        >
-          <PieChart
-            data={Object.entries(dataBac[1].limbiStraine).map(([limba, e]) => ({
-              name: limba,
-              value: e.candidati,
-            }))}
+          )}
+          <SnippetCard
+            title={`Promovare ${dataBac[0]}`}
+            value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
           />
-        </ChartCard>
-
-        <ChartCard
-          title={`Distribuție specializări ${dataBac[0]}`}
-          Icon={FaSuitcase}
-        >
-          <PieChart
-            data={Object.entries(dataBac[1].specializari).map(
-              ([specializare, e]) => ({
-                name: specializare,
-                value: e.candidati,
-              })
-            )}
+          <SnippetCard
+            title={`Candidați Bac ${dataBac[0]}`}
+            value={formtaNumber(dataBac[1].candidati, 0)}
           />
-        </ChartCard>
+        </div>
 
-        <ChartCard
-          title={`Distribuție limbi materne ${dataBac[0]}`}
-          Icon={TbMessageLanguage}
-        >
-          <PieChart
-            data={Object.entries(dataBac[1].limbiMaterne).map(([limba, e]) => ({
-              name: limba,
-              value: e.candidati,
-            }))}
-          />
-        </ChartCard>
+        <TabelDateIstoriceLiceu
+          rezultateBac={rezultateBac}
+          admitere={admitere}
+          ierarhie={ierarhieLicee[id] ?? {}}
+        />
 
-        {genderData && (
-          <ChartCard title="Distribuție demografică elevi" Icon={FaUserFriends}>
+        <TabelSpecializari specializari={specializari} />
+
+        <div className="mx-auto my-8 grid gap-x-24 gap-y-16 self-center lg:grid-cols-2">
+          <ChartCard title={`Limbi străine Bac ${dataBac[0]}`}>
             <PieChart
-              data={[
-                {
-                  name: "M",
-                  value: genderData.males,
-                  color: "rgb(54, 162, 235)",
-                },
-                {
-                  name: "F",
-                  value: genderData.females,
-                  color: "rgb(255, 99, 132)",
-                },
-              ]}
-              convertToPercentages
+              data={Object.entries(dataBac[1].limbiStraine).map(
+                ([limba, e]) => ({
+                  name: limba,
+                  value: e.candidati,
+                })
+              )}
             />
           </ChartCard>
-        )}
-      </div>
 
-      <TabelDisciplineBac discipline={disciplineBac} />
+          <ChartCard title={`Specializări Bac ${dataBac[0]}`}>
+            <PieChart
+              data={Object.entries(dataBac[1].specializari).map(
+                ([specializare, e]) => ({
+                  name: specializare,
+                  value: e.candidati,
+                })
+              )}
+            />
+          </ChartCard>
+
+          <ChartCard title={`Limbi materne Bac ${dataBac[0]}`}>
+            <PieChart
+              data={Object.entries(dataBac[1].limbiMaterne).map(
+                ([limba, e]) => ({
+                  name: limba,
+                  value: e.candidati,
+                })
+              )}
+            />
+          </ChartCard>
+
+          {genderData && (
+            <ChartCard title="Demografie elevi">
+              <PieChart
+                data={[
+                  {
+                    name: "Masculin",
+                    value: genderData.males,
+                    color: "rgb(54, 162, 235)",
+                  },
+                  {
+                    name: "Feminin",
+                    value: genderData.females,
+                    color: "rgb(255, 99, 132)",
+                  },
+                ]}
+                convertToPercentages
+              />
+            </ChartCard>
+          )}
+        </div>
+
+        <TabelDisciplineBac discipline={disciplineBac} />
+      </div>
     </MainContainer>
   );
 }
@@ -425,140 +393,4 @@ function getInfoLiceu(id: string) {
     specializari,
     disciplineBac,
   };
-}
-
-function MainChart({
-  rezultateBac: data,
-  admitere: dataAdm,
-  aspectRatio,
-}: {
-  rezultateBac: {
-    [an: string]: {
-      medie?: number;
-      candidati: number;
-      candidatiValizi: number;
-      rataPromovare?: number;
-    };
-  };
-  admitere: {
-    [an: string]: number | null;
-  };
-  aspectRatio: number;
-}) {
-  const entries = Object.entries(data).sort();
-
-  const chartData = {
-    labels: entries.map((e) => e[0]),
-    datasets: [
-      {
-        label: "Medie absolvire",
-        data: entries.map((e) => e[1].medie),
-        fill: false,
-        backgroundColor: "#FD8A8A",
-        borderColor: "#FD8A8A",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Medie admitere",
-        data: entries.map((e) => dataAdm[e[0]]),
-        fill: false,
-        backgroundColor: "#FDAD35",
-        borderColor: "#FDAD35",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Candidați Bac",
-        data: entries.map((e) => e[1].candidati),
-        fill: false,
-        borderColor: "#9EA1D4",
-        backgroundColor: "#9EA1D4",
-        tension: 0.4,
-        yAxisID: "y1",
-      },
-      {
-        label: "Rata de promovare",
-        data: entries.map((e) => e[1].rataPromovare),
-        fill: false,
-        backgroundColor: "#A8D1D1",
-        borderColor: "#A8D1D1",
-        tension: 0.4,
-        yAxisID: "y2",
-      },
-    ],
-  };
-  const chartOptions = {
-    plugins: {
-      legend: {
-        labels: {
-          color: "#000",
-        },
-      },
-    },
-    aspectRatio: aspectRatio,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "#555",
-        },
-        grid: {
-          color: "#bbb",
-        },
-      },
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-        max: 10,
-
-        ticks: {
-          color: "#f75",
-        },
-        grid: {
-          color: "#bbb",
-        },
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
-
-        ticks: {
-          color: "#7E81D4",
-          precision: 0,
-        },
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-      y2: {
-        type: "linear",
-        display: false,
-        min: 0,
-        max: 102,
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        },
-      },
-    },
-  };
-
-  return (
-    <div
-      style={{
-        aspectRatio: aspectRatio,
-      }}
-    >
-      <Chart type="line" data={chartData} options={chartOptions} />
-    </div>
-  );
 }

@@ -6,15 +6,13 @@ export function Title({
   className,
 }: PropsWithChildren<{ className?: string }>) {
   return (
-    <div className="mb-8 mt-16">
-      <h1
-        className={twMerge(
-          "mb-8 text-center text-2xl font-semibold [text-wrap:balance] sm:text-3xl lg:text-4xl",
-          className
-        )}
-      >
-        {children}
-      </h1>
-    </div>
+    <h1
+      className={twMerge(
+        "my-16 text-center text-2xl font-semibold [text-wrap:balance] sm:text-3xl lg:text-4xl",
+        className
+      )}
+    >
+      {children}
+    </h1>
   );
 }

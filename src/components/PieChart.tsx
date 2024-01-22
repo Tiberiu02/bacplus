@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 const magicNumbers = [0];
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 2 ** i; j++) {
@@ -29,8 +25,6 @@ export function PieChart({
   data: { name: string; value: number; color?: string }[];
   convertToPercentages?: boolean;
 }) {
-  const [hovered, setHovered] = useState<string | null>(null);
-
   const total = data.reduce((acc, e) => acc + e.value, 0);
   let sumSoFar = 0;
 
@@ -50,68 +44,44 @@ export function PieChart({
   }));
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="group relative">
-        <svg viewBox="-5 -5 110 110" className="w-full max-w-[16rem]">
+    <div className="max-w flex flex-row gap-6">
+      <div className="group relative shrink-0">
+        <svg viewBox="-5 -5 110 110" className="w-full max-w-[4rem]">
           {/* SVG Pie slices */}
           {entries.map((e) => (
             <path
               key={e.name}
               d={`
                 M 50 50
-                L ${50 - 50 * Math.sin(e.startAngle)} ${
+                L ${50 + 50 * Math.sin(e.startAngle)} ${
                 50 - 50 * Math.cos(e.startAngle)
               }
-                A 50 50 0 ${e.endAngle - e.startAngle > Math.PI ? 1 : 0} 0 ${
-                50 - 50 * Math.sin(e.endAngle)
+                A 50 50 0 ${e.endAngle - e.startAngle > Math.PI ? 1 : 0} 1 ${
+                50 + 50 * Math.sin(e.endAngle)
               } ${50 - 50 * Math.cos(e.endAngle)}
                 Z
               `}
               fill={e.color}
-              className="stroke-white transition-all duration-300 ease-in-out hover:scale-[1.02] hover:stroke-gray-100 hover:brightness-90 hover:saturate-[1.5]"
-              onPointerEnter={() => setHovered(e.name)}
+              className="stroke-white"
               style={{
                 transformOrigin: "50% 50%",
               }}
             />
           ))}
         </svg>
-
-        {/* Labels visible on slice hover */}
-        {entries.map((e) => (
-          <div
-            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 select-none rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white transition-all duration-300 ease-in-out [--group-opacity:0] group-hover:[--group-opacity:1]"
-            key={e.name}
-            style={{
-              left: `${50 - 33 * Math.sin(e.midAngle)}%`,
-              top: `${50 - 33 * Math.cos(e.midAngle)}%`,
-              opacity: hovered === e.name ? "var(--group-opacity)" : 0,
-            }}
-          >
-            {e.label}
-          </div>
-        ))}
       </div>
 
       {/* Chart Legend */}
-      <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">
+      <div className="my-auto flex flex-col gap-x-8 gap-y-2 text-sm">
         {entries.map((e) => (
           <div className="flex items-center gap-2" key={e.name}>
             <div
-              className="flex h-4 w-4 items-center justify-center overflow-hidden border-4"
+              className="flex h-2 w-2 shrink-0 items-center justify-center overflow-hidden rounded-full [text-wrap:balance]"
               style={{
-                borderColor: e.color,
-                outlineColor: e.color,
+                backgroundColor: e.color,
               }}
-            >
-              <div
-                className="h-4 w-4 brightness-110"
-                style={{
-                  backgroundColor: e.color,
-                }}
-              />
-            </div>
-            <div>{e.label}</div>
+            ></div>
+            <div className="[text-wrap:balance]">{e.label}</div>
           </div>
         ))}
       </div>

@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { Table } from "../Table";
-import { Card } from "../Cards";
-import { FaUniversity } from "react-icons/fa";
 import { Select } from "../Select";
 
 export function TabelSpecializari({
@@ -22,20 +20,17 @@ export function TabelSpecializari({
   if (an == 0) return null;
 
   return (
-    <Card className="overflow-hidden p-0">
-      <div className="relative flex max-w-full items-center justify-between gap-4 px-4 py-6 sm:px-6">
-        <div className="flex items-center gap-4 ">
-          <FaUniversity className="shrink-0 text-3xl text-blue-500 opacity-60" />
-          <div className="text-xl font-semibold opacity-90">
-            Admitere specializări
-          </div>
+    <div className="flex w-full flex-col items-center gap-8">
+      <div className="relative w-full max-w-full flex-col items-center gap-4">
+        <div className="text-center text-xl font-semibold opacity-90">
+          Admitere specializări
         </div>
         <Select
           options={ani.map((e) => ({ value: e, label: e.toString() }))}
           value={an}
           onChange={setAn}
           ariaLabel="An specializări admitere"
-          className=""
+          className="mx-auto"
         />
       </div>
       <Table
@@ -65,7 +60,6 @@ export function TabelSpecializari({
           },
         ]}
       />
-      <div className="mt-[calc(-0.5rem-1px)]" />
-    </Card>
+    </div>
   );
 }

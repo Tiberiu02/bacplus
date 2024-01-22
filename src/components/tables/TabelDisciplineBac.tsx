@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { Table } from "../Table";
-import { Card } from "../Cards";
 import { Select } from "../Select";
-import { FaGraduationCap } from "react-icons/fa6";
 
 export function TabelDisciplineBac({
   discipline,
@@ -22,20 +20,17 @@ export function TabelDisciplineBac({
   if (an == 0) return null;
 
   return (
-    <Card className="overflow-hidden p-0">
-      <div className="relative flex max-w-full items-center justify-between gap-4 px-4 py-6 sm:px-6">
-        <div className="flex items-center gap-4 ">
-          <FaGraduationCap className="shrink-0 text-3xl text-blue-500 opacity-60" />
-          <div className="text-xl font-semibold opacity-90">
-            Rezultate bacalaureat
-          </div>
+    <div className="flex w-full flex-col items-center gap-8">
+      <div className="relative max-w-full flex-col items-center justify-between gap-4">
+        <div className="text-center text-xl font-semibold opacity-90 [text-wrap:balance]">
+          Rezultate Bacalaureat pe discipline
         </div>
         <Select
           options={ani.map((e) => ({ value: e, label: e.toString() }))}
           value={an}
           onChange={setAn}
           ariaLabel="An specializări admitere"
-          className=""
+          className="mx-auto"
         />
       </div>
       <Table
@@ -49,7 +44,6 @@ export function TabelDisciplineBac({
             textAlign: "left",
             sortable: true,
             primarySortOrder: "ASC",
-            defaultSortingColumn: true,
           },
           {
             type: "number",
@@ -64,10 +58,11 @@ export function TabelDisciplineBac({
             decimals: 0,
             header: "Elevi",
             sortable: true,
+            defaultSortingColumn: true,
           },
         ]}
       />
       <div className="mt-[calc(-0.5rem-1px)]" />
-    </Card>
+    </div>
   );
 }

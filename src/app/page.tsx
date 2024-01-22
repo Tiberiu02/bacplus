@@ -14,6 +14,7 @@ import Image from "next/image";
 import backgoundImg from "../../public/hero-bg.webp";
 import { Authors } from "~/components/Authors";
 import { query } from "~/data/dbQuery";
+import { env } from "~/env.mjs";
 
 function Section({
   children,
@@ -76,11 +77,10 @@ export default function Home() {
             <h1 className="text-center text-4xl font-extrabold [word-spacing:0.5rem] sm:text-5xl">
               TRANSPARENȚĂ ÎN&nbsp;EDUCAȚIE
             </h1>
-            <h2 className="text-center text-xl font-medium">
+            <h2 className="text-center text-xl font-medium [text-wrap:balance]">
               Sporim transparența examenelor de Bacalaureat și Evaluare
-              Națională prin statistici la nivel de liceu, școală generală,
-              județ sau țară, precum și clasamente ale liceelor, școlilor
-              generale și județelor.
+              Națională prin statistici la nivel de liceu si școală generală,
+              precum și clasamente ale liceelor și școlilor generale.
             </h2>
             <div className="flex flex-row justify-center gap-2">
               <LinkButton
@@ -117,36 +117,85 @@ export default function Home() {
 
         <p>
           Bacalaureatul este cel mai important examen din sistemul educațional
-          românesc. Totodată, rezultatele la bac reprezintă singurele date
-          numerice disponibile care reflectă situația învățământului la nivel
-          național.
-        </p>
-
-        <p>
-          Anual, pe{" "}
-          <LinkText href="http://bacalaureat.edu.ro">site-ul</LinkText> oferit
-          de Ministerul Educației sunt disponibile listele cu rezultatele
-          fiecărui candidat. Se mai publică și un raport care analizează aceste
-          rezultate. Publicarea rezultatelor online a constituit un pas
-          important în procesul de digitalizare. Noi ne-am propus să ducem
-          digitalizarea la nivelul următor prin sintetizarea și publicarea de
-          date statistice precum clasamente ale liceelor și școlilor, dar și
-          informații detaliate despre fiecare liceu și școală.
-        </p>
-
-        <p>
-          Pe acest site, ne-am dorit să oferim o perspectivă amplă asupra
-          educației în România prin grafice și tabele interactive care prezintă
-          informațiile cele mai importante într-un mod ușor de înțeles.
+          românesc. Notele la examenele naționale nu oferă o imagine completă
+          asupra situației învățământului la nivel național, dar ele reprezintă
+          singurele date numerice disponibile în România. De aceea, este
+          important ca aceste date să fie studiate și valorificate, chiar dacă
+          există riscul de a crea impresia falsă că examenele naționare
+          reprezintă singurul scop al educației. Acest site vine în ajutorul
+          elevilor, părinților și profesorilor care vor să se informeze asupra
+          situației învățământului din România cu ajutorul datelor oficiale
+          publicate de Ministerul Educației Naționale.
         </p>
       </Section>
 
       <Section className="bg-gray-150">
         <h2 className="text-3xl font-bold">Datele Noastre</h2>
 
-        <p>Statisticile noastre au fost sintetizate folosind date despre</p>
+        <p>
+          Toate datele de pe acest site au fost sintetizate folosind informații
+          publicate de Ministerul Educației Naționale pe{" "}
+          <LinkText
+            target="_blank"
+            href="http://static.bacalaureat.edu.ro/2023/"
+          >
+            bacalaureat.edu.ro
+          </LinkText>
+          ,{" "}
+          <LinkText
+            target="_blank"
+            href="https://data.gov.ro/en/organization/men"
+          >
+            data.gov.ro
+          </LinkText>
+          ,{" "}
+          <LinkText target="_blank" href="http://static.admitere.edu.ro/">
+            admitere.edu.ro
+          </LinkText>
+          {" și "}
+          <LinkText target="_blank" href="http://static.evaluare.edu.ro/">
+            evaluare.edu.ro.
+          </LinkText>
+        </p>
+        <p>
+          În vederea realizării tuturor statisticilor de pe acest site, am creat
+          o baza de date unificată cu toate datele disponibile pe site-urile
+          menționate mai sus. Am decis să facem publică această bază de date
+          pentru ca oricine să își poată sintetiza propriile statistici cu
+          ușurință. Această bază de date este disponibilă în formatul SQLite și
+          poate fi descărcată de{" "}
+          <LinkText href={env.DB_DOWNLOAD_URL} target="_blank">
+            aici
+          </LinkText>
+          . Pentru a putea lucra cu această bază de date, vă recomandăm
+          programul gratuit{" "}
+          <LinkText href="https://sqlitestudio.pl/" target="_blank">
+            SQLiteStudio
+          </LinkText>
+          . Va fi nevoie să cunoașteți limbajul de interogare a bazelor de date
+          SQL (Standard Query Language). Vă recomandăm{" "}
+          <LinkText href="https://www.w3schools.com/sql" target="_blank">
+            acest tutorial SQL gratuit
+          </LinkText>
+          .
+        </p>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <p>
+          De asemenea, facem publice programele create de noi pentru a descărca
+          rezultatele și a crea această bază de date unificată. Le puteți accesa
+          pe GitHub{" "}
+          <LinkText
+            href="https://github.com/Tiberiu02/bacplus-data"
+            target="_blank"
+          >
+            aici
+          </LinkText>
+          . Dacă decideți să publicați statistici realizate cu ajutorul bazei
+          noastre de date sau alte statistici preluate de pe acest site, vă
+          rugăm să menționați sursa (cu link).
+        </p>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <CountUpCard
             caption="Candidați"
             finalNumber={
@@ -194,21 +243,20 @@ export default function Home() {
 
         <p>
           După cei 12 ani petrecuți în sistemul educațional, am ajuns să îl
-          cunoaștem îndeaproape, cu bune și cu rele.
+          cunoaștem îndeaproape, cu bune și cu rele. Am început acest proiect în
+          2021 ca un mic pas în direcția mult mai largă a digitalizării
+          sistemului educațional românesc. Există nenumărate moduri în care
+          tehnologia poate amplifica potențialul fiecărui elev și profesor.
+          Depinde doar de noi ca următoarele generații să beneficieze de o
+          educație mai bună.
         </p>
-
         <p>
-          Suntem doi tineri dornici să aducă o schimbare pozitivă asupra
-          sistemului în care s-au format. Credem în tehnologie și în rolul pe
-          care aceasta îl poate avea în actul educațional. Sunt multe moduri în
-          care tehnologia poate îmbunătăți sistemul actual, dar am ales să
-          începem cu transparentizarea examenului de bacalaureat.
-        </p>
-
-        <p>
-          Suntem conștienți că publicarea acestor statistici reprezintă doar un
-          pas mic. De aceea, ne dorim să extindem platforma și în alte arii ale
-          educației.
+          Pentru sugestii, idei, probleme cu platforma, sau orice altceva, ne
+          puteți contacta prin e-mail la adresa{" "}
+          <b>
+            <i>contact@bacplus.ro.</i>
+          </b>{" "}
+          Orice feedback este binevenit!
         </p>
 
         <Authors />
