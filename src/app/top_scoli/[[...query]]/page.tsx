@@ -13,7 +13,7 @@ import { TabelScoli } from "../../../components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
-import { icons } from "~/data/icons";
+import { smallIcons } from "~/data/icons";
 
 export function generateMetadata({
   params,
@@ -23,12 +23,12 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
 
   const title = judet?.numeIntreg
-    ? `Top școli generale ${judet?.numeIntreg} ${an}`
-    : `Top școli generale ${an}`;
+    ? `Top școli generale ${judet?.numeIntreg} ${an} la Evaluarea Națională`
+    : `Top școli generale ${an} la Evaluarea Națională`;
 
-  const description = `Descoperă cele mai bune școli generale din ${
+  const description = `Descoperă clasamentul școlilor generale din ${
     judet?.numeIntreg ?? "România"
-  } ${an}`;
+  } la Evaluarea Națională ${an}`;
 
   return {
     title,
@@ -202,7 +202,7 @@ function getScoli(an: number, judet?: string) {
         medieMatematica: result._avg.ma_final ?? undefined,
         medieAbsolvire: result._avg.medie_abs ?? undefined,
         medieEvaluareNationala: result._avg.medie_en ?? undefined,
-        icon: icons[result.id_scoala] ?? false,
+        icon: smallIcons[result.id_scoala] ?? false,
       };
     });
 

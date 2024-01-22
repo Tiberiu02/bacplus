@@ -22,6 +22,7 @@ import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
 import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
 import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
+import { largeIcons } from "~/data/icons";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -81,6 +82,14 @@ export default function PaginaLiceu({
 
   return (
     <MainContainer>
+      {largeIcons[id] && (
+        <img
+          src={`/icons-lg/${id}.webp`}
+          alt={numeLiceu}
+          className="mx-auto -mb-4 mt-12 h-40 w-40"
+        />
+      )}
+
       <Title>{numeLiceu}</Title>
 
       {gimnaziu && (

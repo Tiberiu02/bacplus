@@ -13,7 +13,7 @@ import { Announcements } from "~/components/Announcements";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
-import { icons } from "~/data/icons";
+import { smallIcons } from "~/data/icons";
 
 export function generateMetadata({
   params,
@@ -23,12 +23,12 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnBac);
 
   const title = judet?.numeIntreg
-    ? `Top licee ${judet?.numeIntreg} ${an}`
-    : `Top licee ${an}`;
+    ? `Top licee ${judet?.numeIntreg} ${an} la Bacalaureat și Admitere`
+    : `Top licee ${an} la Bacalaureat și Admitere`;
 
-  const description = `Descoperă cele mai bune licee din ${
+  const description = `Descoperă clasamentul liceelor din ${
     judet?.numeIntreg ?? "România"
-  } ${an}`;
+  } ${an} la Bacalaureat și Admitere`;
 
   return {
     title,
@@ -196,7 +196,7 @@ function getLicee(an: number, judet?: string) {
         rataPromovare: 0,
         numeLiceu: "",
         codJudet: result.id_liceu.split("_").at(-1) ?? "",
-        icon: icons[result.id_liceu] ?? false,
+        icon: smallIcons[result.id_liceu] ?? false,
       };
     });
 

@@ -37,7 +37,7 @@ export function TabelLicee({
             <>
               {rowData.icon && (
                 <img
-                  src={`/icons-32/${rowData.id}.png`}
+                  src={`/icons-xs/${rowData.id}.webp`}
                   alt=""
                   className="mr-2 inline-block h-5 w-5 transition-opacity duration-200 group-hover:opacity-50"
                 />
@@ -45,6 +45,13 @@ export function TabelLicee({
               {rowData.numeLiceu}
             </>
           ),
+        },
+        {
+          type: "number",
+          decimals: 2,
+          header: `Medie admitere ${anAdmitere ?? ""}`,
+          value: (rowData) => rowData.medieAdm,
+          sortable: true,
         },
         {
           type: "number",
@@ -63,15 +70,8 @@ export function TabelLicee({
         {
           type: "number",
           decimals: 0,
-          header: "Elevi",
+          header: "Elevi Bac",
           value: (rowData) => rowData.numCandidati,
-          sortable: true,
-        },
-        {
-          type: "number",
-          decimals: 2,
-          header: `Medie admitere ${anAdmitere ?? ""}`,
-          value: (rowData) => rowData.medieAdm,
           sortable: true,
         },
       ]}

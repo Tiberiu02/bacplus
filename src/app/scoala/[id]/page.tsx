@@ -14,6 +14,7 @@ import { env } from "~/env.mjs";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
+import { largeIcons } from "~/data/icons";
 
 export function generateStaticParams() {
   return query.scoliCuElevi.map((scoala) => ({
@@ -61,6 +62,14 @@ export default function PaginaScoala({
 
   return (
     <MainContainer>
+      {largeIcons[id] && (
+        <img
+          src={`/icons-lg/${id}.webp`}
+          alt={numeScoala}
+          className="mx-auto -mb-4 mt-12 h-40 w-40"
+        />
+      )}
+
       <Title>{numeScoala}</Title>
 
       {liceu && (

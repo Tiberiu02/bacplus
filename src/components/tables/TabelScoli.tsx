@@ -31,7 +31,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
             <>
               {rowData.icon && (
                 <img
-                  src={`/icons-32/${rowData.id}.png`}
+                  src={`/icons-xs/${rowData.id}.webp`}
                   alt=""
                   className="mr-2 inline-block h-5 w-5 transition-opacity duration-200 group-hover:opacity-50"
                 />

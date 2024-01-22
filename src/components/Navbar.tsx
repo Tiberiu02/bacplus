@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-import { MdMenu, MdOutlineClose } from "react-icons/md";
+import { FiMenu, FiX } from "react-icons/fi";
 
 import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
@@ -84,11 +84,11 @@ export function Navbar({
             />
           </Link>
           <button
-            className="text-4xl text-gray-700 sm:hidden"
+            className="text-2xl text-black sm:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Meniu"
           >
-            {isMenuOpen ? <MdOutlineClose /> : <MdMenu />}
+            {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
           <div className="hidden flex-row gap-6 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path }]) => (
