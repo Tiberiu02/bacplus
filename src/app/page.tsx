@@ -120,12 +120,10 @@ export default function Home() {
           românesc. Notele la examenele naționale nu oferă o imagine completă
           asupra situației învățământului la nivel național, dar ele reprezintă
           singurele date numerice disponibile în România. De aceea, este
-          important ca aceste date să fie studiate și valorificate, chiar dacă
-          există riscul de a crea impresia falsă că examenele naționare
-          reprezintă singurul scop al educației. Acest site vine în ajutorul
-          elevilor, părinților și profesorilor care vor să se informeze asupra
-          situației învățământului din România cu ajutorul datelor oficiale
-          publicate de Ministerul Educației Naționale.
+          important ca aceste date să fie studiate și valorificate. Acest site
+          vine în ajutorul elevilor, părinților și profesorilor care vor să se
+          informeze asupra situației învățământului din România cu ajutorul
+          datelor oficiale publicate de Ministerul Educației Naționale.
         </p>
       </Section>
 
