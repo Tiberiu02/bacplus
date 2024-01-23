@@ -20,7 +20,9 @@ export function TabelDateIstoriceScoala({
     [an: string]: number;
   };
 }) {
-  const entries = Object.entries(data).sort();
+  const entries = Object.entries(data).sort(
+    (a, b) => parseInt(b[0]) - parseInt(a[0])
+  );
 
   return (
     <Table
