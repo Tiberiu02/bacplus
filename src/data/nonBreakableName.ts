@@ -8,7 +8,7 @@ export function nonBreakableName(name: string) {
 
     if (!p3 || !p4) return name;
 
-    return `${p1}„${p3.split(" ").join("\u00A0")}”${p4}`;
+    return `${p1}„${p3.length > 25 ? p3 : p3.replaceAll(" ", "\u00A0")}”${p4}`;
   }
   return name;
 }

@@ -86,7 +86,9 @@ export default function PaginaLiceu({
             />
           )}
 
-          <Title className="!my-0">{nonBreakableName(numeLiceu)}</Title>
+          <Title className="!my-0 max-w-full text-xl">
+            {nonBreakableName(numeLiceu)}
+          </Title>
 
           {(website || adresa) && (
             <div className="flex flex-col items-center gap-1">
