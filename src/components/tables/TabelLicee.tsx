@@ -3,6 +3,7 @@
 import { liceuFromDataArray } from "~/data/data";
 import type { LiceuDataArray } from "~/data/data";
 import { Table } from "~/components/Table";
+import { nonBreakableName } from "~/data/nonBreakableName";
 
 export function TabelLicee({
   data,
@@ -42,7 +43,7 @@ export function TabelLicee({
                   className="mr-2 inline-block h-5 w-5 transition-opacity duration-200 group-hover:opacity-50"
                 />
               )}
-              {rowData.numeLiceu}
+              {nonBreakableName(rowData.numeLiceu)}
             </>
           ),
         },

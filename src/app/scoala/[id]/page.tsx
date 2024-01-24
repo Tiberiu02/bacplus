@@ -13,6 +13,7 @@ import { largeIcons } from "~/data/icons";
 import { LinkText } from "~/components/LinkText";
 import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
 import { ierarhieScoli } from "~/data/ierarhie";
+import { nonBreakableName } from "~/data/nonBreakableName";
 
 export function generateStaticParams() {
   return query.scoliCuElevi.map((scoala) => ({
@@ -57,7 +58,7 @@ export default function PaginaScoala({
 
   const data = Object.entries(rezultateEn).at(-1);
 
-  if (!data || !codJudet) notFound();
+  if (!data || !codJudet || !numeScoala) notFound();
 
   return (
     <MainContainer>
@@ -71,7 +72,7 @@ export default function PaginaScoala({
             />
           )}
 
-          <Title className="!my-0">{numeScoala}</Title>
+          <Title className="!my-0">{nonBreakableName(numeScoala)}</Title>
 
           {(website || address) && (
             <div className="flex flex-col items-center gap-1">

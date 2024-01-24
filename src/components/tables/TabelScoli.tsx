@@ -3,6 +3,7 @@
 import { scoalaFromDataArray } from "~/data/data";
 import type { ScoalaDataArray } from "~/data/data";
 import { Table } from "~/components/Table";
+import { nonBreakableName } from "~/data/nonBreakableName";
 
 export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
   return (
@@ -36,7 +37,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
                   className="mr-2 inline-block h-5 w-5 transition-opacity duration-200 group-hover:opacity-50"
                 />
               )}
-              {rowData.numeScoala}
+              {nonBreakableName(rowData.numeScoala)}
             </>
           ),
         },

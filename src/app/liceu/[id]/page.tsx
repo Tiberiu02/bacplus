@@ -16,6 +16,7 @@ import { largeIcons } from "~/data/icons";
 import { twMerge } from "tailwind-merge";
 import { TabelDateIstoriceLiceu } from "~/components/tables/TabelDateIstoriceLiceu";
 import { ierarhieLicee } from "~/data/ierarhie";
+import { nonBreakableName } from "~/data/nonBreakableName";
 
 export function generateStaticParams() {
   return query.licee.map((e) => ({
@@ -71,7 +72,7 @@ export default function PaginaLiceu({
   const dataBac = Object.entries(rezultateBac).at(-1);
   const dataAdm = Object.entries(admitere).at(-1) as [string, number];
 
-  if (!dataBac || !codJudet) notFound();
+  if (!dataBac || !codJudet || !numeLiceu) notFound();
 
   return (
     <MainContainer>
@@ -85,7 +86,7 @@ export default function PaginaLiceu({
             />
           )}
 
-          <Title className="!my-0">{numeLiceu}</Title>
+          <Title className="!my-0">{nonBreakableName(numeLiceu)}</Title>
 
           {(website || adresa) && (
             <div className="flex flex-col items-center gap-1">
