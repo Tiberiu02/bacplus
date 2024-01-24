@@ -40,6 +40,7 @@ export function generateMetadata({
       images: ["/og-banner.jpg"],
       url: env.WEBSITE_URL,
     },
+    robots: an != ultimulAnBac ? "noindex" : undefined,
   };
 }
 
