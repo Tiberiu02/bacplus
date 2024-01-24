@@ -155,7 +155,7 @@ export default function PaginaLiceu({
 
         <TabelSpecializari specializari={specializari} />
 
-        <div className="mx-auto my-8 grid gap-x-24 gap-y-16 self-center lg:grid-cols-2">
+        <div className="mx-auto my-24 grid gap-x-48 gap-y-32 self-center lg:grid-cols-2">
           <ChartCard title={`Limbi străine Bac ${dataBac[0]}`}>
             <PieChart
               data={Object.entries(dataBac[1].limbiStraine).map(
