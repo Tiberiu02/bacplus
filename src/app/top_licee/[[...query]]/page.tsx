@@ -130,7 +130,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
             type: "decimal",
           },
           {
-            name: "Rata de promovare",
+            name: "Rată de promovare",
             value: (liceu: Liceu) =>
               Math.round(liceu.rataPromovare * 100) / 100,
             type: "decimal",

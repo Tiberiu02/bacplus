@@ -73,7 +73,7 @@ export function TabelDateIstoriceLiceu({
           {
             type: "percentage",
             value: (e) => e.rataPromovare ?? undefined,
-            header: "Rata de promovare",
+            header: "Rată de promovare",
           },
         ]}
       />

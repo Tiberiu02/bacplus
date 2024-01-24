@@ -64,7 +64,7 @@ export function TabelLicee({
         },
         {
           type: "percentage",
-          header: "Rata de promovare",
+          header: "Rată de promovare",
           value: (rowData) => rowData.rataPromovare,
           sortable: true,
         },
