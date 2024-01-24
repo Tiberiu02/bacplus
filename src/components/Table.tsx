@@ -224,7 +224,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           >
             {filteredData.slice(0, showRows).map((row, rIx) => (
               <tr
-                key={rIx}
+                key={row.key}
                 onClick={
                   href
                     ? (e) => {
