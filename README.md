@@ -5,6 +5,8 @@ Welcome to the bacplus.ro website!
 # Planning
 
 - new routing
+- select typing
+- search erase all
 
 # New routing
 
