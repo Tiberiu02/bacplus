@@ -228,8 +228,9 @@ export default function Home() {
             După cei 12 ani petrecuți în sistemul educațional, am ajuns să îl
             cunoaștem îndeaproape, cu bune și cu rele. Am început acest proiect
             în 2021 ca un mic pas în direcția mult mai largă a digitalizării
-            sistemului educațional românesc. Există nenumărate moduri în care
-            tehnologia poate amplifica potențialul fiecărui elev și profesor.
+            sistemului educațional românesc. Există nenumărate soluții digitale
+            care, dacă ar fi dezvoltate, ar putea putea fi de un real folos
+            pentru elevii, profesorii și părinții din învățământul românesc.
             Depinde doar de noi ca următoarele generații să beneficieze de o
             educație mai bună.
           </p>
