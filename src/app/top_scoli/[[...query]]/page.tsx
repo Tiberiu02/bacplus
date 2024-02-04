@@ -157,8 +157,6 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <div className="mt-4" />
-
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
             defaultValue={judet?.nume ?? ""}
