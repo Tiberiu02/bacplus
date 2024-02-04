@@ -46,5 +46,14 @@ export function CountUp({
     };
   }, [ref, duration, maxValue]);
 
-  return <div ref={ref}>{maxValue}</div>;
+  return (
+    <div className="relative">
+      <div className="select-none opacity-0">
+        {maxValue.toLocaleString("ro-RO")}
+      </div>
+      <div ref={ref} className="absolute left-0 top-0">
+        {maxValue.toLocaleString("ro-RO")}
+      </div>
+    </div>
+  );
 }

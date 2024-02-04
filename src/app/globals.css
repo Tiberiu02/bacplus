@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.bg-polka {
+  background-image: 
+  radial-gradient(rgb(242, 244, 246) 10%, transparent 10%),
+  radial-gradient(rgb(242, 244, 246) 10%, transparent 10%);
+  background-position: 12px 12px, 36px 36px;
+  background-size: 48px 48px;
+  background-color: rgb(255, 255, 255);
+}
+
 .bg-lgbt {
     --g-red: #d04b36;
     --g-orange: #e36511;

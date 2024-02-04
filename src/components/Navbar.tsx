@@ -20,14 +20,6 @@ const PAGES = {
     name: "Școli",
     path: "/top_scoli",
   },
-  // national: {
-  //   name: "Național",
-  //   path: "/national",
-  // },
-  // about: {
-  //   name: "Despre",
-  //   path: "/contact",
-  // },
 };
 
 const HOME_PATH = "/";
@@ -46,7 +38,7 @@ export function Navbar({
   const activePage = Object.entries(PAGES).find(
     ([_, { path }]) => path.split("/")[1] == currentPath.split("/")[1]
   )?.[0];
-  const isHomePage = currentPath == HOME_PATH;
+  const isHomePage = false && currentPath == HOME_PATH;
 
   return (
     <nav
@@ -95,9 +87,9 @@ export function Navbar({
               <Link
                 href={path}
                 className={twMerge(
-                  "py-1",
+                  "border-b-2 border-black border-opacity-0",
                   key == activePage
-                    ? "border-b-2 border-black font-semibold"
+                    ? "border-opacity-100 font-semibold"
                     : "hover:text-black"
                 )}
                 key={key}
