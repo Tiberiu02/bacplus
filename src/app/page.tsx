@@ -6,7 +6,7 @@ import { LinkText } from "~/components/LinkText";
 import { CountUp } from "~/components/CountUp";
 
 import { Authors } from "~/components/Authors";
-import { query, ultimulAnBac } from "~/data/dbQuery";
+import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { env } from "~/env.mjs";
 import { MainContainer } from "~/components/MainContainer";
 import { smallIcons } from "~/data/icons";
@@ -202,13 +202,13 @@ export default function Home() {
           <div className="m-2 flex flex-row flex-wrap gap-24 gap-y-8">
             <CountUpCard
               caption="Licee"
-              finalNumber={query.licee.length}
+              finalNumber={query.bac.filter((a) => a.an == ultimulAnBac).length}
               duration={3000}
               Icon={FaSchool}
             />
             <CountUpCard
-              caption="Școli generale"
-              finalNumber={query.scoli.length}
+              caption="Gimnazii"
+              finalNumber={query.en.filter((a) => a.an == ultimulAnEn).length}
               duration={3500}
               Icon={FaSchool2}
             />
