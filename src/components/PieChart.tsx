@@ -72,7 +72,7 @@ export function PieChart({
       </div>
 
       {/* Chart Legend */}
-      <div className="my-auto flex flex-col gap-x-8 gap-y-2 text-sm">
+      <div className="my-auto flex flex-col gap-x-8 gap-y-2">
         {entries.map((e) => (
           <div className="flex items-center gap-2" key={e.name}>
             <div

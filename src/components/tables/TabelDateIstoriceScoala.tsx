@@ -33,7 +33,7 @@ export function TabelDateIstoriceScoala({
           type: "text",
           value: (e) => e[0],
           header: "", // An
-          tdClassName: "font-medium",
+          tdClassName: "font-semibold",
           textAlign: "left",
         },
         {

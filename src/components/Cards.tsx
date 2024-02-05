@@ -42,7 +42,7 @@ export function ChartCard({
 }>) {
   return (
     <div className="flex w-full max-w-[calc(100vw-1.5rem)] flex-col items-center gap-6 overflow-clip">
-      <div className="text-center text-lg font-semibold">{title}</div>
+      <div className="text-center text-xl font-semibold">{title}</div>
       {children}
     </div>
   );

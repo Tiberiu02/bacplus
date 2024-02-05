@@ -43,7 +43,7 @@ export function TabelDateIstoriceLiceu({
             type: "text",
             value: (e) => e.an.toString(),
             header: "", // An
-            tdClassName: "font-medium",
+            tdClassName: "font-semibold",
             textAlign: "left",
           },
           entries.some((e) => e.medieAdm !== undefined) && {

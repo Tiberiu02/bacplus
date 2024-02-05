@@ -105,17 +105,17 @@ export default function PaginaScoala({
 
         <Announcements />
 
-        <div className="mx-auto grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4 sm:gap-x-16">
+        <div className="mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8">
           <SnippetCard
-            title={`Medie Evaluare ${data[0]}`}
+            title={`Evaluare ${data[0]}`}
             value={formtaNumber(data[1].medieEvaluareNationala, 2)}
           />
           <SnippetCard
-            title={`Medie română ${data[0]}`}
+            title={`Română ${data[0]}`}
             value={formtaNumber(data[1].medieLimbaRomana, 2)}
           />
           <SnippetCard
-            title={`Medie matematică ${data[0]}`}
+            title={`Matematică ${data[0]}`}
             value={formtaNumber(data[1].medieMatematica, 2)}
           />
           <SnippetCard

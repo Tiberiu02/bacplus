@@ -86,9 +86,7 @@ export default function PaginaLiceu({
             />
           )}
 
-          <Title className="!my-0 max-w-full text-xl">
-            {nonBreakableName(numeLiceu)}
-          </Title>
+          <Title className="!my-0">{nonBreakableName(numeLiceu)}</Title>
 
           {(website || adresa) && (
             <div className="flex flex-col items-center gap-1">
@@ -123,7 +121,7 @@ export default function PaginaLiceu({
 
         <div
           className={twMerge(
-            `mx-auto grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4 sm:gap-x-16`,
+            `mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8`,
             !dataAdm && "sm:grid-cols-3"
           )}
         >
@@ -133,7 +131,7 @@ export default function PaginaLiceu({
           />
           {dataAdm && (
             <SnippetCard
-              title={`Medie Admitere ${dataAdm[0]}`}
+              title={`Admitere ${dataAdm[0]}`}
               value={formtaNumber(dataAdm[1], 2)}
             />
           )}
@@ -155,7 +153,7 @@ export default function PaginaLiceu({
 
         <TabelSpecializari specializari={specializari} />
 
-        <div className="mx-auto my-24 grid gap-x-48 gap-y-32 self-center lg:grid-cols-2">
+        <div className="mx-auto mb-16 mt-8 grid gap-x-48 gap-y-24 self-center lg:grid-cols-2">
           <ChartCard title={`Limbi străine Bac ${dataBac[0]}`}>
             <PieChart
               data={Object.entries(dataBac[1].limbiStraine).map(

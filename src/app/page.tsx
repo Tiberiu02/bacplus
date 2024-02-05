@@ -11,6 +11,7 @@ import { env } from "~/env.mjs";
 import { MainContainer } from "~/components/MainContainer";
 import { smallIcons } from "~/data/icons";
 import { VerticalTrack } from "~/components/VerticalTrack";
+import Link from "next/link";
 
 function Section({
   children,
@@ -20,7 +21,7 @@ function Section({
   return (
     <div
       className={
-        "flex flex-col gap-4 px-2 py-16 " + (className ? className : "")
+        "flex flex-col gap-4 px-2 pt-16 " + (className ? className : "")
       }
     >
       <h2 className="mb-2 text-2xl font-bold [text-wrap:balance] sm:mb-4 sm:text-3xl">
@@ -97,11 +98,17 @@ export default function Home() {
             .sort((a, b) => (b._avg.my_medie ?? 0) - (a._avg.my_medie ?? 0))
             .slice(0, 50)
             .map((a) => (
-              <img
+              <Link
+                href={`/liceu/${a.id_liceu}`}
                 key={a.id_liceu}
-                src={`/icons-xs/${a.id_liceu || ""}.webp`}
-                className="h-8 w-8"
-              />
+                className="h-8 w-8 shrink-0"
+                target="_blank"
+              >
+                <img
+                  src={`/icons-xs/${a.id_liceu || ""}.webp`}
+                  className="h-8 w-8"
+                />
+              </Link>
             ))}
         </VerticalTrack>
       </div>
@@ -203,13 +210,13 @@ export default function Home() {
             <CountUpCard
               caption="Licee"
               finalNumber={query.bac.filter((a) => a.an == ultimulAnBac).length}
-              duration={3000}
+              duration={1000}
               Icon={FaSchool}
             />
             <CountUpCard
               caption="Gimnazii"
               finalNumber={query.en.filter((a) => a.an == ultimulAnEn).length}
-              duration={3500}
+              duration={2000}
               Icon={FaSchool2}
             />
             <CountUpCard
@@ -218,7 +225,7 @@ export default function Home() {
                 query.bac.reduce((acc, e) => acc + e._count._all, 0) +
                 query.en.reduce((acc, e) => acc + e._count._all, 0)
               }
-              duration={2500}
+              duration={3000}
               Icon={FaUserGraduate}
             />
           </div>
