@@ -99,7 +99,7 @@ export default function Home() {
             .slice(0, 50)
             .map((a) => (
               <Link
-                href={`/liceu/${a.id_liceu}`}
+                href={`/liceu/${a.id_liceu || ""}`}
                 key={a.id_liceu}
                 className="h-8 w-8 shrink-0"
                 target="_blank"
