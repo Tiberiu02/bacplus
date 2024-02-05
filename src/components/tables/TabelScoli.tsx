@@ -11,6 +11,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
       data={data}
       decompressionFn={scoalaFromDataArray}
       searchPlaceholder="Caută școală"
+      keyFn={(rowData) => rowData.id}
       columns={[
         {
           type: "number",

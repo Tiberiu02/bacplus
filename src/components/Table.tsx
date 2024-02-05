@@ -52,12 +52,14 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   columns: columnsPossiblyFalse,
   searchPlaceholder,
   searchable,
+  keyFn,
 }: {
   data: CompressedRowType[];
   decompressionFn?: (compressed: CompressedRowType) => RowType;
   columns: (ColumnType<RowType> | false)[];
   searchPlaceholder?: string;
   searchable?: boolean;
+  keyFn?: (row: RowType) => string;
 }) {
   type RowTypeExtra = RowType & {
     key: string;
@@ -224,7 +226,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
           >
             {filteredData.slice(0, showRows).map((row, rIx) => (
               <tr
-                key={row.key}
+                key={keyFn ? keyFn(row) : row._rowIndex}
                 onClick={
                   href
                     ? (e) => {

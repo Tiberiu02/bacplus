@@ -17,6 +17,7 @@ export function TabelLicee({
       data={data}
       decompressionFn={liceuFromDataArray}
       searchPlaceholder="Caută liceu"
+      keyFn={(rowData) => rowData.id}
       columns={[
         {
           type: "number",
