@@ -220,7 +220,7 @@ export default function Home() {
               Icon={FaSchool2}
             />
             <CountUpCard
-              caption="Candidați"
+              caption="Elevi"
               finalNumber={
                 query.bac.reduce((acc, e) => acc + e._count._all, 0) +
                 query.en.reduce((acc, e) => acc + e._count._all, 0)

@@ -61,6 +61,10 @@ export function generateStaticParams() {
 export default function Page({ params }: { params: { query: string[] } }) {
   const [an, judet, reversed] = parseParamsTop(params.query, ultimulAnEn);
 
+  if (params.query && params.query.includes(ultimulAnEn.toString())) {
+    redirect("/top_scoli" + (judet ? "/" + judet.nume : ""));
+  }
+
   if (reversed) {
     redirect(
       "/top_licee" +
