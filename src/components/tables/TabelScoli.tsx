@@ -45,7 +45,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
         {
           type: "number",
           decimals: 2,
-          header: "Medie Evaluare Națională",
+          header: "Medie Evaluare",
           value: (rowData) => rowData.medieEvaluareNationala,
           sortable: true,
           defaultSortingColumn: true,
@@ -53,7 +53,7 @@ export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
         {
           type: "number",
           decimals: 2,
-          header: "Medie Limba Română",
+          header: "Medie Română",
           value: (rowData) => rowData.medieLimbaRomana,
           sortable: true,
         },

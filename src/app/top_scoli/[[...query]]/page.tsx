@@ -23,10 +23,10 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
 
   const title = judet?.numeIntreg
-    ? `Top școli generale ${judet?.numeIntreg} ${an} la Evaluarea Națională`
-    : `Top școli generale ${an} la Evaluarea Națională`;
+    ? `Top școli ${judet?.numeIntreg} ${an} la Evaluarea Națională`
+    : `Top școli ${an} la Evaluarea Națională`;
 
-  const description = `Descoperă clasamentul școlilor generale din ${
+  const description = `Descoperă clasamentul școlilor din ${
     judet?.numeIntreg ?? "România"
   } la Evaluarea Națională ${an}`;
 
@@ -105,10 +105,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
       <LdJson
         name={
           judet?.numeIntreg
-            ? `Top școli generale ${judet?.numeIntreg} ${an}`
-            : `Top școli generale ${an}`
+            ? `Top școli ${judet?.numeIntreg} ${an}`
+            : `Top școli ${an}`
         }
-        description={`Descoperă cele mai bune școli generale din ${
+        description={`Descoperă cele mai bune școli din ${
           judet?.numeIntreg ?? "România"
         } conform rezultatelor oficiale la Evaluarea Națională ${an} publicate de Ministerul Educației Naționale.`}
         data={scoli
@@ -155,8 +155,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Clasamentul școlilor generale {judet && `din ${judet.numeIntreg}`} la
-          Evaluarea Națională
+          Clasamentul școlilor {judet && `din ${judet.numeIntreg}`} la Evaluarea
+          Națională
         </Title>
 
         <Announcements />

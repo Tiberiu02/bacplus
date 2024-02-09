@@ -59,7 +59,7 @@ export function TabelLicee({
         {
           type: "number",
           decimals: 2,
-          header: `Medie admitere ${anAdmitere ?? ""}`,
+          header: `Medie Admitere ${anAdmitere ?? ""}`,
           value: (rowData) => rowData.medieAdm,
           sortable: true,
         },
