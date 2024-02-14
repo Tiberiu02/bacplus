@@ -14,6 +14,7 @@ import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParamsTop";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
+import Link from "next/link";
 
 export function generateMetadata({
   params,
@@ -155,6 +156,15 @@ export default function Page({ params }: { params: { query: string[] } }) {
         </Title>
 
         <Announcements />
+
+        <Link target="_blank" href="https://zecelaen.ro" className="">
+          <div className="rounded-xl bg-blue-50 px-4 py-4 font-medium sm:px-6">
+            <span className="font-bold">Ești clasa a 8-a?</span>&ensp;Am lansat{" "}
+            <span className="italic">ZeceLaEN.ro</span>, o platformă gratuită de
+            pregătire la matematică pentru Evaluarea Națională cu teste oficiale
+            și rezolvări video
+          </div>
+        </Link>
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
