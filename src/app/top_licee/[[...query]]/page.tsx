@@ -162,7 +162,6 @@ export default function Page({ params }: { params: { query: string[] } }) {
             <span className="font-bold">Ești clasa a 8-a?</span>&ensp;Am lansat{" "}
             <span className="italic">ZeceLaEN.ro</span>, o platformă gratuită de
             pregătire la matematică pentru Evaluarea Națională cu teste oficiale
-            și rezolvări video
           </div>
         </Link>
 
