@@ -23,9 +23,9 @@ const PAGES = {
   testeEN: {
     name: "Teste\xa0Evaluare",
     path: "https://zecelaen.ro",
-    target: "_blank",
+    external: true,
   },
-} as { [key: string]: { name: string; path: string; target?: string } };
+} as { [key: string]: { name: string; path: string; external?: boolean } };
 
 const HOME_PATH = "/";
 
@@ -41,7 +41,8 @@ export function Navbar({
 
   const currentPath = usePathname();
   const activePage = Object.entries(PAGES).find(
-    ([_, { path }]) => path.split("/")[1] == currentPath.split("/")[1]
+    ([_, { path, external }]) =>
+      !external && path.split("/")[1] == currentPath.split("/")[1]
   )?.[0];
   const isHomePage = false && currentPath == HOME_PATH;
 
@@ -88,7 +89,7 @@ export function Navbar({
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
           <div className="hidden flex-row gap-6 sm:flex">
-            {Object.entries(PAGES).map(([key, { name, path, target }]) => (
+            {Object.entries(PAGES).map(([key, { name, path, external }]) => (
               <Link
                 href={path}
                 className={twMerge(
@@ -97,7 +98,7 @@ export function Navbar({
                     ? "border-opacity-100 font-semibold"
                     : "hover:text-black"
                 )}
-                target={target}
+                target={external ? "_blank" : undefined}
                 key={key}
               >
                 {name}
