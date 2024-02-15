@@ -20,7 +20,12 @@ const PAGES = {
     name: "Școli",
     path: "/top_scoli",
   },
-};
+  testeEN: {
+    name: "Teste\xa0Evaluare",
+    path: "https://zecelaen.ro",
+    target: "_blank",
+  },
+} as { [key: string]: { name: string; path: string; target?: string } };
 
 const HOME_PATH = "/";
 
@@ -83,7 +88,7 @@ export function Navbar({
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
           <div className="hidden flex-row gap-6 sm:flex">
-            {Object.entries(PAGES).map(([key, { name, path }]) => (
+            {Object.entries(PAGES).map(([key, { name, path, target }]) => (
               <Link
                 href={path}
                 className={twMerge(
@@ -92,6 +97,7 @@ export function Navbar({
                     ? "border-opacity-100 font-semibold"
                     : "hover:text-black"
                 )}
+                target={target}
                 key={key}
               >
                 {name}
