@@ -158,12 +158,11 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <Announcements />
 
         <Link target="_blank" href="https://zecelaen.ro" className="">
-          <div className="rounded-xl bg-blue-50 px-4 py-4 font-medium sm:px-6">
+          <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-4 py-4 font-medium sm:px-6">
             <span className="font-bold">Evaluarea Națională</span> bate la ușă?
-            Tocmai am lansat{" "}
-            <span className="font-semibold text-blue-800">ZeceLaEN.ro</span>, o
-            platformă gratuită cu subiecte oficiale, grile interactive și
-            explicații video
+            Am creat o platformă gratuită cu subiecte oficiale, grile
+            interactive și explicații video,{" "}
+            <span className="font-semibold text-blue-800">ZeceLaEN.ro</span>
           </div>
         </Link>
 
