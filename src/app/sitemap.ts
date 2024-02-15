@@ -5,10 +5,10 @@ import { env } from "~/env.mjs";
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     "/",
-    `/top_licee`,
-    ...JUDETE.map((judet) => `/top_licee/${judet.nume}`),
-    `/top_scoli`,
-    ...JUDETE.map((judet) => `/top_scoli/${judet.nume}`),
+    `/top-licee`,
+    ...JUDETE.map((judet) => `/top-licee/${judet.nume}`),
+    `/top-scoli`,
+    ...JUDETE.map((judet) => `/top-scoli/${judet.nume}`),
   ];
 
   return pages.map((page) => ({

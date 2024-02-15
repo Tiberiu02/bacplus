@@ -73,13 +73,13 @@ export default function Home() {
           <div className="flex flex-row justify-center gap-2">
             <LinkButton
               className="flex w-24 justify-center"
-              href={`/top_licee`}
+              href={`/top-licee`}
             >
               Licee
             </LinkButton>
             <LinkButton
               className="flex w-24 justify-center"
-              href={`/top_scoli`}
+              href={`/top-scoli`}
             >
               Școli
             </LinkButton>

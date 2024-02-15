@@ -14,11 +14,11 @@ import Image from "next/image";
 const PAGES = {
   highshools: {
     name: "Licee",
-    path: "/top_licee",
+    path: "/top-licee",
   },
   schools: {
     name: "Școli",
-    path: "/top_scoli",
+    path: "/top-scoli",
   },
   testeEN: {
     name: "Teste\xa0Evaluare",

@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <Suspense>
-      <DynamicRedirect paramName="name" data={licee} fallback={`/top_licee`} />
+      <DynamicRedirect paramName="name" data={licee} fallback={`/top-licee`} />
     </Suspense>
   );
 }

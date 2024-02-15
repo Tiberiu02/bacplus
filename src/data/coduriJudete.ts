@@ -230,7 +230,7 @@ export function judetDupaCod(cod: string) {
 }
 
 export function judetDupaNume(nume: string) {
-  const judet = JUDETE_DUPA_NUME[nume];
+  const judet = JUDETE_DUPA_NUME[nume.toUpperCase()];
 
   if (!judet) {
     throw new Error(`Nume judet invalid: "${nume}"`);
