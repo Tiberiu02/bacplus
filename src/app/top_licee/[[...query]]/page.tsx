@@ -162,7 +162,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
             <span className="font-bold">Evaluarea Națională</span> bate la ușă?
             Hai cu noi pe{" "}
             <span className="font-semibold text-blue-800">ZeceLaEN.ro</span>!
-            Avem subiecte oficiale, grile interactive și explicații video.
+            Avem subiecte oficiale cu grile interactive și explicații video.
           </div>
         </Link>
 
