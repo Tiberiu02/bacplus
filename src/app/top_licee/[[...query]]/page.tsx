@@ -159,9 +159,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Link target="_blank" href="https://zecelaen.ro" className="">
           <div className="rounded-xl bg-blue-50 px-4 py-4 font-medium sm:px-6">
-            <span className="font-bold">Ești clasa a 8-a?</span>&ensp;Am lansat{" "}
-            <span className="italic">ZeceLaEN.ro</span>, o platformă gratuită de
-            pregătire la matematică pentru Evaluarea Națională cu teste oficiale
+            <span className="font-bold">Evaluarea Națională</span> bate la ușă?
+            Tocmai am lansat <span className="italic">ZeceLaEN.ro</span>, o
+            platformă gratuită de pregătire la matematică pentru Evaluarea
+            Națională.
           </div>
         </Link>
 
