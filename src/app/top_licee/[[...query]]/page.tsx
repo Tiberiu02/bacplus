@@ -161,8 +161,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
           <div className="rounded-xl bg-blue-50 px-4 py-4 font-medium sm:px-6">
             <span className="font-bold">Evaluarea Națională</span> bate la ușă?
             Tocmai am lansat <span className="italic">ZeceLaEN.ro</span>, o
-            platformă gratuită de pregătire la matematică pentru Evaluarea
-            Națională.
+            platformă gratuită cu subiecte oficiale, grile interactive și
+            explicații video
           </div>
         </Link>
 
