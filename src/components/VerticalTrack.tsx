@@ -24,7 +24,8 @@ export function VerticalTrack({
     const loop = () => {
       if (stop) return;
 
-      scroll += (Date.now() - time) / 50;
+      const dt = Math.min(100, Date.now() - time); // cap delta time to prevent large jumps when tab is inactive
+      scroll += dt / 50;
       time = Date.now();
 
       const [firstChild, secondChild] = container.children;
