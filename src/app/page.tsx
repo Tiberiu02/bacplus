@@ -61,7 +61,7 @@ function CountUpCard({
 export default function Home() {
   return (
     <main>
-      <div className="bg-polka relative flex h-[calc(100vh-4rem-2px)] min-w-full flex-col items-center">
+      <div className="bg-polka relative flex h-[calc(100svh-4rem-2px)] min-w-full flex-col items-center">
         <div className="h-full"></div>
         <div className="flex max-w-3xl flex-col gap-4 p-4">
           <h1 className="text-center text-4xl font-extrabold [text-wrap:balance] [word-spacing:0.3rem] sm:text-5xl">
