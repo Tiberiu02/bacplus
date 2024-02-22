@@ -1,6 +1,6 @@
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query } from "~/data/dbQuery";
+import { licee, query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
@@ -19,8 +19,8 @@ import { ierarhieLicee } from "~/data/ierarhie";
 import { nonBreakableName } from "~/data/nonBreakableName";
 
 export function generateStaticParams() {
-  return query.licee.map((e) => ({
-    id: e.id_liceu,
+  return licee.map((e) => ({
+    id: e.id,
   }));
 }
 
@@ -29,9 +29,7 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeLiceu = query.licee.find(
-    (e) => e.id_liceu == params.id
-  )?.nume_afisat;
+  const numeLiceu = licee.find((e) => e.id == params.id)?.nume;
 
   if (!numeLiceu) return {};
 
@@ -217,12 +215,11 @@ export default function PaginaLiceu({
 function getInfoLiceu(id: string) {
   const codJudet = query.bac.find((result) => result.id_liceu == id)?.id_judet;
   const {
-    nume_afisat: numeLiceu,
+    nume: numeLiceu,
     website,
-    address: adresa,
-  } = query.licee.find((result) => result.id_liceu == id) || {};
-
-  const gimnaziu = query.scoli.some((result) => result.id_scoala == id);
+    adresa,
+    gimnaziu,
+  } = licee.find((result) => result.id == id) || {};
 
   const specializari = query.specializariAdm
     .filter((s) => s.repartizat_id_liceu == id)
@@ -384,7 +381,7 @@ function getInfoLiceu(id: string) {
 
   return {
     numeLiceu,
-    gimnaziu,
+    gimnaziu: !!gimnaziu,
     website,
     adresa,
     codJudet,

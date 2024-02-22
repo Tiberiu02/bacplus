@@ -210,10 +210,10 @@ function getScoli(an: number, judet?: string) {
       };
     });
 
-  query.scoli.forEach((scoala) => {
-    const obj = scoli[scoala.id_scoala];
+  query.institutii.forEach((scoala) => {
+    const obj = scoli[scoala.id];
     if (obj != undefined) {
-      obj.numeScoala = scoala.nume_afisat;
+      obj.numeScoala = scoala.nume;
     }
   });
 

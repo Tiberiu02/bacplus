@@ -77,3 +77,51 @@ model scoli {
   nume_afisat String
   cod_siiir   String?
 }
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model alias {
+  alternativ String @id
+  corect     String
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model institutii {
+  id         String   @id
+  nume       String
+  rank       Decimal?
+  adresa     String?
+  website    String?
+  email      String?
+  telefon    String?
+  wikipedia  String?
+  facebook   String?
+  instagram  String?
+  youtube    String?
+  cod_siiir  String?  @unique(map: "sqlite_autoindex_institutii_2")
+  cod_fiscal String?
+  liceu      String?
+  gimnaziu   String?
+  siiir      siiir?   @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model siiir {
+  cod                   String      @id
+  aux_id                String      @unique(map: "index_aux_id")
+  denumire              String
+  denumire_scurta       String
+  localitate            String
+  localitate_superioara String
+  judet                 String
+  statut                String
+  tip_unitate           String
+  forma_proprietate     String
+  strada                String?
+  nr_strada             String?
+  cod_postal            String?
+  website               String?
+  telefon               String?
+  cod_sirues            String?
+  cod_fiscal            String?
+  mod_operare           String?
+  institutii            institutii?
+}

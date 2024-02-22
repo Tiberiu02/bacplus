@@ -232,22 +232,7 @@ const queryFunctions = {
         },
       },
     }),
-  licee: () =>
-    prisma.licee.findMany({
-      select: {
-        id_liceu: true,
-        nume_afisat: true,
-        website: true,
-        address: true,
-      },
-    }),
-  scoli: () =>
-    prisma.scoli.findMany({
-      select: {
-        id_scoala: true,
-        nume_afisat: true,
-      },
-    }),
+  institutii: () => prisma.institutii.findMany(),
   scoliCuElevi: () =>
     prisma.en.groupBy({
       by: ["id_scoala"],
@@ -311,3 +296,6 @@ if (!query.aniEn[0]) {
 
 export const ultimulAnBac = query.aniBac[0].an;
 export const ultimulAnEn = query.aniEn[0].an;
+
+export const licee = query.institutii.filter((i) => i.liceu);
+export const gimnazii = query.institutii.filter((i) => i.gimnaziu);

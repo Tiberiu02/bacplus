@@ -1,6 +1,6 @@
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { query } from "~/data/dbQuery";
+import { gimnazii, query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -26,9 +26,7 @@ export function generateMetadata({
 }: {
   params: { id: string };
 }): Metadata {
-  const numeScoala = query.scoli.find(
-    (e) => e.id_scoala == params.id
-  )?.nume_afisat;
+  const numeScoala = gimnazii.find((e) => e.id == params.id)?.nume;
 
   if (!numeScoala) return {};
 
@@ -146,10 +144,8 @@ export default function PaginaScoala({
 
 function getInfoScoala(id: string) {
   const codJudet = query.en.find((result) => result.id_scoala == id)?.id_judet;
-  const { nume_afisat: numeScoala } =
-    query.scoli.find((result) => result.id_scoala == id) || {};
 
-  const liceu = query.licee.find((result) => result.id_liceu == id);
+  const scoala = query.institutii.find((result) => result.id == id);
 
   const rezultateEn = {} as {
     [an: number]: {
@@ -193,11 +189,11 @@ function getInfoScoala(id: string) {
   });
 
   return {
-    liceu: liceu != undefined,
+    liceu: !!scoala?.liceu,
     rezultateEn,
     codJudet,
-    numeScoala,
-    website: liceu?.website,
-    address: liceu?.address,
+    numeScoala: scoala?.nume,
+    website: scoala?.website,
+    address: scoala?.adresa,
   };
 }
