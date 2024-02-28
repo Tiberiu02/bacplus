@@ -2,13 +2,22 @@
 
 import dynamic from "next/dynamic";
 
-import { CircleMarker, Popup, TileLayer } from "react-leaflet";
+// import { MapContainer, CircleMarker, Popup, TileLayer } from "react-leaflet";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((m) => m.MapContainer),
-  {
-    ssr: false,
-  }
+  { ssr: false }
+);
+const CircleMarker = dynamic(
+  () => import("react-leaflet").then((m) => m.CircleMarker),
+  { ssr: false }
+);
+const Popup = dynamic(() => import("react-leaflet").then((m) => m.Popup), {
+  ssr: false,
+});
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((m) => m.TileLayer),
+  { ssr: false }
 );
 
 import MarkerIcon from "leaflet/dist/images/marker-icon.png";
