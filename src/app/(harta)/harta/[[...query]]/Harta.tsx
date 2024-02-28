@@ -62,8 +62,8 @@ export function Harta({
 
   return (
     <MapContainer
-      center={[45.9345508, 25]}
-      zoom={7}
+      center={[44.44, 26.1025384]}
+      zoom={12}
       className="relative h-full w-screen"
     >
       <TileLayer
