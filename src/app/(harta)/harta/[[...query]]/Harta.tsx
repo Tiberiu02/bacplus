@@ -2,23 +2,10 @@
 
 import dynamic from "next/dynamic";
 
+import { CircleMarker, Popup, TileLayer } from "react-leaflet";
+
 const MapContainer = dynamic(
   () => import("react-leaflet").then((m) => m.MapContainer),
-  {
-    ssr: false,
-  }
-);
-const CircleMarker = dynamic(
-  () => import("react-leaflet").then((m) => m.CircleMarker),
-  {
-    ssr: false,
-  }
-);
-const Popup = dynamic(() => import("react-leaflet").then((m) => m.Popup), {
-  ssr: false,
-});
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((m) => m.TileLayer),
   {
     ssr: false,
   }
@@ -77,8 +64,8 @@ export function Harta({
             key={institutie.id}
             center={[institutie.lat, institutie.long]}
             radius={6}
-            color={institutie.liceu ? "#E22" : "#2A2"}
-            fillColor={institutie.liceu ? "#E88" : "#8C8"}
+            color={institutie.liceu ? "#E22" : "#56f"}
+            fillColor={institutie.liceu ? "#E88" : "#9af"}
             fillOpacity={0.8}
             weight={4}
           >
