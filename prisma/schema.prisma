@@ -8,19 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model licee {
-  id_liceu    String   @id
-  nume_liceu  String
-  nume_afisat String
-  rank        Decimal?
-  address     String?
-  website     String?
-  facebook    String?
-  instagram   String?
-  wikipedia   String?
-  bac         bac[]
-}
-
 model bac {
   an                     Int
   cod_candidat           String
@@ -48,7 +35,6 @@ model bac {
   medie                  Float?
   my_medie               Float?
   rezultat               String
-  licee                  licee?  @relation(fields: [id_liceu], references: [id_liceu], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([an, cod_candidat])
 }
@@ -69,13 +55,6 @@ model en {
   repartizat_specializare String?
 
   @@id([an, cod_candidat])
-}
-
-model scoli {
-  id_scoala   String  @id
-  nume_scoala String
-  nume_afisat String
-  cod_siiir   String?
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -101,6 +80,7 @@ model institutii {
   cod_fiscal String?
   liceu      String?
   gimnaziu   String?
+  latlong    String?
   siiir      siiir?   @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
 }
 

@@ -20,6 +20,10 @@ const PAGES = {
     name: "Școli",
     path: "/top-scoli",
   },
+  harta: {
+    name: "Hartă",
+    path: "/harta",
+  },
   testeEN: {
     name: "Teste\xa0Evaluare",
     path: "https://zecelaen.ro",
@@ -32,9 +36,11 @@ const HOME_PATH = "/";
 export function Navbar({
   ultimulAnBac,
   ultimulAnEn,
+  isOverlay,
 }: {
   ultimulAnBac: number;
   ultimulAnEn: number;
+  isOverlay?: boolean;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [animationParent] = useAutoAnimate();
@@ -49,15 +55,17 @@ export function Navbar({
   return (
     <nav
       className={twMerge(
-        "z-50 flex flex-col items-center",
+        "z-[1000] flex flex-col items-center bg-white",
         isHomePage &&
-          "fixed left-0 top-0 w-full bg-white bg-opacity-90 backdrop-blur-sm"
+          "fixed left-0 top-0 w-full bg-opacity-90 backdrop-blur-sm",
+        isOverlay && "shadow"
       )}
       ref={animationParent}
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-transparent px-4 py-5"
+          "flex w-full max-w-6xl flex-col bg-transparent px-4 py-5",
+          isOverlay && "py-4"
         )}
       >
         <div className="flex w-full items-center justify-between">

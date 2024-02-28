@@ -47,6 +47,16 @@ export type ScoalaDataArray = [
   boolean // icon
 ];
 
+export type Institutie = {
+  id: string;
+  nume: string;
+  liceu: boolean;
+  gimnaziu: boolean;
+  judet: string;
+  long: number;
+  lat: number;
+};
+
 export type Judet = {
   id: string;
   nume: string;

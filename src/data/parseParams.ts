@@ -25,3 +25,30 @@ export function parseParamsTop(
     }
   }
 }
+
+export function parseParamsHarta(
+  params: string[] | undefined
+): [
+  ReturnType<typeof judetDupaNume> | undefined,
+  "licee" | "gimnazii" | undefined
+] {
+  if (!params) {
+    return [undefined, undefined];
+  }
+
+  const [p1, p2] = params;
+  if (!p1) {
+    return [undefined, undefined];
+  } else if (!p2) {
+    if (p1 === "licee" || p1 === "gimnazii") {
+      return [undefined, p1];
+    } else {
+      return [judetDupaNume(p1), undefined];
+    }
+  } else {
+    if (p2 != "licee" && p2 != "gimnazii") {
+      throw new Error("Invalid params");
+    }
+    return [judetDupaNume(p1), p2];
+  }
+}

@@ -9,9 +9,9 @@ import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { Announcements } from "~/components/Announcements";
-import { TabelScoli } from "../../../components/tables/TabelScoli";
+import { TabelScoli } from "~/components/tables/TabelScoli";
 import { LdJson } from "~/components/LdJson";
-import { parseParamsTop } from "~/data/parseParamsTop";
+import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
 

@@ -2,7 +2,7 @@ import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
 import { query, ultimulAnBac } from "~/data/dbQuery";
 
-import { TabelLicee } from "../../../components/tables/TabelLicee";
+import { TabelLicee } from "~/components/tables/TabelLicee";
 import { MainContainer } from "~/components/MainContainer";
 import { liceuToDataArray } from "~/data/data";
 import type { Liceu } from "~/data/data";
@@ -11,7 +11,7 @@ import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { Announcements } from "~/components/Announcements";
 import { LdJson } from "~/components/LdJson";
-import { parseParamsTop } from "~/data/parseParamsTop";
+import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
 import Link from "next/link";

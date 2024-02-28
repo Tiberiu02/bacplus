@@ -1,13 +1,13 @@
-import "./globals.css";
+import "../globals.css";
 import { Inter } from "next/font/google";
-import { Footer } from "../components/Footer";
-import { Navbar } from "../components/Navbar";
+import { Footer } from "~/components/Footer";
+import { Navbar } from "~/components/Navbar";
 import { twMerge } from "tailwind-merge";
 
-import { query } from "~/data/dbQuery";
-import Script from "next/script";
+import { ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { env } from "~/env.mjs";
 import type { Metadata } from "next";
+import { Analytics } from "~/components/Analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,27 +41,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={twMerge(inter.className, "flex min-h-screen flex-col")}>
-        <Navbar
-          ultimulAnBac={query.aniBac[0]?.an ?? 0}
-          ultimulAnEn={query.aniEn[0]?.an ?? 0}
-        />
+        <Navbar ultimulAnBac={ultimulAnBac} ultimulAnEn={ultimulAnEn} />
         {children}
-        <div className="m-4"></div>
         <Footer />
-
-        {/* Google Analytics */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        />
-        <Script id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-  
-            gtag('config', '${env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
-          `}
-        </Script>
+        <Analytics />
       </body>
     </html>
   );
