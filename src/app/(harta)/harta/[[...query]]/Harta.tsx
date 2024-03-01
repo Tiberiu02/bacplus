@@ -25,12 +25,14 @@ import MarkerIcon from "leaflet/dist/images/marker-icon.png";
 import type { Icon } from "leaflet";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 export function Harta({
   data,
 }: {
   data: {
     id: string;
+    url: string;
     nume: string;
     liceu: boolean;
     gimnaziu: boolean;
@@ -68,9 +70,9 @@ export function Harta({
         detectRetina={true}
       />
       {icon &&
-        data.map((institutie) => (
+        data.map((institutie, i) => (
           <CircleMarker
-            key={institutie.id}
+            key={i}
             center={[institutie.lat, institutie.long]}
             radius={6}
             color={institutie.liceu ? "#E22" : "#56f"}
@@ -92,11 +94,7 @@ export function Harta({
                 )}
                 <div>
                   <Link
-                    href={
-                      institutie.liceu
-                        ? `/liceu/${institutie.id}`
-                        : `/scoala/${institutie.id}`
-                    }
+                    href={`/i/${institutie.url}`}
                     target="_blank"
                   >
                     Detalii

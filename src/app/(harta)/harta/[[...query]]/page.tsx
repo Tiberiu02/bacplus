@@ -8,6 +8,7 @@ import { Harta } from "./Harta";
 
 import "leaflet/dist/leaflet.css";
 import { largeIcons } from "~/data/icons";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 export function generateMetadata({
   params,
@@ -75,6 +76,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
     .filter((i) => i.latlong)
     .map((institutie) => ({
       id: institutie.id,
+      url: getUrlFromId(institutie.id),
       nume: institutie.nume,
       judet: judetDupaCod(institutie.id.split("_").at(-1) || "").nume,
       lat: parseFloat(institutie.latlong?.split(",")[0] || "0"),

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { DynamicRedirect } from "~/components/DynamicRedirect";
 import { licee } from "~/data/dbQuery";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 export default function Page() {
   return (
@@ -9,7 +10,7 @@ export default function Page() {
         paramName="name"
         data={licee.map((liceu) => ({
           value: liceu.nume,
-          redirect: `/liceu/${liceu.id}`,
+          redirect: `/i/${getUrlFromId(liceu.id)}`,
         }))}
         fallback={`/top-licee`}
       />

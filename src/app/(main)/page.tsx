@@ -12,6 +12,7 @@ import { MainContainer } from "~/components/MainContainer";
 import { smallIcons } from "~/data/icons";
 import { VerticalTrack } from "~/components/VerticalTrack";
 import Link from "next/link";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 function Section({
   children,
@@ -99,7 +100,7 @@ export default function Home() {
             .slice(0, 50)
             .map((a) => (
               <Link
-                href={`/liceu/${a.id_liceu || ""}`}
+                href={`/i/${getUrlFromId(a.id_liceu || "")}`}
                 key={a.id_liceu}
                 className="h-8 w-8 shrink-0"
                 target="_blank"

@@ -2,10 +2,12 @@ import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
 import { query, ultimulAnBac } from "~/data/dbQuery";
 
-import { TabelLicee } from "~/components/tables/TabelLicee";
+import { TabelLicee } from "~/app/(main)/top-licee/[[...query]]/TabelLicee";
+import {
+  Liceu,
+  liceuToDataArray,
+} from "~/app/(main)/top-licee/[[...query]]/data";
 import { MainContainer } from "~/components/MainContainer";
-import { liceuToDataArray } from "~/data/data";
-import type { Liceu } from "~/data/data";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
@@ -15,6 +17,7 @@ import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
 import Link from "next/link";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 export function generateMetadata({
   params,
@@ -204,6 +207,7 @@ function getLicee(an: number, judet?: string) {
         numeLiceu: "",
         codJudet: result.id_liceu.split("_").at(-1) ?? "",
         icon: smallIcons[result.id_liceu] ?? false,
+        url: getUrlFromId(result.id_liceu),
       };
     });
 

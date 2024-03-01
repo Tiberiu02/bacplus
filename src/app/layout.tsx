@@ -2,6 +2,9 @@ import "./globals.css";
 
 import { env } from "~/env.mjs";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+
+import { Analytics } from "~/components/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.WEBSITE_URL),
@@ -25,10 +28,19 @@ export const metadata: Metadata = {
   },
 };
 
+const inter = Inter({ subsets: ["latin"] });
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <html lang="ro">
+      <body className={inter.className}>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
 }

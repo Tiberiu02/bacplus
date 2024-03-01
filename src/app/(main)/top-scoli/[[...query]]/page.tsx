@@ -3,17 +3,18 @@ import { JUDETE } from "~/data/coduriJudete";
 import { query, ultimulAnEn } from "~/data/dbQuery";
 
 import { MainContainer } from "~/components/MainContainer";
-import { scoalaToDataArray } from "~/data/data";
-import type { Scoala } from "~/data/data";
+import { scoalaToDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
+import type { Scoala } from "~/app/(main)/top-scoli/[[...query]]/data";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.mjs";
 import { Announcements } from "~/components/Announcements";
-import { TabelScoli } from "~/components/tables/TabelScoli";
+import { TabelScoli } from "~/app/(main)/top-scoli/[[...query]]/TabelScoli";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
+import { getUrlFromId } from "~/data/institutie/urlFromId";
 
 export function generateMetadata({
   params,
@@ -207,6 +208,8 @@ function getScoli(an: number, judet?: string) {
         medieAbsolvire: result._avg.medie_abs ?? undefined,
         medieEvaluareNationala: result._avg.medie_en ?? undefined,
         icon: smallIcons[result.id_scoala] ?? false,
+        url: getUrlFromId(result.id_scoala),
+        liceu: false,
       };
     });
 
@@ -214,6 +217,7 @@ function getScoli(an: number, judet?: string) {
     const obj = scoli[scoala.id];
     if (obj != undefined) {
       obj.numeScoala = scoala.nume;
+      obj.liceu = !!scoala.liceu;
     }
   });
 

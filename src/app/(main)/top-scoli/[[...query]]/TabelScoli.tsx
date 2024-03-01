@@ -1,22 +1,16 @@
 "use client";
 
-import { liceuFromDataArray } from "~/data/data";
-import type { LiceuDataArray } from "~/data/data";
+import { scoalaFromDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
+import type { ScoalaDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
 import { Table } from "~/components/Table";
 import { nonBreakableName } from "~/data/nonBreakableName";
 
-export function TabelLicee({
-  data,
-  anAdmitere,
-}: {
-  data: LiceuDataArray[];
-  anAdmitere?: number;
-}) {
+export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
   return (
     <Table
       data={data}
-      decompressionFn={liceuFromDataArray}
-      searchPlaceholder="Caută liceu"
+      decompressionFn={scoalaFromDataArray}
+      searchPlaceholder="Caută școală"
       keyFn={(rowData) => rowData.id}
       columns={[
         {
@@ -24,13 +18,14 @@ export function TabelLicee({
           decimals: 0,
           header: "",
           value: (_rowData, rowIndex) => rowIndex + 1,
-          tdClassName: "text-gray-500 pr-",
+          tdClassName: "text-gray-500",
         },
         {
           type: "text",
-          header: "Nume liceu",
-          value: (rowData) => rowData.numeLiceu,
-          href: (rowData) => `/liceu/${rowData.id}`,
+          header: "Nume școală",
+          value: (rowData) => rowData.numeScoala,
+          href: (rowData) =>
+            `/i/${rowData.url}${rowData.liceu ? "/gimnaziu" : ""}`,
           widthGrow: true,
           searchable: true,
           textAlign: "left",
@@ -44,35 +39,36 @@ export function TabelLicee({
                   className="mr-2 inline-block h-5 w-5 translate-y-[-1px] transition-opacity duration-200 group-hover:opacity-50"
                 />
               )}
-              {nonBreakableName(rowData.numeLiceu)}
+              {nonBreakableName(rowData.numeScoala)}
             </>
           ),
         },
         {
           type: "number",
-          header: "Medie Bac",
           decimals: 2,
-          value: (rowData) => rowData.medieBac,
+          header: "Medie Evaluare",
+          value: (rowData) => rowData.medieEvaluareNationala,
           sortable: true,
           defaultSortingColumn: true,
         },
         {
           type: "number",
           decimals: 2,
-          header: `Medie Admitere ${anAdmitere ?? ""}`,
-          value: (rowData) => rowData.medieAdm,
+          header: "Medie Română",
+          value: (rowData) => rowData.medieLimbaRomana,
           sortable: true,
         },
         {
-          type: "percentage",
-          header: "Rată de promovare",
-          value: (rowData) => rowData.rataPromovare,
+          type: "number",
+          decimals: 2,
+          header: "Medie Matematică",
+          value: (rowData) => rowData.medieMatematica,
           sortable: true,
         },
         {
           type: "number",
           decimals: 0,
-          header: "Elevi Bac",
+          header: "Elevi",
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },
