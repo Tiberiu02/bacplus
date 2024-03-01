@@ -127,16 +127,21 @@ export default function PaginaScoala({
           ierarhie={ierarhieScoli[id] ?? {}}
         />
 
-        <div className="flex flex-col items-center">
-          <ChartCard title={`Limbi materne ${data[0]}`}>
-            <PieChart
-              data={Object.entries(data[1].limbiMaterne).map(([limba, e]) => ({
-                name: limba,
-                value: e.candidati,
-              }))}
-            />
-          </ChartCard>
-        </div>
+        {(Object.keys(data[1].limbiMaterne).length > 1 ||
+          Object.keys(data[1].limbiMaterne)[0] != "Limba română") && (
+          <div className="flex flex-col items-center">
+            <ChartCard title={`Limbi materne ${data[0]}`}>
+              <PieChart
+                data={Object.entries(data[1].limbiMaterne).map(
+                  ([limba, e]) => ({
+                    name: limba,
+                    value: e.candidati,
+                  })
+                )}
+              />
+            </ChartCard>
+          </div>
+        )}
       </div>
     </MainContainer>
   );
