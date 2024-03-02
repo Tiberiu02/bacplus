@@ -7,9 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex h-[100dvh] flex-col bg-[#DDD]">
+    <div className="flex h-[100dvh] flex-col bg-[#DDD]">
       <Navbar ultimulAnBac={ultimulAnBac} ultimulAnEn={ultimulAnEn} isOverlay />
       {children}
-    </main>
+    </div>
   );
 }
