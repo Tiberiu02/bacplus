@@ -11,7 +11,7 @@ export function CopyButton({ text }: { text: string }) {
     <Button
       className="ml-4 px-2 py-[2px]"
       onClick={() => {
-        navigator.clipboard.writeText(text);
+        void navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 3000);
       }}

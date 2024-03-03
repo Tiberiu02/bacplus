@@ -21,7 +21,10 @@ export default function Page() {
           Exista două moduri de a găsi sigla liceului, pe Google Images sau pe
           site-ul liceului
           <ol type="a" className="ml-8 [&>li]:list-[lower-alpha]">
-            <li>Caută pe Google "nume liceu sigla" sau "nume liceu logo"</li>
+            <li>
+              Caută pe Google &quot;nume liceu sigla&quot; sau &quot;nume liceu
+              logo&quot;
+            </li>
             <li>
               Deschide site-ul liceului pentru a vedea dacă există vreo sigla
               acolo
@@ -51,8 +54,8 @@ export default function Page() {
           completă. Deschide site-ul sursă și preia sigla de acolo
         </li>
         <li>
-          Siglele trebuie salvate in folderul "data/icons" cu numele fiind ID-ul
-          liceului de pe BacPlus, de exemplu
+          Siglele trebuie salvate in folderul &quot;data/icons&quot; cu numele
+          fiind ID-ul liceului de pe BacPlus, de exemplu
           COLEGIUL_NATIONAL_DE_INFORMATICA_TUDOR_VIANU_B.png
         </li>
         <li>
