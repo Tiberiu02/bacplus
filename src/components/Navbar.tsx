@@ -75,13 +75,6 @@ export function Navbar({
             className="flex items-center gap-2 text-lg"
           >
             <Image
-              className="hidden w-4"
-              src="/logo.svg"
-              alt="Logo"
-              width={20}
-              height={20}
-            />
-            <Image
               className="w-16"
               src="/logo-text.svg"
               alt="Logo"
