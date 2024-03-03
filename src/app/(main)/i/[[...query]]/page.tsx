@@ -110,8 +110,8 @@ export default function PaginaInstitutie({
                   {institutie.latlong && (
                     <LinkText
                       href={`/harta?lat=${
-                        institutie.latlong.split(",")[0]
-                      }&long=${institutie.latlong.split(",")[1]}`}
+                        institutie.latlong.split(",")[0] || ""
+                      }&long=${institutie.latlong.split(",")[1] || ""}`}
                       target="_blank"
                     >
                       <FaMapMarkerAlt className="mt-[-2px] inline" /> Vezi pe
