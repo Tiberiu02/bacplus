@@ -106,6 +106,7 @@ export default function Page() {
       <div className="mt-12 flex flex-col gap-16">
         {[...query.institutii]
           .sort((a, b) => (a.rank || 1e9) - (b.rank || 1e9))
+          .filter((i) => !largeIcons[i.id])
           .slice(0, 500)
           .map((i) => {
             const judet = judetDupaCod(i.id.split("_").at(-1) || "");
