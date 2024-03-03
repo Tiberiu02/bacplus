@@ -114,8 +114,8 @@ export default function PaginaInstitutie({
                       }&long=${institutie.latlong.split(",")[1] || ""}`}
                       target="_blank"
                     >
-                      <FaMapMarkerAlt className="mt-[-2px] inline" /> Vezi pe
-                      hartă
+                      <FaMapMarkerAlt className="mr-1 mt-[-2px] inline" />
+                      Vezi pe hartă
                     </LinkText>
                   )}
                 </>
