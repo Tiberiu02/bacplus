@@ -2,8 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-// import { MapContainer, CircleMarker, Popup, TileLayer } from "react-leaflet";
-
 const MapContainer = dynamic(
   () => import("react-leaflet").then((m) => m.MapContainer),
   { ssr: false }
@@ -25,7 +23,7 @@ import MarkerIcon from "leaflet/dist/images/marker-icon.png";
 import type { Icon } from "leaflet";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getUrlFromId } from "~/data/institutie/urlFromId";
+import { useSearchParams } from "next/navigation";
 
 export function Harta({
   data,
@@ -43,6 +41,7 @@ export function Harta({
   }[];
 }) {
   const [icon, setIcon] = useState<Icon | null>(null);
+  const params = useSearchParams();
 
   useEffect(() => {
     void (async () => {
@@ -58,10 +57,14 @@ export function Harta({
     })();
   }, []);
 
+  const [lat, long] = [params.get("lat"), params.get("long")];
+
   return (
     <MapContainer
-      center={[44.44, 26.1025384]}
-      zoom={12}
+      center={
+        lat && long ? [parseFloat(lat), parseFloat(long)] : [44.44, 26.1025384]
+      }
+      zoom={lat && long ? 17 : 12}
       className="relative h-full w-screen"
     >
       <TileLayer
@@ -93,10 +96,7 @@ export function Harta({
                   <div className="italic">liceu și gimnaziu</div>
                 )}
                 <div>
-                  <Link
-                    href={`/i/${institutie.url}`}
-                    target="_blank"
-                  >
+                  <Link href={`/i/${institutie.url}`} target="_blank">
                     Detalii
                   </Link>
                 </div>

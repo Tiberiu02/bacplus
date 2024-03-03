@@ -19,6 +19,7 @@ import { ierarhieLicee, ierarhieScoli } from "~/data/ierarhie";
 import { nonBreakableName } from "~/data/nonBreakableName";
 import { getIdFromUrl, getUrlFromId } from "~/data/institutie/urlFromId";
 import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export function generateStaticParams() {
   return query.institutii.flatMap((i) =>
@@ -80,14 +81,97 @@ export default function PaginaInstitutie({
 
   if (!institutie) notFound();
 
-  if (gimnaziu || !institutie.liceu) {
-    return PaginaGimnaziu(id);
-  } else {
-    return PaginaLiceu(id);
-  }
+  return (
+    <MainContainer>
+      <div className="flex w-full flex-col items-center gap-32">
+        <div className="mt-12 flex w-full flex-col items-center gap-8 ">
+          {largeIcons[id] && (
+            <img
+              src={`/icons-lg/${id}.webp`}
+              alt={institutie.nume}
+              className="mx-auto h-40 w-40"
+            />
+          )}
+
+          <Title className="!my-0">{nonBreakableName(institutie.nume)}</Title>
+
+          {(institutie.website || institutie.adresa) && (
+            <div className="flex flex-col items-center gap-1">
+              {institutie.website && (
+                <LinkText href={institutie.website} target="_blank">
+                  {new URL(institutie.website).hostname}
+                </LinkText>
+              )}
+              {institutie.adresa && (
+                <>
+                  <i className="w-[16rem] text-center [text-wrap:balance]">
+                    {institutie.adresa}
+                  </i>
+                  {institutie.latlong && (
+                    <LinkText
+                      href={`/harta?lat=${
+                        institutie.latlong.split(",")[0]
+                      }&long=${institutie.latlong.split(",")[1]}`}
+                      target="_blank"
+                    >
+                      <FaMapMarkerAlt className="mt-[-2px] inline" /> Vezi pe
+                      hartă
+                    </LinkText>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {institutie.liceu && institutie.gimnaziu && (
+            <div className="flex w-full select-none justify-center gap-4 pb-2">
+              {gimnaziu ? (
+                <Link
+                  href={`/i/${getUrlFromId(id)}`}
+                  replace={true}
+                  scroll={false}
+                >
+                  <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+                    Liceu
+                  </div>
+                </Link>
+              ) : (
+                <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
+                  Liceu
+                </div>
+              )}
+              {!gimnaziu ? (
+                <Link
+                  href={`/i/${getUrlFromId(id)}/gimnaziu`}
+                  replace={true}
+                  scroll={false}
+                >
+                  <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
+                    Gimnaziu
+                  </div>
+                </Link>
+              ) : (
+                <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
+                  Gimnaziu
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <Announcements />
+
+        {gimnaziu || !institutie.liceu ? (
+          <PaginaGimnaziu id={id} />
+        ) : (
+          <PaginaLiceu id={id} />
+        )}
+      </div>
+    </MainContainer>
+  );
 }
 
-function PaginaGimnaziu(id: string) {
+function PaginaGimnaziu({ id }: { id: string }) {
   const { numeScoala, codJudet, rezultateEn, liceu, website, address } =
     getInfoScoala(id);
 
@@ -96,95 +180,45 @@ function PaginaGimnaziu(id: string) {
   if (!data || !codJudet || !numeScoala) notFound();
 
   return (
-    <MainContainer>
-      <div className="flex w-full flex-col items-center gap-32">
-        <div className="mt-12 flex w-full flex-col items-center gap-8 ">
-          {largeIcons[id] && (
-            <img
-              src={`/icons-lg/${id}.webp`}
-              alt={numeScoala}
-              className="mx-auto h-40 w-40"
-            />
-          )}
-
-          <Title className="!my-0">{nonBreakableName(numeScoala)}</Title>
-
-          {(website || address) && (
-            <div className="flex flex-col items-center gap-1">
-              {website && (
-                <LinkText href={website} target="_blank">
-                  {new URL(website).hostname}
-                </LinkText>
-              )}
-              {address && (
-                <i className="w-[16rem] text-center [text-wrap:balance]">
-                  {address}
-                </i>
-              )}
-            </div>
-          )}
-
-          {liceu && (
-            <div className="flex w-full select-none justify-center gap-4 pb-2">
-              <Link
-                href={`/i/${getUrlFromId(id)}`}
-                replace={true}
-                scroll={false}
-              >
-                <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
-                  Liceu
-                </div>
-              </Link>
-              <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
-                Gimnaziu
-              </div>
-            </div>
-          )}
-        </div>
-
-        <Announcements />
-
-        <div className="mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8">
-          <SnippetCard
-            title={`Evaluare ${data[0]}`}
-            value={formtaNumber(data[1].medieEvaluareNationala, 2)}
-          />
-          <SnippetCard
-            title={`Română ${data[0]}`}
-            value={formtaNumber(data[1].medieLimbaRomana, 2)}
-          />
-          <SnippetCard
-            title={`Matematică ${data[0]}`}
-            value={formtaNumber(data[1].medieMatematica, 2)}
-          />
-          <SnippetCard
-            title={`Absolvenți ${data[0]}`}
-            value={formtaNumber(data[1].candidati, 0)}
-          />
-        </div>
-
-        <TabelDateIstoriceScoala
-          rezultateEn={rezultateEn}
-          ierarhie={ierarhieScoli[id] ?? {}}
+    <>
+      <div className="mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8">
+        <SnippetCard
+          title={`Evaluare ${data[0]}`}
+          value={formtaNumber(data[1].medieEvaluareNationala, 2)}
         />
-
-        {(Object.keys(data[1].limbiMaterne).length > 1 ||
-          Object.keys(data[1].limbiMaterne)[0] != "Limba română") && (
-          <div className="flex flex-col items-center">
-            <ChartCard title={`Limbi materne ${data[0]}`}>
-              <PieChart
-                data={Object.entries(data[1].limbiMaterne).map(
-                  ([limba, e]) => ({
-                    name: limba,
-                    value: e.candidati,
-                  })
-                )}
-              />
-            </ChartCard>
-          </div>
-        )}
+        <SnippetCard
+          title={`Română ${data[0]}`}
+          value={formtaNumber(data[1].medieLimbaRomana, 2)}
+        />
+        <SnippetCard
+          title={`Matematică ${data[0]}`}
+          value={formtaNumber(data[1].medieMatematica, 2)}
+        />
+        <SnippetCard
+          title={`Absolvenți ${data[0]}`}
+          value={formtaNumber(data[1].candidati, 0)}
+        />
       </div>
-    </MainContainer>
+
+      <TabelDateIstoriceScoala
+        rezultateEn={rezultateEn}
+        ierarhie={ierarhieScoli[id] ?? {}}
+      />
+
+      {(Object.keys(data[1].limbiMaterne).length > 1 ||
+        Object.keys(data[1].limbiMaterne)[0] != "Limba română") && (
+        <div className="flex flex-col items-center">
+          <ChartCard title={`Limbi materne ${data[0]}`}>
+            <PieChart
+              data={Object.entries(data[1].limbiMaterne).map(([limba, e]) => ({
+                name: limba,
+                value: e.candidati,
+              }))}
+            />
+          </ChartCard>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -244,7 +278,7 @@ function getInfoScoala(id: string) {
   };
 }
 
-function PaginaLiceu(id: string) {
+function PaginaLiceu({ id }: { id: string }) {
   const {
     numeLiceu,
     gimnaziu,
@@ -264,146 +298,94 @@ function PaginaLiceu(id: string) {
   if (!dataBac || !codJudet || !numeLiceu) notFound();
 
   return (
-    <MainContainer>
-      <div className="flex w-full flex-col items-center gap-32">
-        <div className="mt-12 flex w-full flex-col items-center gap-8">
-          {largeIcons[id] && (
-            <img
-              src={`/icons-lg/${id}.webp`}
-              alt={numeLiceu}
-              className="mx-auto h-40 w-40"
-            />
-          )}
-
-          <Title className="!my-0">{nonBreakableName(numeLiceu)}</Title>
-
-          {(website || adresa) && (
-            <div className="flex flex-col items-center gap-1">
-              {website && (
-                <LinkText href={website} target="_blank">
-                  {new URL(website).hostname}
-                </LinkText>
-              )}
-              {adresa && (
-                <i className="w-[16rem] text-center [text-wrap:balance]">
-                  {adresa}
-                </i>
-              )}
-            </div>
-          )}
-
-          {gimnaziu && (
-            <div className="flex w-full select-none justify-center gap-4 pb-2">
-              <div className="border-collapse border-b-2 border-black px-1 pb-2 text-center font-semibold">
-                Liceu
-              </div>
-              <Link
-                href={`/i/${getUrlFromId(id)}/gimnaziu`}
-                replace={true}
-                scroll={false}
-              >
-                <div className="border-black px-1 pb-2 text-center tracking-wide hover:border-b-2 hover:font-semibold hover:tracking-normal">
-                  Gimnaziu
-                </div>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        <Announcements />
-
-        <div
-          className={twMerge(
-            `mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8`,
-            !dataAdm && "sm:grid-cols-3"
-          )}
-        >
-          <SnippetCard
-            title={`Medie Bac ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].medie, 2)}
-          />
-          {dataAdm && (
-            <SnippetCard
-              title={`Admitere ${dataAdm[0]}`}
-              value={formtaNumber(dataAdm[1], 2)}
-            />
-          )}
-          <SnippetCard
-            title={`Promovare ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
-          />
-          <SnippetCard
-            title={`Candidați Bac ${dataBac[0]}`}
-            value={formtaNumber(dataBac[1].candidati, 0)}
-          />
-        </div>
-
-        <TabelDateIstoriceLiceu
-          rezultateBac={rezultateBac}
-          admitere={admitere}
-          ierarhie={ierarhieLicee[id] ?? {}}
+    <>
+      <div
+        className={twMerge(
+          `mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8`,
+          !dataAdm && "sm:grid-cols-3"
+        )}
+      >
+        <SnippetCard
+          title={`Medie Bac ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].medie, 2)}
         />
-
-        <TabelSpecializari specializari={specializari} />
-
-        <div className="mx-auto mb-16 mt-8 grid gap-x-48 gap-y-24 self-center lg:grid-cols-2">
-          <ChartCard title={`Limbi străine Bac ${dataBac[0]}`}>
-            <PieChart
-              data={Object.entries(dataBac[1].limbiStraine).map(
-                ([limba, e]) => ({
-                  name: limba,
-                  value: e.candidati,
-                })
-              )}
-            />
-          </ChartCard>
-
-          <ChartCard title={`Specializări Bac ${dataBac[0]}`}>
-            <PieChart
-              data={Object.entries(dataBac[1].specializari).map(
-                ([specializare, e]) => ({
-                  name: specializare,
-                  value: e.candidati,
-                })
-              )}
-            />
-          </ChartCard>
-
-          <ChartCard title={`Limbi materne Bac ${dataBac[0]}`}>
-            <PieChart
-              data={Object.entries(dataBac[1].limbiMaterne).map(
-                ([limba, e]) => ({
-                  name: limba,
-                  value: e.candidati,
-                })
-              )}
-            />
-          </ChartCard>
-
-          {genderData && (
-            <ChartCard title="Demografie elevi">
-              <PieChart
-                data={[
-                  {
-                    name: "Masculin",
-                    value: genderData.males,
-                    color: "rgb(54, 162, 235)",
-                  },
-                  {
-                    name: "Feminin",
-                    value: genderData.females,
-                    color: "rgb(255, 99, 132)",
-                  },
-                ]}
-                convertToPercentages
-              />
-            </ChartCard>
-          )}
-        </div>
-
-        <TabelDisciplineBac discipline={disciplineBac} />
+        {dataAdm && (
+          <SnippetCard
+            title={`Admitere ${dataAdm[0]}`}
+            value={formtaNumber(dataAdm[1], 2)}
+          />
+        )}
+        <SnippetCard
+          title={`Promovare ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
+        />
+        <SnippetCard
+          title={`Candidați Bac ${dataBac[0]}`}
+          value={formtaNumber(dataBac[1].candidati, 0)}
+        />
       </div>
-    </MainContainer>
+
+      <TabelDateIstoriceLiceu
+        rezultateBac={rezultateBac}
+        admitere={admitere}
+        ierarhie={ierarhieLicee[id] ?? {}}
+      />
+
+      <TabelSpecializari specializari={specializari} />
+
+      <div className="mx-auto mb-16 mt-8 grid gap-x-48 gap-y-24 self-center lg:grid-cols-2">
+        <ChartCard title={`Limbi străine Bac ${dataBac[0]}`}>
+          <PieChart
+            data={Object.entries(dataBac[1].limbiStraine).map(([limba, e]) => ({
+              name: limba,
+              value: e.candidati,
+            }))}
+          />
+        </ChartCard>
+
+        <ChartCard title={`Specializări Bac ${dataBac[0]}`}>
+          <PieChart
+            data={Object.entries(dataBac[1].specializari).map(
+              ([specializare, e]) => ({
+                name: specializare,
+                value: e.candidati,
+              })
+            )}
+          />
+        </ChartCard>
+
+        <ChartCard title={`Limbi materne Bac ${dataBac[0]}`}>
+          <PieChart
+            data={Object.entries(dataBac[1].limbiMaterne).map(([limba, e]) => ({
+              name: limba,
+              value: e.candidati,
+            }))}
+          />
+        </ChartCard>
+
+        {genderData && (
+          <ChartCard title="Demografie elevi">
+            <PieChart
+              data={[
+                {
+                  name: "Masculin",
+                  value: genderData.males,
+                  color: "rgb(54, 162, 235)",
+                },
+                {
+                  name: "Feminin",
+                  value: genderData.females,
+                  color: "rgb(255, 99, 132)",
+                },
+              ]}
+              convertToPercentages
+            />
+          </ChartCard>
+        )}
+      </div>
+
+      <TabelDisciplineBac discipline={disciplineBac} />
+    </>
   );
 }
 
