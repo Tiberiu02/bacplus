@@ -1,4 +1,4 @@
-import { prisma } from "~/server/db";
+import { prisma } from "~/server/prisma";
 import { computeAllQueries } from "~/data/cacheQuery";
 
 const queryFunctions = {

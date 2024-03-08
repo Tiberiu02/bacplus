@@ -5,7 +5,7 @@ import { FaMagnifyingGlass, FaRegPenToSquare } from "react-icons/fa6";
 import { twMerge } from "tailwind-merge";
 import type { DateLicee, Ierarhie } from "./data";
 import { judetDupaCod } from "~/data/coduriJudete";
-import unidecode from "unidecode";
+import { unidecode } from "~/data/unidecode";
 import { Card } from "~/components/Cards";
 import { FaSchool } from "react-icons/fa";
 import { groupBy } from "~/data/groupBy";

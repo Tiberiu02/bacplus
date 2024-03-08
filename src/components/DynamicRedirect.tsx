@@ -1,11 +1,10 @@
 "use client";
 
 import { useSearchParams, redirect } from "next/navigation";
+import { unidecode } from "~/data/unidecode";
 
 function getRawValue(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+  return unidecode(value)
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "");
 }

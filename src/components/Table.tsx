@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { ChangeEventHandler } from "react";
-import unidecode from "unidecode";
 import { formtaNumber } from "~/data/formatNumber";
 import { PercentageBar } from "./PercentageBar";
 import {
@@ -14,6 +13,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Button } from "./Button";
 import Link from "next/link";
+import { unidecode } from "~/data/unidecode";
 
 type ColumnType<T> =
   | (
@@ -112,7 +112,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
   const onGlobalFilterChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = unidecode(e.target.value)
       .toLowerCase()
-      .replace(/[^\w\d]/g, "");
+      .replace(/[^a-z0-9]/g, "");
     setGlobalFilterValue(value);
   };
 

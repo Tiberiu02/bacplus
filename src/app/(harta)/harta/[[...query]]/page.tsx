@@ -1,7 +1,7 @@
 import { judetDupaCod } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { env } from "~/env.mjs";
 import { parseParamsHarta } from "~/data/parseParams";
 import { Harta } from "./Harta";
@@ -9,6 +9,15 @@ import { Harta } from "./Harta";
 import "leaflet/dist/leaflet.css";
 import { largeIcons } from "~/data/icons";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
+import { Suspense } from "react";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  height: "device-height",
+  initialScale: 1,
+  minimumScale: 1,
+  userScalable: false,
+};
 
 export function generateMetadata({
   params,
@@ -35,13 +44,6 @@ export function generateMetadata({
     description,
     metadataBase: new URL(env.WEBSITE_URL),
     icons: ["/favicon.ico"],
-    viewport: {
-      width: "device-width",
-      height: "device-height",
-      initialScale: 1,
-      minimumScale: 1,
-      userScalable: false,
-    },
     openGraph: {
       title,
       description,
@@ -87,8 +89,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
     }));
 
   return (
-    <>
+    <Suspense>
       <Harta data={markers.reverse()} />
-    </>
+    </Suspense>
   );
 }

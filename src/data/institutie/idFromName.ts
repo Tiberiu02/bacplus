@@ -1,8 +1,8 @@
+import { unidecode } from "../unidecode";
+
 export function getId(nume: string, codJudet: string) {
   return (
-    nume
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+    unidecode(nume)
       .toUpperCase()
       .replace(/[^A-Z0-9]/g, " ")
       .trim()
