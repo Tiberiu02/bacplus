@@ -11,9 +11,9 @@ export function createStaticData<T>(
     .digest("hex")
     .slice(0, 10);
 
-  if (!fs.existsSync(`.next/static-data/${hash}.json`)) {
-    fs.mkdirSync(".next/static-data", { recursive: true });
-    fs.writeFileSync(`.next/static-data/${hash}.json`, JSON.stringify(data));
+  if (!fs.existsSync(`static-data/${hash}.json`)) {
+    fs.mkdirSync("static-data", { recursive: true });
+    fs.writeFileSync(`static-data/${hash}.json`, JSON.stringify(data));
   }
 
   return {
