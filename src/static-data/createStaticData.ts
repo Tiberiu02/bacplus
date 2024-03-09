@@ -9,11 +9,11 @@ export function createStaticData<T>(
   const hash = createHash("sha256")
     .update(JSON.stringify(data))
     .digest("hex")
-    .slice(0, 10);
+    .slice(0, 16);
 
-  if (!fs.existsSync(`.next/static-data/${hash}.json`)) {
+  if (!fs.existsSync(`.next/static-data/${hash}.txt`)) {
     fs.mkdirSync(".next/static-data", { recursive: true });
-    fs.writeFileSync(`.next/static-data/${hash}.json`, JSON.stringify(data));
+    fs.writeFileSync(`.next/static-data/${hash}.txt`, JSON.stringify(data));
   }
 
   return {

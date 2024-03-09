@@ -10,7 +10,7 @@ async function fetchStaticData<T>(
   cooldown = 250
 ): Promise<T> {
   try {
-    const response = await fetch(`${staticDataRoute}/${hash}.json`);
+    const response = await fetch(`${staticDataRoute}/${hash}.txt`);
     return (await response.json()) as T;
   } catch (error) {
     if (retries === 0) throw error;
