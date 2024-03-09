@@ -52,7 +52,12 @@ export function generateMetadata({
 
   if (!institutie) return {};
 
-  const title = `${institutie.nume}`;
+  const title =
+    institutie.nume +
+    " – " +
+    (institutie.liceu && !gimnaziu
+      ? "Admitere, Bac, rezultate, informații"
+      : "Evaluare Națională, rezultate, informații");
   const description = `Descoperă informații detaliate despre ${institutie.nume}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`;
 
   return {

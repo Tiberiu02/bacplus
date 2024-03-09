@@ -209,7 +209,7 @@ export const JUDETE = [
     nume: "VASLUI",
     numeIntreg: "Vaslui",
   },
-];
+] as const;
 
 const JUDETE_DUPA_COD = Object.fromEntries(
   JUDETE.map((judet) => [judet.id, judet])
