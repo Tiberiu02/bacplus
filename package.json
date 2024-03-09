@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node downloadData.cjs && prisma generate && del-cli .next/static-data && next build && cpy-cli .next/static-data/ out/static-data/ --flat",
+    "build": "node downloadData.cjs && prisma generate && del-cli .next/static-data && next build && cpy .next/static-data/ out/static-data/ --flat",
     "dev": "next dev",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
