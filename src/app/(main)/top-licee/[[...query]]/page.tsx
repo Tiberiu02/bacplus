@@ -18,6 +18,7 @@ import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
 import Link from "next/link";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
+import { createStaticData } from "~/static-data/createStaticData";
 
 export function generateMetadata({
   params,
@@ -96,6 +97,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
           : `/top-licee/${j.nume.toLowerCase()}/${an}`,
     })),
   ];
+
+  const liceeData = licee
+    .sort((a, b) => (b.medieBac || 0) - (a.medieBac || 0))
+    .map(liceuToDataArray);
 
   return (
     <>
@@ -177,7 +182,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
         </div>
 
         <TabelLicee
-          data={licee.map(liceuToDataArray)}
+          data={createStaticData(liceeData, liceeData.slice(0, 51))}
           anAdmitere={anAdmitere?.an != +an ? anAdmitere?.an : undefined}
         />
       </MainContainer>

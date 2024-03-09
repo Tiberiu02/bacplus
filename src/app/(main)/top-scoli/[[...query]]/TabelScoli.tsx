@@ -1,11 +1,19 @@
 "use client";
 
-import { scoalaFromDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
-import type { ScoalaDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
+import { scoalaFromDataArray } from "./data";
+import type { ScoalaDataArray } from "./data";
 import { Table } from "~/components/Table";
 import { nonBreakableName } from "~/data/nonBreakableName";
+import { StaticData } from "~/static-data/staticData";
+import { useStaticData } from "~/static-data/useStaticData";
 
-export function TabelScoli({ data }: { data: ScoalaDataArray[] }) {
+export function TabelScoli({
+  data: staticData,
+}: {
+  data: StaticData<ScoalaDataArray[]>;
+}) {
+  const data = useStaticData(staticData);
+
   return (
     <Table
       data={data}

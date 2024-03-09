@@ -15,6 +15,7 @@ import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { smallIcons } from "~/data/icons";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
+import { createStaticData } from "~/static-data/createStaticData";
 
 export function generateMetadata({
   params,
@@ -102,6 +103,13 @@ export default function Page({ params }: { params: { query: string[] } }) {
     })),
   ];
 
+  const scoliData = scoli
+    .sort(
+      (a, b) =>
+        (b.medieEvaluareNationala || 0) - (a.medieEvaluareNationala || 0)
+    )
+    .map(scoalaToDataArray);
+
   return (
     <>
       <LdJson
@@ -178,7 +186,9 @@ export default function Page({ params }: { params: { query: string[] } }) {
           />
         </div>
 
-        <TabelScoli data={scoli.map(scoalaToDataArray)} />
+        <TabelScoli
+          data={createStaticData(scoliData, scoliData.slice(0, 50))}
+        />
       </MainContainer>
     </>
   );

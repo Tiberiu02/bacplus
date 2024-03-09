@@ -126,8 +126,8 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
         const aVal = sortColumn.value(a, 0);
         const bVal = sortColumn.value(b, 0);
 
-        const aNull = aVal === undefined;
-        const bNull = bVal === undefined;
+        const aNull = aVal === undefined || aVal === null;
+        const bNull = bVal === undefined || bVal === null;
 
         return bNull || (!aNull && (sortOrder == 1 ? aVal < bVal : aVal > bVal))
           ? -1

@@ -3,14 +3,17 @@
 import { Table } from "~/components/Table";
 import { nonBreakableName } from "~/data/nonBreakableName";
 import { LiceuDataArray, liceuFromDataArray } from "./data";
+import { StaticData } from "~/static-data/staticData";
+import { useStaticData } from "~/static-data/useStaticData";
 
 export function TabelLicee({
-  data,
+  data: staticData,
   anAdmitere,
 }: {
-  data: LiceuDataArray[];
+  data: StaticData<LiceuDataArray[]>;
   anAdmitere?: number;
 }) {
+  const data = useStaticData(staticData);
   const licee = data.map(liceuFromDataArray);
 
   return (

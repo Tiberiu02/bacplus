@@ -24,24 +24,30 @@ import type { Icon } from "leaflet";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import type { StaticData } from "~/static-data/staticData";
+import { useStaticData } from "~/static-data/useStaticData";
 
 export function Harta({
-  data,
+  data: staticData,
 }: {
-  data: {
-    id: string;
-    url: string;
-    nume: string;
-    liceu: boolean;
-    gimnaziu: boolean;
-    judet: string;
-    long: number;
-    lat: number;
-    icon: boolean;
-  }[];
+  data: StaticData<
+    {
+      id: string;
+      url: string;
+      nume: string;
+      liceu: boolean;
+      gimnaziu: boolean;
+      judet: string;
+      long: number;
+      lat: number;
+      icon: boolean;
+    }[]
+  >;
 }) {
   const [icon, setIcon] = useState<Icon | null>(null);
   const params = useSearchParams();
+
+  const data = useStaticData(staticData);
 
   useEffect(() => {
     void (async () => {

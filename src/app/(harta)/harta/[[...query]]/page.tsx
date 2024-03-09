@@ -10,6 +10,7 @@ import "leaflet/dist/leaflet.css";
 import { largeIcons } from "~/data/icons";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { Suspense } from "react";
+import { createStaticData } from "~/static-data/createStaticData";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -90,7 +91,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   return (
     <Suspense>
-      <Harta data={markers.reverse()} />
+      <Harta data={createStaticData(markers.reverse(), [])} />
     </Suspense>
   );
 }
