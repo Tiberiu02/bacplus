@@ -22,24 +22,22 @@ import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceSc
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 export function generateStaticParams() {
-  return query.institutii
-    .flatMap((i) =>
-      i.liceu && i.gimnaziu
-        ? [
-            {
-              query: [getUrlFromId(i.id)],
-            },
-            {
-              query: [getUrlFromId(i.id), "gimnaziu"],
-            },
-          ]
-        : [
-            {
-              query: [getUrlFromId(i.id)],
-            },
-          ]
-    )
-    .slice(0, 100);
+  return query.institutii.flatMap((i) =>
+    i.liceu && i.gimnaziu
+      ? [
+          {
+            query: [getUrlFromId(i.id)],
+          },
+          {
+            query: [getUrlFromId(i.id), "gimnaziu"],
+          },
+        ]
+      : [
+          {
+            query: [getUrlFromId(i.id)],
+          },
+        ]
+  );
 }
 
 export function generateMetadata({
