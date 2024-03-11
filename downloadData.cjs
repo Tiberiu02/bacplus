@@ -48,6 +48,7 @@ download.on("end", (output) => {
       Math.round((fSize / 1_000_000) * 10) / 10
     } MB`
   );
+  process.exit(0);
 });
 download.on("progress", (progress) => {
   typeof progress === "number";
