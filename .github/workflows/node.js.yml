@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CICD_SERVER: ${{ secrets.CICD_SERVER }}
+  CICD_SERVER: ${{ vars.CICD_SERVER }}
   INFRA_KEY: ${{ secrets.INFRA_KEY }}
   
 jobs:
