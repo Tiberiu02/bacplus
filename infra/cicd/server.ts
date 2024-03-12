@@ -2,7 +2,7 @@ import express from "express";
 import { spawn } from "child_process";
 import https from "https";
 import dotenv from "dotenv";
-import { sslCertificate, sslPrivateKey } from "infra/ssl";
+import { sslCertificate, sslPrivateKey } from "../ssl";
 dotenv.config();
 
 const INFRA_KEY = process.env.INFRA_KEY;
