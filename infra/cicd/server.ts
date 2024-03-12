@@ -49,12 +49,8 @@ server.post("/pull-and-deploy", async (req, res) => {
     await execCmd("git", ["pull"]);
     await execCmd("npm", ["install"]);
     // await execCmd("npm", ["run", "build"]);
-    await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts"]);
-    await execCmd("npx", [
-      "ts-node",
-      "infra/backend/deploy.ts",
-      "bacplus-test",
-    ]);
+    await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts", "bacplus-test"]);
+    await execCmd("npx", ["ts-node", "infra/backend/deploy.ts"]);
   } else {
     console.log(new Date(), "Invalid key");
     res.status(403).send("Invalid key");
