@@ -14,7 +14,7 @@ export const createExpressContext = ({
 export const appRouter = router({
   test: publicProcedure.query(() => {
     return {
-      message: "Hello from the server!",
+      message: "Hello from the server! New deployment from CI/CD server!",
       time: new Date().toISOString(),
     };
   }),
