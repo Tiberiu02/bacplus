@@ -42,6 +42,8 @@ server.use("/", express.json());
 server.post("/pull-and-deploy", async (req, res) => {
   const { key } = req.body;
   if (key === INFRA_KEY) {
+    res.send("Updating app...");
+
     console.log(new Date(), "Updating app...");
 
     await execCmd("git", ["pull"]);
@@ -53,8 +55,6 @@ server.post("/pull-and-deploy", async (req, res) => {
       "infra/backend/deploy.ts",
       "bacplus-test",
     ]);
-
-    res.send("App updated");
   } else {
     console.log(new Date(), "Invalid key");
     res.status(403).send("Invalid key");
