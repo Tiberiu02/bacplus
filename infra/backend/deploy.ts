@@ -51,7 +51,7 @@ webpack(config, (err, stats) => {
   const key = process.env.INFRA_KEY;
 
   request.post(
-    "http://localhost:3012/update-app",
+    "https://api.bacplus.ro:3012/update-app",
     { json: { app, key } },
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
