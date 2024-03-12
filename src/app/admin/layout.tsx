@@ -1,12 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { FaLock } from "react-icons/fa";
+import { trpc } from "~/utils/trpc";
+// import { trpc } from "~/utils/trpc";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-[100dvh] flex-col text-lg">
       <div className="flex w-full max-w-6xl flex-col self-center bg-transparent px-5 py-5 text-base">
@@ -39,3 +39,6 @@ export default function RootLayout({
     </div>
   );
 }
+
+// export default RootLayout;
+export default trpc.withTRPC(RootLayout);
