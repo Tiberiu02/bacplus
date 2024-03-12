@@ -8,7 +8,7 @@
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
     "start": "concurrently --kill-others \"npx serve out\" \"npx ts-node-dev infra\\backend\\dev\\server.ts\"",
-    "deploy": "npx ts-node infra/cdn/bunny.ts"
+    "backend": "concurrently --kill-others \"npx ts-node infra\\backend\\server.ts\" \"npx ts-node infra\\cicd\\server.ts\""
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.7.0",

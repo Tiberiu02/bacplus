@@ -1,7 +1,7 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express, { type Handler } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
 dotenv.config();
 
 const INFRA_KEY = process.env.INFRA_KEY;
@@ -26,7 +26,7 @@ appServer.use("/", (req, res, next) => {
 });
 
 appServer.listen(443, () => {
-  console.log("Server is running at http://localhost:443");
+  console.log("App server is running at http://localhost:443");
 });
 
 const controlServer = express();

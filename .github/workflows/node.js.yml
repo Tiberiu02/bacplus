@@ -14,12 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DATABASE_URL: ${{ vars.DATABASE_URL }}
-  GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
-  DB_DOWNLOAD_URL: ${{ vars.DB_DOWNLOAD_URL }}
-  DB_DOWNLOAD_PATH: ${{ vars.DB_DOWNLOAD_PATH }}
-  WEBSITE_URL: ${{ vars.WEBSITE_URL }}
-  BUNNY_ACCESS_KEY: ${{ secrets.BUNNY_ACCESS_KEY }}
+  CICD_SERVER: ${{ secrets.CICD_SERVER }}
+  INFRA_KEY: ${{ secrets.INFRA_KEY }}
   
 jobs:
   build:
@@ -36,8 +32,6 @@ jobs:
         node-version: '18'
         cache: 'npm'
     - name: Install dependencies
-      run: npm install
-    - name: Build
-      run: npm run build 
-    - name: Deploy 
-      run: npm run deploy bacplus
+      run: npm install dotenv request
+    - name: Trigger CI/CD
+      run: node infra/cicd/ping.js
