@@ -8,7 +8,8 @@
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
     "start": "concurrently --kill-others \"npx serve out\" \"npx ts-node-dev infra/backend/dev/server.ts\"",
-    "backend": "concurrently --kill-others \"npx ts-node infra/backend/server.ts\" \"npx ts-node infra/cicd/server.ts\""
+    "backend": "concurrently --kill-others \"npx ts-node infra/backend/server.ts\" \"npx ts-node infra/cicd/server.ts\"",
+    "trigger-cicd": "node infra/cicd/ping.js"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.7.0",
@@ -26,6 +27,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.3",
     "glob": "^10.3.10",
+    "https": "^1.0.0",
     "next": "^14.1.3",
     "node-fetch": "^2.7.0",
     "primereact": "^9.6.1",

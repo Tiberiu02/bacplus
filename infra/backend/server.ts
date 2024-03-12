@@ -1,7 +1,9 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express, { type Handler } from "express";
 import cors from "cors";
+import https from "https";
 import dotenv from "dotenv";
+import { sslCertificate, sslPrivateKey } from "infra/ssl";
 dotenv.config();
 
 const INFRA_KEY = process.env.INFRA_KEY;
@@ -25,9 +27,17 @@ appServer.use("/", (req, res, next) => {
   }
 });
 
-appServer.listen(443, () => {
-  console.log("App server is running at http://localhost:443");
-});
+https
+  .createServer(
+    {
+      key: sslPrivateKey,
+      cert: sslCertificate,
+    },
+    appServer
+  )
+  .listen(443, () => {
+    console.log("App server is running at http://localhost:443");
+  });
 
 const controlServer = express();
 
@@ -49,6 +59,14 @@ controlServer.post("/update-app", (req, res) => {
   }
 });
 
-controlServer.listen(3012, () => {
-  console.log("Control server is running at http://localhost:3012");
-});
+https
+  .createServer(
+    {
+      key: sslPrivateKey,
+      cert: sslCertificate,
+    },
+    controlServer
+  )
+  .listen(3012, () => {
+    console.log("Control server is running at http://localhost:3012");
+  });

@@ -1,6 +1,8 @@
 import express from "express";
-import { spawn, exec } from "child_process";
+import { spawn } from "child_process";
+import https from "https";
 import dotenv from "dotenv";
+import { sslCertificate, sslPrivateKey } from "infra/ssl";
 dotenv.config();
 
 const INFRA_KEY = process.env.INFRA_KEY;
@@ -59,6 +61,14 @@ server.post("/pull-and-deploy", async (req, res) => {
   }
 });
 
-server.listen(6167, () => {
-  console.log("CI-CD server is running at http://localhost:6167");
-});
+https
+  .createServer(
+    {
+      key: sslPrivateKey,
+      cert: sslCertificate,
+    },
+    server
+  )
+  .listen(6167, () => {
+    console.log("CI-CD server is running at http://localhost:6167");
+  });
