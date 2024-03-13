@@ -41,7 +41,7 @@ https
 
 const controlServer = express();
 
-controlServer.use("/update-app", express.json());
+controlServer.use("/update-app", express.json({ limit: '50mb' }));
 
 controlServer.post("/update-app", (req, res) => {
   const { app, key } = req.body;
