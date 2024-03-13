@@ -1,6 +1,7 @@
 import { publicProcedure, router } from "./trpc";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { prisma } from "./prisma";
 
 export type Context = Record<string, never>;
 
@@ -12,10 +13,12 @@ export const createExpressContext = ({
 };
 
 export const appRouter = router({
-  test: publicProcedure.query(() => {
+  test: publicProcedure.query(async () => {
+    const users = await prisma.users.findMany();
     return {
-      message: "Hello from the server! New deployment from CI/CD server!",
+      message: "Hello from the server!",
       time: new Date().toISOString(),
+      users,
     };
   }),
 });

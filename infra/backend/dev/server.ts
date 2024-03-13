@@ -2,8 +2,11 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { appRouter, createExpressContext } from "../../../src/server/app";
+import { appRouter, createExpressContext } from "~/server/app";
 dotenv.config();
+import path from "path";
+
+console.log(path.basename(process.cwd()));
 
 const appServer = express();
 
