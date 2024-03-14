@@ -2,7 +2,7 @@
 
 import { Table } from "~/components/Table";
 import { nonBreakableName } from "~/data/nonBreakableName";
-import { LiceuDataArray, liceuFromDataArray } from "./data";
+import { type LiceuDataArray, liceuFromDataArray } from "./data";
 import { StaticData } from "~/static-data/staticData";
 import { useStaticData } from "~/static-data/useStaticData";
 

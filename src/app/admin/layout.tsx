@@ -2,13 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaLock, FaSignOutAlt } from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
+import { FaLock } from "react-icons/fa";
 import { trpc } from "~/utils/trpc";
 import { FiUser } from "react-icons/fi";
 import { useAtom } from "jotai";
 import { userDataAtom } from "./userData";
-import { PiSignOutBold, PiSignOutFill } from "react-icons/pi";
+import { PiSignOutBold } from "react-icons/pi";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useAtom(userDataAtom);

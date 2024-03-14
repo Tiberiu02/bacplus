@@ -10,13 +10,12 @@ import { Button } from "~/components/Button";
 import { trpc } from "~/utils/trpc";
 
 import { useAtom } from "jotai";
-import { FaCross } from "react-icons/fa6";
 import { BiSolidError } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
-import { UserDataProvider, userDataAtom } from "./userData";
+import { userDataAtom } from "./userData";
 
 export default function Admin() {
-  const [jwt, setJwt] = useAtom(userDataAtom);
+  const [jwt] = useAtom(userDataAtom);
 
   if (!jwt) {
     return <LoginScreen />;
@@ -69,7 +68,7 @@ function LoginScreen() {
           Icon={VscKey}
           type="password"
         />
-        <Button className="mt-8 w-32" onClick={login}>
+        <Button className="mt-8 w-32" onClick={() => void login()}>
           Conectare
         </Button>
         <div
