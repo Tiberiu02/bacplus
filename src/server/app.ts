@@ -3,7 +3,7 @@ import type { CreateExpressContextOptions } from "@trpc/server/adapters/express"
 import { prisma } from "./prisma";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
-import { env } from "~/env.js";
+import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
 
 export type Context = Record<string, never>;
 

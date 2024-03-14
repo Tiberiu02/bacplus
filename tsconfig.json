@@ -46,11 +46,12 @@
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.js",
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
-, "src/env.js"  ],
+  ],
   "exclude": [
     "node_modules"
   ]
