@@ -7,7 +7,7 @@ import { CountUp } from "~/components/CountUp";
 
 import { Authors } from "~/components/Authors";
 import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { MainContainer } from "~/components/MainContainer";
 import { smallIcons } from "~/data/icons";
 import { VerticalTrack } from "~/components/VerticalTrack";

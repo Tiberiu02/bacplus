@@ -14,6 +14,7 @@ import { twMerge } from "tailwind-merge";
 import { Button } from "./Button";
 import Link from "next/link";
 import { unidecode } from "~/data/unidecode";
+import { TextInput } from "./TextInput";
 
 type ColumnType<T> =
   | (
@@ -109,11 +110,8 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
 
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
-  const onGlobalFilterChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = unidecode(e.target.value)
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "");
-    setGlobalFilterValue(value);
+  const onGlobalFilterChange = (value: string) => {
+    setGlobalFilterValue(value.toLowerCase().replace(/[^a-z0-9]/g, ""));
   };
 
   const href = columns
@@ -146,16 +144,16 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {searchable != false && (
-        <div className="flex h-10 items-center gap-4 rounded-full border-[1px] border-gray-300 px-3 text-black transition-all duration-200 focus-within:border-blue-700 hover:border-blue-700">
-          <FaMagnifyingGlass className="shrink-0 text-gray-400" />
-          <input
-            className="w-full bg-transparent outline-none"
-            placeholder={searchPlaceholder}
+      {
+        searchable != false && (
+          <TextInput
+            placeHolder={searchPlaceholder ?? ""}
             onChange={onGlobalFilterChange}
+            Icon={FaMagnifyingGlass}
           />
-        </div>
-      )}
+        )
+        // TextInput(searchPlaceholder, onGlobalFilterChange)
+      }
       <div className="-mx-3 -mt-2 w-[calc(100%+1.5rem)] overflow-y-auto px-3">
         <table className="my-2 w-full border-separate border-spacing-y-0">
           <thead>

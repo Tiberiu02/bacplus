@@ -8,9 +8,10 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
-    NODE_ENV: z.enum(["development", "test", "production"]),
     DB_DOWNLOAD_URL: z.string().url(),
     WEBSITE_URL: z.string().url(),
+    INFRA_KEY: z.string().min(24),
+    JWT_SECRET: z.string().min(24),
   },
 
   /**
@@ -30,9 +31,10 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
     DB_DOWNLOAD_URL: process.env.DB_DOWNLOAD_URL,
+    INFRA_KEY: process.env.INFRA_KEY,
+    JWT_SECRET: process.env.JWT_SECRET,
     WEBSITE_URL: process.env.WEBSITE_URL,
     NEXT_PUBLIC_TRPC_API_URL: process.env.NEXT_PUBLIC_TRPC_API_URL,
   },

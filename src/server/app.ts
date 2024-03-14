@@ -1,9 +1,13 @@
 import { publicProcedure, router } from "./trpc";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "./prisma";
+import { z } from "zod";
+import jwt from "jsonwebtoken";
+import { env } from "~/env.js";
 
 export type Context = Record<string, never>;
+
+const JWT_SECRET = env.JWT_SECRET;
 
 export const createExpressContext = ({
   req,
@@ -21,6 +25,41 @@ export const appRouter = router({
       users,
     };
   }),
+  login: publicProcedure
+    .input(z.object({ email: z.string(), password: z.string() }))
+    .query(async ({ input }) => {
+      const user = await prisma.users.findFirst({
+        where: {
+          email: input.email,
+        },
+      });
+      if (!user) {
+        return {
+          error: "Email invalid",
+          user: null,
+        };
+      }
+      if (user.password !== input.password) {
+        return {
+          error: "Parolă invalidă",
+          user: null,
+        };
+      }
+      console.log("signing token");
+      const token = jwt.sign(
+        { id: user.id, email: user.email, name: user.name },
+        JWT_SECRET
+      );
+      console.log("token", token);
+      return {
+        error: null,
+        user: {
+          email: user.email,
+          name: user.name,
+          token: token,
+        },
+      };
+    }),
 });
 
 // Export type router type signature,

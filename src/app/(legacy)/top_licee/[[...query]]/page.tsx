@@ -2,7 +2,7 @@ import { JUDETE } from "~/data/coduriJudete";
 import { query, ultimulAnBac } from "~/data/dbQuery";
 
 import type { Metadata } from "next";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 

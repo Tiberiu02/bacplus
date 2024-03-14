@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { JUDETE } from "~/data/coduriJudete";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [

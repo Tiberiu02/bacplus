@@ -110,4 +110,5 @@ model users {
   id       String @id
   email    String @unique(map: "sqlite_autoindex_users_2")
   password String
+  name     String
 }

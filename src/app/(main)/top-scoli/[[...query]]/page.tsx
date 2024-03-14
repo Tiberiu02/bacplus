@@ -7,7 +7,7 @@ import { scoalaToDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
 import type { Scoala } from "~/app/(main)/top-scoli/[[...query]]/data";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "~/app/(main)/top-scoli/[[...query]]/TabelScoli";
 import { LdJson } from "~/components/LdJson";

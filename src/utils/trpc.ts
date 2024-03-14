@@ -1,7 +1,7 @@
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "../server/app";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 
 export const trpc = createTRPCNext<AppRouter>({
   config(_opts) {

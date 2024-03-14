@@ -10,7 +10,7 @@ import {
 import { MainContainer } from "~/components/MainContainer";
 import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { Announcements } from "~/components/Announcements";
 import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParams";

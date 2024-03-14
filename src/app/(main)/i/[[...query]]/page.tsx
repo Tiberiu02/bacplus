@@ -6,7 +6,7 @@ import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
 import { ChartCard, SnippetCard } from "~/components/Cards";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import Link from "next/link";

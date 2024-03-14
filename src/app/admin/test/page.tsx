@@ -1,6 +1,6 @@
 "use client";
 
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 
 import { trpc } from "~/utils/trpc";
 

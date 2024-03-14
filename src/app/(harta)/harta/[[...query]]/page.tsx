@@ -2,7 +2,7 @@ import { judetDupaCod } from "~/data/coduriJudete";
 import { query } from "~/data/dbQuery";
 
 import type { Metadata, Viewport } from "next";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { parseParamsHarta } from "~/data/parseParams";
 import { Harta } from "./Harta";
 

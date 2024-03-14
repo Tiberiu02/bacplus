@@ -5,7 +5,7 @@ import { Title } from "~/components/Title";
 import { CalculatorAdmitere } from "./CalculatorAdmitere";
 import { query, ultimulAnEn } from "~/data/dbQuery";
 import type { DateLicee, Ierarhie } from "./data";
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 
 export function generateMetadata(): Metadata {
   return {
