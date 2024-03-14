@@ -6,6 +6,7 @@ import path from "path";
 dotenv.config();
 
 const bundleFile = "app-bundle.js";
+const bundleLicence = 'app-bundle.js.LICENSE.txt'
 const bundlePath = path.join(__dirname, bundleFile);
 
 const config: webpack.Configuration = {
@@ -19,6 +20,7 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: [".ts", ".js", ".mjs"],
   },
+  target: "node",
   module: {
     rules: [
       {
@@ -60,6 +62,7 @@ webpack(config, (err, stats) => {
         console.error("Error updating app server: ", error, body);
       }
       fs.unlinkSync(bundlePath);
+      fs.unlinkSync(path.join(__dirname, bundleLicence));
     }
   );
 });
