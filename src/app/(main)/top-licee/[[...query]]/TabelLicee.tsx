@@ -42,7 +42,7 @@ export function TabelLicee({
             <>
               {rowData.icon && (
                 <img
-                  src={`/icons-xs/${rowData.id}.webp`}
+                  src={`https://assets.bacplus.ro/sigle/xs/${rowData.id}.webp`}
                   alt=""
                   className="mr-2 inline-block h-5 w-5 translate-y-[-1px] transition-opacity duration-200 group-hover:opacity-50"
                 />

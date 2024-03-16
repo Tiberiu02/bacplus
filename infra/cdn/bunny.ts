@@ -5,6 +5,7 @@ import https from "https";
 import fs from "fs";
 import cliProgress from "cli-progress";
 import "dotenv/config";
+import { Readable } from "stream";
 
 const NUM_WORKERS = 64;
 const ACCESS_KEY = process.env.BUNNY_ACCESS_KEY!;
@@ -36,6 +37,30 @@ async function listPullZones() {
 async function findPullZone(name: string) {
   const pullZones = await listPullZones();
   return pullZones.find((zone: any) => zone.Name === name);
+}
+
+async function listStorageZomes() {
+  const url = "https://api.bunny.net/storagezone";
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      AccessKey: ACCESS_KEY,
+    },
+  };
+
+  const response = await fetch(url, options);
+
+  if (response.status !== 200) {
+    throw new Error(`Error listing storage zones: ${await response.text()}`);
+  }
+
+  return (await response.json()) as StorageZone[];
+}
+
+export async function findStorageZone(name: string) {
+  const storageZones = await listStorageZomes();
+  return storageZones.find((zone) => zone.Name === name);
 }
 
 async function createStorageZone(prefix: string) {
@@ -95,13 +120,14 @@ async function createPullZone(name: string, storageZone: StorageZone) {
   return pullZone;
 }
 
-const uploadFile = async (
+export const uploadFile = async (
   destinationPath: string,
-  sourcePath: string,
-  retries: number,
-  storageZone: StorageZone
+  file: string | Buffer,
+  storageZone: StorageZone,
+  retries: number = 5
 ) => {
-  const readStream = fs.createReadStream(sourcePath);
+  const readStream =
+    file instanceof Buffer ? Readable.from(file) : fs.createReadStream(file);
 
   const options: https.RequestOptions = {
     method: "PUT",
@@ -129,9 +155,7 @@ const uploadFile = async (
       if (retries <= 0) {
         reject(error);
       } else {
-        resolve(
-          uploadFile(destinationPath, sourcePath, retries - 1, storageZone)
-        );
+        resolve(uploadFile(destinationPath, file, storageZone, retries - 1));
       }
     });
 
@@ -298,8 +322,8 @@ async function uploadFiles(
       const response = await uploadFile(
         destinationPath,
         sourcePath,
-        15,
-        storageZone
+        storageZone,
+        15
       );
 
       if (cancelObj.canceled) {
@@ -320,6 +344,10 @@ async function uploadFiles(
   if (!cancelObj.canceled) {
     progressBar.stop();
   }
+}
+
+if (require.main === module) {
+  main();
 }
 
 async function main() {
@@ -343,7 +371,7 @@ async function main() {
 
   process.on("SIGINT", cleanup);
   await uploadFiles("out", storageZone, cancelObj);
-  await uploadFile("bunnycdn_errors/404.html", "out/404.html", 5, storageZone);
+  await uploadFile("bunnycdn_errors/404.html", "out/404.html", storageZone, 5);
   process.removeListener("SIGINT", cleanup);
 
   const pullZone = await findPullZone(pullZoneName);
@@ -355,8 +383,6 @@ async function main() {
 
   console.log(`Deployed to https://${pullZoneName}.b-cdn.net/`);
 }
-
-main();
 
 export interface StorageZone {
   Id: number;

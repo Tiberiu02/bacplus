@@ -106,7 +106,9 @@ export default function Home() {
                 target="_blank"
               >
                 <img
-                  src={`/icons-xs/${a.id_liceu || ""}.webp`}
+                  src={`https://assets.bacplus.ro/sigle/xs/${
+                    a.id_liceu || ""
+                  }.webp`}
                   className="h-8 w-8"
                 />
               </Link>

@@ -92,7 +92,7 @@ export default function PaginaInstitutie({
         <div className="mt-12 flex w-full flex-col items-center gap-8 ">
           {largeIcons[id] && (
             <img
-              src={`/icons-lg/${id}.webp`}
+              src={`https://assets.bacplus.ro/sigle/lg/${id}.webp`}
               alt={institutie.nume}
               className="mx-auto h-40 w-40"
             />

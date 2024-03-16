@@ -1,18 +1,9 @@
-import fs from "fs";
-
-const smallIconsFolder = "public/icons-xs/";
-const largeIconsFolder = "public/icons-lg/";
-const smallIconFiles = fs.readdirSync(smallIconsFolder);
-const largeIconFiles = fs.readdirSync(largeIconsFolder);
+import { query } from "./dbQuery";
 
 export const smallIcons = Object.fromEntries(
-  smallIconFiles.map(
-    (iconFile) => [iconFile.split(".")[0], true] as [string, boolean]
-  )
+  query.institutii.map((i) => [i.id, !!i.sigla_xs] as [string, boolean])
 ) as Record<string, boolean>;
 
 export const largeIcons = Object.fromEntries(
-  largeIconFiles.map(
-    (iconFile) => [iconFile.split(".")[0], true] as [string, boolean]
-  )
+  query.institutii.map((i) => [i.id, !!i.sigla_lg] as [string, boolean])
 ) as Record<string, boolean>;

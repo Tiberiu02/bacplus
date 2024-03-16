@@ -81,6 +81,11 @@ model institutii {
   liceu      String?
   gimnaziu   String?
   latlong    String?
+  uri        String?
+  sigla      String?
+  sigla_lg   String?
+  sigla_xs   String?
+  info_sigla String?
   siiir      siiir?  @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
 }
 

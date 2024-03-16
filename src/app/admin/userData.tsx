@@ -10,11 +10,12 @@ type UserData = {
 
 const UserDataContext = createContext<UserData | null>(null);
 
+export const userDataStorageKey = "auth-jwt";
 export const userDataAtom = atomWithStorage<{
   name: string;
   email: string;
   token: string;
-} | null>("auth-jwt", null);
+} | null>(userDataStorageKey, null);
 
 export const UserDataProvider = ({
   children,

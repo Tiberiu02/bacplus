@@ -2,6 +2,18 @@ import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "../server/app";
 import { env } from "~/env.js";
+import { userDataStorageKey } from "~/app/admin/userData";
+
+function getAuthToken() {
+  let token = "";
+
+  try {
+    const userData = JSON.parse(localStorage.getItem(userDataStorageKey) || "");
+    token = "Bearer " + userData.token;
+  } catch (e) {}
+
+  return token;
+}
 
 export const trpc = createTRPCNext<AppRouter>({
   config(_opts) {
@@ -17,7 +29,7 @@ export const trpc = createTRPCNext<AppRouter>({
           // You can pass any HTTP headers you wish here
           headers() {
             return {
-              // authorization: getAuthCookie(),
+              authorization: getAuthToken(),
             };
           },
         }),

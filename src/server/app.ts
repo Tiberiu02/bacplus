@@ -1,11 +1,22 @@
-import { publicProcedure, router } from "./trpc";
+import { protectedProcedure, publicProcedure, router } from "./trpc";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { prisma } from "./prisma";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
+import sharp from "sharp";
+import { findStorageZone, uploadFile } from "infra/cdn/bunny";
 
-export type Context = Record<string, never>;
+const User = z.object({
+  id: z.string(),
+  email: z.string(),
+  name: z.string(),
+});
+
+export type Context = {
+  user?: z.infer<typeof User>;
+  prisma: typeof prisma;
+};
 
 const JWT_SECRET = env.JWT_SECRET;
 
@@ -13,12 +24,23 @@ export const createExpressContext = ({
   req,
   res,
 }: CreateExpressContextOptions): Context => {
-  return {};
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (token) {
+    const user = User.parse(jwt.verify(token, JWT_SECRET));
+
+    return {
+      user,
+      prisma,
+    };
+  }
+
+  return { prisma };
 };
 
 export const appRouter = router({
-  test: publicProcedure.query(async () => {
-    const users = await prisma.users.findMany();
+  test: publicProcedure.query(async ({ ctx }) => {
+    const users = await ctx.prisma.users.findMany();
     return {
       message: "Hello from the server!",
       time: new Date().toISOString(),
@@ -27,8 +49,8 @@ export const appRouter = router({
   }),
   login: publicProcedure
     .input(z.object({ email: z.string(), password: z.string() }))
-    .query(async ({ input }) => {
-      const user = await prisma.users.findFirst({
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.users.findFirst({
         where: {
           email: input.email,
         },
@@ -45,12 +67,12 @@ export const appRouter = router({
           user: null,
         };
       }
-      console.log("signing token");
+
       const token = jwt.sign(
         { id: user.id, email: user.email, name: user.name },
         JWT_SECRET
       );
-      console.log("token", token);
+
       return {
         error: null,
         user: {
@@ -60,8 +82,184 @@ export const appRouter = router({
         },
       };
     }),
+
+  sigle: router({
+    institutiiFaraSigla: protectedProcedure.query(async ({ ctx }) => {
+      return (
+        await ctx.prisma.institutii.findMany({
+          where: {
+            info_sigla: null,
+            sigla_lg: null,
+            rank: {
+              lt: 10000,
+            },
+          },
+          orderBy: {
+            rank: "asc",
+          },
+          take: 100,
+        })
+      ).map((i) => ({
+        id: i.id,
+        nume: i.nume,
+        website: i.website,
+        rank: i.rank,
+        sigla: i.sigla,
+        sigla_xs: i.sigla_xs,
+        sigla_lg: i.sigla_lg,
+      }));
+    }),
+
+    upload: protectedProcedure
+      .input(z.object({ id: z.string(), dataUrl: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        console.log("received data URL for id", input.id);
+        const regex = /^data:.+\/(.+);base64,(.*)$/;
+
+        const matches = input.dataUrl.match(regex);
+        const ext = matches?.[1];
+        const data = matches?.[2];
+        if (!ext || !data) {
+          throw new Error("Invalid data URL");
+        }
+        const buffer = Buffer.from(data, "base64");
+
+        const image = sharp(buffer);
+
+        const LG_SIZE = 320;
+        const LG_MIN_SIZE = 96;
+        const XS_SIZE = 32;
+
+        const imageLg = await processImage(image, LG_SIZE, LG_MIN_SIZE);
+        const imageXs = await processImage(image, XS_SIZE);
+
+        const assetsStorageZone = await findStorageZone("bacplus-assets");
+
+        if (!assetsStorageZone) {
+          throw new Error("No storage zone found");
+        }
+
+        console.log("processed image", input.id);
+
+        console.log("uploading original");
+        await uploadFile(
+          `sigle/original/${input.id}.${ext}`,
+          buffer,
+          assetsStorageZone
+        );
+        if (imageLg) {
+          console.log("uploading lg");
+          await uploadFile(
+            `sigle/lg/${input.id}.webp`,
+            imageLg,
+            assetsStorageZone
+          );
+        }
+        if (imageXs) {
+          console.log("uploading xs");
+          await uploadFile(
+            `sigle/xs/${input.id}.webp`,
+            imageXs,
+            assetsStorageZone
+          );
+        }
+        await ctx.prisma.institutii.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            sigla: `${input.id}.${ext}`,
+            sigla_lg: imageLg ? "da" : null,
+            sigla_xs: imageXs ? "da" : null,
+          },
+        });
+      }),
+
+    delete: protectedProcedure
+      .input(z.object({ id: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        console.log("deleting sigla for id", input.id);
+        await ctx.prisma.institutii.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            sigla: null,
+            sigla_lg: null,
+            sigla_xs: null,
+          },
+        });
+      }),
+
+    marcheazaFaraSigla: protectedProcedure
+      .input(z.object({ id: z.string(), faraSigla: z.boolean() }))
+      .mutation(async ({ input, ctx }) => {
+        console.log("marcheaza fara sigla", input.id, input.faraSigla);
+        await ctx.prisma.institutii.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            info_sigla: input.faraSigla ? "lipsa" : null,
+          },
+        });
+        console.log("updated", input.id);
+      }),
+  }),
 });
 
 // Export type router type signature,
 // NOT the router itself.
 export type AppRouter = typeof appRouter;
+
+async function processImage(
+  image: sharp.Sharp,
+  maxSize: number,
+  minSize?: number
+) {
+  const metadata = await image.metadata();
+
+  const [width, height] =
+    (metadata.orientation || 0) >= 5
+      ? [metadata.height, metadata.width]
+      : [metadata.width, metadata.height];
+
+  // Skip if smaller than minSize
+  if (!width || !height || (minSize && width < minSize && height < minSize)) {
+    return null;
+  }
+
+  let newImage = image;
+
+  // Make the image square by expanding
+  if (width !== height) {
+    const new_size = Math.max(width, height);
+    const hasTransparency = metadata.hasAlpha;
+
+    console.log("resizing", width, height, new_size);
+
+    const newBuffer = await sharp({
+      create: {
+        width: new_size,
+        height: new_size,
+        channels: hasTransparency ? 4 : 3,
+        background: hasTransparency
+          ? { r: 0, g: 0, b: 0, alpha: 0 }
+          : { r: 255, g: 255, b: 255 },
+      },
+    })
+      .composite([{ input: await image.toBuffer(), gravity: "center" }])
+      .png()
+      .toBuffer();
+
+    newImage = sharp(newBuffer);
+  }
+
+  // Resize if larger than maxSize
+  if (width > maxSize || height > maxSize) {
+    newImage = newImage.resize(maxSize, maxSize);
+  }
+
+  // Save the image
+  return await newImage.webp().toBuffer();
+}
