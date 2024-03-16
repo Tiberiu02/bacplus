@@ -5,7 +5,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
 import sharp from "sharp";
-import { findStorageZone, uploadFile } from "infra/cdn/bunny";
+import { findStorageZone, uploadFile } from "../../infra/cdn/bunny";
 
 const User = z.object({
   id: z.string(),
