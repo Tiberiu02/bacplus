@@ -8,7 +8,11 @@ function getAuthToken() {
   let token = "";
 
   try {
-    const userData = JSON.parse(localStorage.getItem(userDataStorageKey) || "");
+    const userData = JSON.parse(
+      localStorage.getItem(userDataStorageKey) || ""
+    ) as {
+      token: string;
+    };
     token = "Bearer " + userData.token;
   } catch (e) {}
 

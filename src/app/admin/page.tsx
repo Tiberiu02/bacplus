@@ -112,7 +112,7 @@ function Institutie({
     setImages(imageList);
 
     if (imageList.length == 1) {
-      upload(imageList[0]?.dataURL || "");
+      void upload(imageList[0]?.dataURL || "");
     }
   };
 
