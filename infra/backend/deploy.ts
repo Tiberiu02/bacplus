@@ -6,7 +6,7 @@ import path from "path";
 dotenv.config();
 
 const bundleFile = "app-bundle.js";
-const bundleLicence = 'app-bundle.js.LICENSE.txt'
+const bundleLicence = "app-bundle.js.LICENSE.txt";
 const bundlePath = path.join(__dirname, bundleFile);
 
 const config: webpack.Configuration = {
@@ -19,6 +19,9 @@ const config: webpack.Configuration = {
   },
   resolve: {
     extensions: [".ts", ".js", ".mjs"],
+  },
+  externals: {
+    sharp: "commonjs sharp",
   },
   target: "node",
   module: {
