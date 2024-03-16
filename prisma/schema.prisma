@@ -65,28 +65,29 @@ model alias {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model institutii {
-  id         String  @id
-  nume       String
-  rank       Float?
-  adresa     String?
-  website    String?
-  email      String?
-  telefon    String?
-  wikipedia  String?
-  facebook   String?
-  instagram  String?
-  youtube    String?
-  cod_siiir  String? @unique(map: "sqlite_autoindex_institutii_2")
-  cod_fiscal String?
-  liceu      String?
-  gimnaziu   String?
-  latlong    String?
-  uri        String?
-  sigla      String?
-  sigla_lg   String?
-  sigla_xs   String?
-  info_sigla String?
-  siiir      siiir?  @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
+  id           String  @id
+  nume         String
+  rank         Float?
+  adresa       String?
+  website      String?
+  email        String?
+  telefon      String?
+  wikipedia    String?
+  facebook     String?
+  instagram    String?
+  youtube      String?
+  cod_siiir    String? @unique(map: "sqlite_autoindex_institutii_2")
+  cod_fiscal   String?
+  liceu        String?
+  gimnaziu     String?
+  latlong      String?
+  uri          String?
+  sigla        String?
+  sigla_lg     String?
+  sigla_xs     String?
+  info_sigla   String?
+  last_updated Float?
+  siiir        siiir?  @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model siiir {

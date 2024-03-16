@@ -171,6 +171,7 @@ export const appRouter = router({
             sigla: `${input.id}.${ext}`,
             sigla_lg: imageLg ? "da" : null,
             sigla_xs: imageXs ? "da" : null,
+            last_updated: Date.now(),
           },
         });
       }),
@@ -187,6 +188,7 @@ export const appRouter = router({
             sigla: null,
             sigla_lg: null,
             sigla_xs: null,
+            last_updated: Date.now(),
           },
         });
       }),
@@ -201,6 +203,7 @@ export const appRouter = router({
           },
           data: {
             info_sigla: input.faraSigla ? "lipsa" : null,
+            last_updated: Date.now(),
           },
         });
         console.log("updated", input.id);
