@@ -4,8 +4,9 @@ import path from "path";
 import https from "https";
 import fs from "fs";
 import cliProgress from "cli-progress";
-import "dotenv/config";
 import { Readable } from "stream";
+
+import "dotenv/config";
 
 const NUM_WORKERS = 64;
 const ACCESS_KEY = process.env.BUNNY_ACCESS_KEY!;
@@ -118,6 +119,55 @@ async function createPullZone(name: string, storageZone: StorageZone) {
   console.log(`Created pull zone ${name}`);
 
   return pullZone;
+}
+
+export async function listFiles(storageZone: StorageZone, path: string = "") {
+  if (!path.startsWith("/") || !path.endsWith("/")) {
+    throw new Error("Invalid path: Path must start and end with a slash");
+  }
+
+  // const trimmedPath = path.replace(/^\/+|\/+$/g, "");
+  const url = `https://${storageZone.StorageHostname}/${storageZone.Name}${path}`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      AccessKey: storageZone.Password,
+    },
+  };
+
+  const response = await fetch(url, options);
+
+  if (response.status !== 200) {
+    throw new Error(`Error listing files: ${await response.text()}`);
+  }
+
+  return (await response.json()) as FileInfo[];
+}
+
+export async function purgeUrl(url: string) {
+  if (!url.startsWith("https://") || !url.includes(".b-cdn.net")) {
+    // Please enter the exact CDN URL of an individual file. You can also
+    // purge folders or wildcard files using * inside of the URL path.
+    // Ex: https://pullzone.b-cdn.net/folder/* or https://pullzone.b-cdn.net/folder/file
+    throw new Error("Invalid URL. Must be a BunnyCDN URL");
+  }
+
+  const apiUrl = "https://api.bunny.net/purge?url=" + encodeURIComponent(url);
+  const options = {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      AccessKey: ACCESS_KEY,
+    },
+  };
+
+  const response = await fetch(apiUrl, options);
+
+  if (response.status !== 200) {
+    throw new Error(`Error purging URL: ${await response.text()}`);
+  }
 }
 
 export const uploadFile = async (
@@ -559,4 +609,22 @@ export interface PullZone {
   AsiaOceaniaDiscount: number;
   RoutingFilters: string[];
   BlockNoneReferrer: boolean;
+}
+
+export interface FileInfo {
+  Guid: string;
+  StorageZoneName: string;
+  Path: string;
+  ObjectName: string;
+  Length: number;
+  LastChanged: string;
+  ServerId: number;
+  ArrayNumber: number;
+  IsDirectory: boolean;
+  UserId: string;
+  ContentType: string;
+  DateCreated: string;
+  StorageZoneId: number;
+  Checksum: string | null;
+  ReplicatedZones: string | null;
 }

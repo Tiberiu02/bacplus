@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node downloadData.cjs && prisma generate && del-cli .next/static-data && next build && cpy .next/static-data/ out/static-data/ --flat",
+    "build": "prisma generate && del-cli .next/static-data && next build && cpy .next/static-data/ out/static-data/ --flat",
     "dev": "concurrently --kill-others \"npx next dev\" \"npx ts-node-dev -r tsconfig-paths/register infra/backend/dev/server.ts\"",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",

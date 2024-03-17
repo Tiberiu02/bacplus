@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VscKey } from "react-icons/vsc";
 import { FiUser } from "react-icons/fi";
 import { MainContainer } from "~/components/MainContainer";
@@ -28,6 +28,7 @@ import {
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { BeatLoader } from "react-spinners";
+import { set } from "zod";
 
 export default function Admin() {
   const [jwt] = useAtom(userDataAtom);
@@ -68,6 +69,8 @@ function Institutie({
   sigla,
   sigla_xs,
   sigla_lg,
+  sigla_lipsa,
+  info_modificare,
 }: {
   id: string;
   nume: string;
@@ -76,9 +79,11 @@ function Institutie({
   sigla: string | null;
   sigla_xs: string | null;
   sigla_lg: string | null;
+  sigla_lipsa: boolean | null;
+  info_modificare?: string;
 }) {
   const judet = judetDupaCod(id.split("_").at(-1) || "");
-  const [faraSigla, setFaraSigla] = useState(false);
+  const [faraSigla, setFaraSigla] = useState(!!sigla_lipsa);
   const [isLoading, setIsLoading] = useState(false);
 
   const [images, setImages] = useState<ImageListType>(
@@ -93,14 +98,20 @@ function Institutie({
   const siglaMutation = trpc.sigle.upload.useMutation();
   const marcheazaFaraSigla = trpc.sigle.marcheazaFaraSigla.useMutation();
   const stergeSigla = trpc.sigle.delete.useMutation();
+  const [uploaded, setUploaded] = useState<false | "xs" | "lg">(false);
+
+  useEffect(() => {
+    setFaraSigla(!!sigla_lipsa);
+  }, [sigla_lipsa]);
 
   async function upload(dataUrl: string) {
     setIsLoading(true);
-    await siglaMutation.mutateAsync({
+    const x = await siglaMutation.mutateAsync({
       id,
       dataUrl: dataUrl || "",
     });
     setIsLoading(false);
+    setUploaded(x);
   }
 
   const onChange = (
@@ -113,12 +124,14 @@ function Institutie({
 
     if (imageList.length == 1) {
       void upload(imageList[0]?.dataURL || "");
+    } else if (imageList.length == 0) {
+      setUploaded(false);
     }
   };
 
   const image = images[0];
 
-  return sigla_lg ? null : (
+  return (
     <div className="flex flex-row gap-4 border-b-[1px] border-gray-200 pb-6 pt-2">
       <ReactImageUploading
         multiple
@@ -150,7 +163,10 @@ function Institutie({
                 <FaCamera className="text-4xl text-gray-500" />
               ) : image ? (
                 <>
-                  <img src={image.dataURL} className="w-full" />
+                  <img
+                    src={image.dataURL}
+                    className="h-full w-full object-scale-down"
+                  />
                 </>
               ) : (
                 <>
@@ -180,7 +196,16 @@ function Institutie({
         <div className="mb-2 font-semibold">
           {rank || "?"}. {nume}{" "}
           <span className="font-normal">({judet.numeIntreg})</span>
-          {sigla_xs ? (
+          {faraSigla || sigla_lg || uploaded ? (
+            <div className="ml-4 inline font-medium text-green-500">
+              <FaDotCircle className="mr-2 mt-[-2px] inline" />
+              {sigla_lg || uploaded == "lg"
+                ? "Siglă mare"
+                : sigla_xs || uploaded == "xs"
+                ? "Siglă mică"
+                : "Fără siglă"}
+            </div>
+          ) : sigla_xs ? (
             <div className="ml-4 inline font-medium text-orange-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
               Siglă prea mică
@@ -226,22 +251,49 @@ function Institutie({
           />
           {sigla_xs ? "Fără siglă mai mare" : "Fără siglă"}
         </button>
+        {info_modificare && (
+          <div className="mt-2 text-sm opacity-50">
+            Ultima modificare: {info_modificare}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 function Dashboard() {
-  const data = trpc.sigle.institutiiFaraSigla.useQuery();
+  const data = trpc.sigle.institutii.useQuery(undefined, {
+    staleTime: Infinity,
+  });
+  const [page, setPage] = useState<"lipsa" | "complet">("lipsa");
+
   return (
     <MainContainer>
-      {/* <p className="mt-24 text-center text-xl">Te-ai conectat cu succes!</p>
-      <p className="mt-2 text-center text-xl">
-        În curând, aici vom putea administra toate datele BacPlus.
-      </p> */}
       <Title>Adăugare sigle</Title>
+
+      <div className="flex w-full select-none justify-center gap-4 pb-8">
+        <div
+          className={twMerge(
+            "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
+            page === "lipsa" ? "border-black" : "border-transparent"
+          )}
+          onClick={() => setPage("lipsa")}
+        >
+          Lipsă
+        </div>
+        <div
+          className={twMerge(
+            "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
+            page === "complet" ? "border-black" : "border-transparent"
+          )}
+          onClick={() => setPage("complet")}
+        >
+          Complet
+        </div>
+      </div>
+
       {data.data ? (
-        data.data.map((i) => (
+        (page == "lipsa" ? data.data.lipsa : data.data.complet).map((i) => (
           <Institutie
             key={i.id}
             id={i.id}
@@ -251,6 +303,8 @@ function Dashboard() {
             sigla={i.sigla}
             sigla_xs={i.sigla_xs}
             sigla_lg={i.sigla_lg}
+            sigla_lipsa={i.sigla_lipsa}
+            info_modificare={i.info_modificare}
           />
         ))
       ) : (

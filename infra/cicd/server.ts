@@ -50,6 +50,7 @@ server.post("/pull-and-deploy", async (req, res) => {
       await execCmd("git", ["pull"]);
       await execCmd("npm", ["install"]);
       await execCmd("npm", ["run", "build"]);
+      // Remove .next folder
       await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts", "bacplus-test"]);
       await execCmd("npx", ["ts-node", "infra/backend/deploy.ts"]);
     } catch (e) {

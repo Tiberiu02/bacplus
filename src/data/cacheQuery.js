@@ -17,18 +17,20 @@ async function computeQuery(key, f) {
   } catch (e) {
     const result = await f();
     await fs.mkdir(cacheDir, { recursive: true });
-    await fs.writeFile(cachePath, JSON.stringify(result));
+    await fs.writeFile(
+      cachePath,
+      JSON.stringify(result, (_, v) =>
+        typeof v === "bigint" ? v.toString() : v
+      )
+    );
     return result;
   }
 }
 
 export async function computeAllQueries(queryFunctions) {
-  return Object.fromEntries(
-    await Promise.all(
-      Object.entries(queryFunctions).map(async ([key, f]) => [
-        key,
-        await computeQuery(key, f),
-      ])
-    )
-  );
+  const obj = {};
+  for (const [key, f] of Object.entries(queryFunctions)) {
+    obj[key] = await computeQuery(key, f);
+  }
+  return obj;
 }

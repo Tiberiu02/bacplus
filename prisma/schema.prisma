@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -16,27 +16,27 @@ model bac {
   sex                    String?
   promotie_anterioara    String
   specializare           String
-  lr_init                Float?
-  lr_cont                Float?
-  lr_final               Float?
+  lr_init                Float?  @db.Real
+  lr_cont                Float?  @db.Real
+  lr_final               Float?  @db.Real
   limba_materna          String?
-  lm_init                Float?
-  lm_cont                Float?
-  lm_final               Float?
+  lm_init                Float?  @db.Real
+  lm_cont                Float?  @db.Real
+  lm_final               Float?  @db.Real
   limba_moderna          String
   disciplina_obligatorie String
-  do_init                Float?
-  do_cont                Float?
-  do_final               Float?
+  do_init                Float?  @db.Real
+  do_cont                Float?  @db.Real
+  do_final               Float?  @db.Real
   disciplina_alegere     String
-  da_init                Float?
-  da_cont                Float?
-  da_final               Float?
-  medie                  Float?
-  my_medie               Float?
+  da_init                Float?  @db.Real
+  da_cont                Float?  @db.Real
+  da_final               Float?  @db.Real
+  medie                  Float?  @db.Real
+  my_medie               Float?  @db.Real
   rezultat               String
 
-  @@id([an, cod_candidat])
+  @@id([an, cod_candidat], map: "idx_16399_sqlite_autoindex_bac_1")
 }
 
 model en {
@@ -44,30 +44,30 @@ model en {
   cod_candidat            String
   id_judet                String
   id_scoala               String
-  lr_final                Float?
-  ma_final                Float?
+  lr_final                Float?  @db.Real
+  ma_final                Float?  @db.Real
   limba_materna           String?
-  lm_final                Float?
-  medie_en                Float?
-  medie_abs               Float?
-  medie_adm               Float?
+  lm_final                Float?  @db.Real
+  medie_en                Float?  @db.Real
+  medie_abs               Float?  @db.Real
+  medie_adm               Float?  @db.Real
   repartizat_id_liceu     String?
   repartizat_specializare String?
 
-  @@id([an, cod_candidat])
+  @@id([an, cod_candidat], map: "idx_16384_sqlite_autoindex_en_1")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model alias {
-  alternativ String @id
+  alternativ String @id(map: "idx_16394_sqlite_autoindex_alias_1")
   corect     String
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model institutii {
-  id           String  @id
+  id           String  @id(map: "idx_16404_sqlite_autoindex_institutii_1")
   nume         String
-  rank         Float?
+  rank         Int?
   adresa       String?
   website      String?
   email        String?
@@ -76,31 +76,31 @@ model institutii {
   facebook     String?
   instagram    String?
   youtube      String?
-  cod_siiir    String? @unique(map: "sqlite_autoindex_institutii_2")
+  cod_siiir    String? @unique(map: "idx_16404_sqlite_autoindex_institutii_2")
   cod_fiscal   String?
   liceu        String?
   gimnaziu     String?
   latlong      String?
-  uri          String?
   sigla        String?
   sigla_lg     String?
   sigla_xs     String?
-  info_sigla   String?
-  last_updated Float?
+  last_updated BigInt?
+  last_author  String?
+  sigla_lipsa  Boolean @default(false)
   siiir        siiir?  @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model siiir {
-  cod                   String      @id
-  aux_id                String      @unique(map: "index_aux_id")
-  denumire              String
-  denumire_scurta       String
-  localitate            String
-  localitate_superioara String
-  judet                 String
-  statut                String
-  tip_unitate           String
-  forma_proprietate     String
+  cod                   String      @id(map: "idx_16389_sqlite_autoindex_siiir_1")
+  aux_id                String?     @unique(map: "idx_16389_index_aux_id")
+  denumire              String?
+  denumire_scurta       String?
+  localitate            String?
+  localitate_superioara String?
+  judet                 String?
+  statut                String?
+  tip_unitate           String?
+  forma_proprietate     String?
   strada                String?
   nr_strada             String?
   cod_postal            String?
@@ -114,7 +114,7 @@ model siiir {
 
 model users {
   id       String @id
-  email    String @unique(map: "sqlite_autoindex_users_2")
+  email    String
   password String
   name     String
 }

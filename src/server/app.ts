@@ -5,7 +5,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
 import sharp from "sharp";
-import { findStorageZone, uploadFile } from "../../infra/cdn/bunny";
+import { findStorageZone, purgeUrl, uploadFile } from "../../infra/cdn/bunny";
 
 const User = z.object({
   id: z.string(),
@@ -84,11 +84,34 @@ export const appRouter = router({
     }),
 
   sigle: router({
-    institutiiFaraSigla: protectedProcedure.query(async ({ ctx }) => {
-      return (
+    institutii: protectedProcedure.query(async ({ ctx }) => {
+      const authors = await ctx.prisma.users.findMany();
+
+      function getInfoModificare(
+        authordId: string | null,
+        date: bigint | null
+      ) {
+        if (!date) {
+          return "";
+        }
+        let info = "";
+        const author = authors.find((a) => a.id === authordId);
+        if (author) {
+          info += `${author.name}, `;
+        }
+        const dateStr =
+          new Date(Number(date))
+            .toISOString()
+            .replace("T", ", ")
+            .replace(/\.\d+Z/, "") + " UTC";
+        info += dateStr;
+        return info;
+      }
+
+      const lipsa = (
         await ctx.prisma.institutii.findMany({
           where: {
-            info_sigla: null,
+            sigla_lipsa: false,
             sigla_lg: null,
             rank: {
               lt: 10000,
@@ -107,7 +130,54 @@ export const appRouter = router({
         sigla: i.sigla,
         sigla_xs: i.sigla_xs,
         sigla_lg: i.sigla_lg,
+        sigla_lipsa: i.sigla_lipsa,
+        info_modificare: getInfoModificare(i.last_author, i.last_updated),
       }));
+
+      const complet = (
+        await ctx.prisma.institutii.findMany({
+          where: {
+            AND: [
+              {
+                rank: {
+                  lt: 10000,
+                },
+              },
+              {
+                OR: [
+                  {
+                    sigla_lg: {
+                      not: null,
+                    },
+                  },
+                  {
+                    sigla_lipsa: true,
+                  },
+                ],
+              },
+            ],
+          },
+          orderBy: {
+            last_updated: "desc",
+          },
+          take: 100,
+        })
+      ).map((i) => ({
+        id: i.id,
+        nume: i.nume,
+        website: i.website,
+        rank: i.rank,
+        sigla: i.sigla,
+        sigla_xs: i.sigla_xs,
+        sigla_lg: i.sigla_lg,
+        sigla_lipsa: i.sigla_lipsa,
+        info_modificare: getInfoModificare(i.last_author, i.last_updated),
+      }));
+
+      return {
+        lipsa,
+        complet,
+      };
     }),
 
     upload: protectedProcedure
@@ -147,12 +217,19 @@ export const appRouter = router({
           buffer,
           assetsStorageZone
         );
+        await purgeUrl(
+          `https://bacplus-assets.b-cdn.net/sigle/original/${input.id}.${ext}`
+        );
+
         if (imageLg) {
           console.log("uploading lg");
           await uploadFile(
             `sigle/lg/${input.id}.webp`,
             imageLg,
             assetsStorageZone
+          );
+          await purgeUrl(
+            `https://bacplus-assets.b-cdn.net/sigle/lg/${input.id}.webp`
           );
         }
         if (imageXs) {
@@ -161,6 +238,9 @@ export const appRouter = router({
             `sigle/xs/${input.id}.webp`,
             imageXs,
             assetsStorageZone
+          );
+          await purgeUrl(
+            `https://bacplus-assets.b-cdn.net/sigle/xs/${input.id}.webp`
           );
         }
         await ctx.prisma.institutii.update({
@@ -172,8 +252,11 @@ export const appRouter = router({
             sigla_lg: imageLg ? "da" : null,
             sigla_xs: imageXs ? "da" : null,
             last_updated: Date.now(),
+            last_author: ctx.user.id,
           },
         });
+
+        return imageLg ? "lg" : "xs";
       }),
 
     delete: protectedProcedure
@@ -189,6 +272,7 @@ export const appRouter = router({
             sigla_lg: null,
             sigla_xs: null,
             last_updated: Date.now(),
+            last_author: ctx.user.id,
           },
         });
       }),
@@ -202,8 +286,9 @@ export const appRouter = router({
             id: input.id,
           },
           data: {
-            info_sigla: input.faraSigla ? "lipsa" : null,
+            sigla_lipsa: input.faraSigla,
             last_updated: Date.now(),
+            last_author: ctx.user.id,
           },
         });
         console.log("updated", input.id);
