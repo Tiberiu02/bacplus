@@ -2,6 +2,7 @@ import express from "express";
 import { spawn } from "child_process";
 import https from "https";
 import dotenv from "dotenv";
+import fs from "fs/promises";
 import { sslCertificate, sslPrivateKey } from "../ssl";
 dotenv.config();
 
@@ -49,8 +50,8 @@ server.post("/pull-and-deploy", async (req, res) => {
     try {
       await execCmd("git", ["pull"]);
       await execCmd("npm", ["install"]);
+      await fs.rm(".next", { recursive: true, force: true });
       await execCmd("npm", ["run", "build"]);
-      // Remove .next folder
       await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts", "bacplus-test"]);
       await execCmd("npx", ["ts-node", "infra/backend/deploy.ts"]);
     } catch (e) {
