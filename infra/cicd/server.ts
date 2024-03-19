@@ -52,7 +52,7 @@ server.post("/pull-and-deploy", async (req, res) => {
       await execCmd("npm", ["install"]);
       await fs.rm(".next", { recursive: true, force: true });
       await execCmd("npm", ["run", "build"]);
-      await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts", "bacplus-test"]);
+      await execCmd("npx", ["ts-node", "infra/cdn/bunny.ts", "bacplus"]);
       await execCmd("npx", ["ts-node", "infra/backend/deploy.ts"]);
     } catch (e) {
       console.error(e);

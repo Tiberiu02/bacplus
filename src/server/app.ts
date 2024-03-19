@@ -83,6 +83,68 @@ export const appRouter = router({
       };
     }),
 
+  stats: protectedProcedure.query(async ({ ctx }) => {
+    const users = await ctx.prisma.users.findMany();
+    const contributii = await ctx.prisma.institutii.groupBy({
+      by: ["last_author"],
+      _count: {
+        last_author: true,
+      },
+      where: {
+        last_author: {
+          not: null,
+        },
+      },
+    });
+
+    const institutiiComplet = await ctx.prisma.institutii.aggregate({
+      _count: true,
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                sigla_lg: {
+                  not: null,
+                },
+              },
+              {
+                sigla_lipsa: true,
+              },
+            ],
+          },
+          {
+            rank: {
+              lt: 10000,
+            },
+          },
+        ],
+      },
+    });
+
+    const institutiiLipsa = await ctx.prisma.institutii.aggregate({
+      _count: true,
+      where: {
+        sigla_lipsa: false,
+        sigla_lg: null,
+        rank: {
+          lt: 10000,
+        },
+      },
+    });
+
+    return {
+      leaderboard: contributii
+        .map((c) => ({
+          name: users.find((u) => u.id === c.last_author)?.name,
+          count: c._count.last_author,
+        }))
+        .sort((a, b) => b.count - a.count),
+      lipsa: institutiiLipsa._count,
+      complet: institutiiComplet._count,
+    };
+  }),
+
   sigle: router({
     institutii: protectedProcedure.query(async ({ ctx }) => {
       const authors = await ctx.prisma.users.findMany();

@@ -15,20 +15,12 @@ import { twMerge } from "tailwind-merge";
 import { userDataAtom } from "./userData";
 import { judetDupaCod } from "~/data/coduriJudete";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
-import { CopyButton } from "~/components/CopyButton";
 import { LinkText } from "~/components/LinkText";
-import {
-  FaCamera,
-  FaCross,
-  FaDeleteLeft,
-  FaPlus,
-  FaTrash,
-  FaX,
-} from "react-icons/fa6";
+import { FaCamera, FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { BeatLoader } from "react-spinners";
-import { set } from "zod";
+import { Table } from "~/components/Table";
 
 export default function Admin() {
   const [jwt] = useAtom(userDataAtom);
@@ -262,6 +254,7 @@ function Institutie({
 }
 
 function Dashboard() {
+  const stats = trpc.stats.useQuery();
   const data = trpc.sigle.institutii.useQuery(undefined, {
     staleTime: Infinity,
   });
@@ -269,6 +262,41 @@ function Dashboard() {
 
   return (
     <MainContainer>
+      <Title>Contribuții</Title>
+
+      <div className="flex flex-col gap-2">
+        {stats.data ? (
+          <Table
+            columns={[
+              {
+                header: "Loc",
+                type: "number",
+                value: (rowData, rowIndex) => rowIndex + 1,
+                decimals: 0,
+              },
+              {
+                header: "Nume",
+                type: "text",
+                value: (rowData) => rowData.name,
+              },
+              {
+                header: "Sigle",
+                type: "number",
+                value: (rowData) => rowData.count,
+                decimals: 0,
+                sortable: true,
+                primarySortOrder: "DESC",
+                defaultSortingColumn: true,
+              },
+            ]}
+            data={stats.data.leaderboard}
+            searchable={false}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+
       <Title>Adăugare sigle</Title>
 
       <div className="flex w-full select-none justify-center gap-4 pb-8">
