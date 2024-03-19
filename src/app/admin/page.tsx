@@ -293,7 +293,7 @@ function Dashboard() {
             searchable={false}
           />
         ) : (
-          <></>
+          <LoadingSpinner className="mx-auto" />
         )}
       </div>
 
