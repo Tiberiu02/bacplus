@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { StaticData } from "./staticData";
 
-const staticDataRoute = "/static-data";
+const staticDataRoute = "/_next/static/data";
 
 async function fetchStaticData<T>(
   hash: string,

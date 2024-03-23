@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "prisma generate && del-cli .next/static-data && next build && cpy .next/static-data/ out/static-data/ --flat",
+    "build": "prisma generate && next build",
     "dev": "concurrently --kill-others \"npx next dev\" \"npx ts-node-dev -r tsconfig-paths/register infra/backend/dev/server.ts\"",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
-    "start": "concurrently --kill-others \"npx serve out\" \"npx ts-node-dev infra/backend/dev/server.ts\"",
+    "start": "next start",
     "backend": "concurrently --kill-others \"npx ts-node infra/backend/server.ts\" \"npx ts-node infra/cicd/server.ts\"",
     "trigger-cicd": "node infra/cicd/ping.js"
   },

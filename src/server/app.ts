@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
 import sharp from "sharp";
 import { findStorageZone, purgeUrl, uploadFile } from "../../infra/cdn/bunny";
+import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
 const User = z.object({
   id: z.string(),
@@ -25,6 +26,23 @@ export const createExpressContext = ({
   res,
 }: CreateExpressContextOptions): Context => {
   const token = req.headers.authorization?.split(" ")[1];
+
+  if (token) {
+    const user = User.parse(jwt.verify(token, JWT_SECRET));
+
+    return {
+      user,
+      prisma,
+    };
+  }
+
+  return { prisma };
+};
+
+export const createFetchContext = ({
+  req,
+}: FetchCreateContextFnOptions): Context => {
+  const token = req.headers.get("authorization")?.split(" ")[1];
 
   if (token) {
     const user = User.parse(jwt.verify(token, JWT_SECRET));

@@ -1,7 +1,6 @@
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "../server/app";
-import { env } from "~/env.js";
 import { userDataStorageKey } from "~/app/admin/userData";
 
 function getAuthToken() {
@@ -19,6 +18,14 @@ function getAuthToken() {
   return token;
 }
 
+function getBaseUrl() {
+  if (typeof window !== "undefined")
+    // browser should use relative path
+    return "";
+  // assume localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
 export const trpc = createTRPCNext<AppRouter>({
   config(_opts) {
     return {
@@ -28,7 +35,7 @@ export const trpc = createTRPCNext<AppRouter>({
            * If you want to use SSR, you need to use the server's full URL
            * @link https://trpc.io/docs/v11/ssr
            **/
-          url: env.NEXT_PUBLIC_TRPC_API_URL,
+          url: `${getBaseUrl()}/api/trpc`,
 
           // You can pass any HTTP headers you wish here
           headers() {

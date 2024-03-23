@@ -2,6 +2,8 @@ import type { StaticData } from "./staticData";
 import { createHash } from "crypto";
 import fs from "fs";
 
+const staticDataFolder = ".next/static/data";
+
 export function createStaticData<T>(
   data: T,
   minimalFirstLoadData: T
@@ -11,9 +13,9 @@ export function createStaticData<T>(
     .digest("hex")
     .slice(0, 16);
 
-  if (!fs.existsSync(`.next/static-data/${hash}.txt`)) {
-    fs.mkdirSync(".next/static-data", { recursive: true });
-    fs.writeFileSync(`.next/static-data/${hash}.txt`, JSON.stringify(data));
+  if (!fs.existsSync(`${staticDataFolder}/${hash}.txt`)) {
+    fs.mkdirSync(staticDataFolder, { recursive: true });
+    fs.writeFileSync(`${staticDataFolder}/${hash}.txt`, JSON.stringify(data));
   }
 
   return {
