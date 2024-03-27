@@ -36,7 +36,7 @@ export function generateMetadata({
     title = `Top licee din București ${an} la Bac și Admitere`;
     description = `Liceele din București clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din București`;
   } else {
-    title = `Lista liceelor din ${judet.numeIntreg} ${an} – admitere, bac, top, hartă`;
+    title = `Licee ${judet.numeIntreg} ${an} – admitere, bac, top, hartă`;
     description = `Liceele din ${judet.numeIntreg} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${judet.numeIntreg}`;
   }
 

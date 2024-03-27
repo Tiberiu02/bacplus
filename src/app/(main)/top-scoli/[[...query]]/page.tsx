@@ -25,8 +25,8 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
 
   const title = judet?.numeIntreg
-    ? `Top școli gimnaziale ${judet?.numeIntreg} ${an} la Evaluarea Națională`
-    : `Top școli gimnaziale ${an} la Evaluarea Națională`;
+    ? `Școli gimnaziale ${judet?.numeIntreg} ${an} la Evaluarea Națională`
+    : `Școli gimnaziale ${an} la Evaluarea Națională`;
 
   const description = `Descoperă clasamentul școlilor din ${
     judet?.numeIntreg ?? "România"
