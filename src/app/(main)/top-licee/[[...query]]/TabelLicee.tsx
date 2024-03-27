@@ -9,9 +9,11 @@ import { useStaticData } from "~/static-data/useStaticData";
 export function TabelLicee({
   data: staticData,
   anAdmitere,
+  anBac,
 }: {
   data: StaticData<LiceuDataArray[]>;
-  anAdmitere?: number;
+  anAdmitere: number;
+  anBac: number;
 }) {
   const data = useStaticData(staticData);
   const licee = data.map(liceuFromDataArray);
@@ -53,7 +55,7 @@ export function TabelLicee({
         },
         {
           type: "number",
-          header: "Medie Bac",
+          header: `Medie Bac ${anBac}`,
           decimals: 2,
           value: (rowData) => rowData.medieBac,
           sortable: true,
@@ -62,20 +64,20 @@ export function TabelLicee({
         {
           type: "number",
           decimals: 2,
-          header: `Medie Admitere ${anAdmitere ?? ""}`,
+          header: `Medie Admitere ${anAdmitere}`,
           value: (rowData) => rowData.medieAdm,
           sortable: true,
         },
         {
           type: "percentage",
-          header: "Rată de promovare",
+          header: `Rată de promovare ${anBac}`,
           value: (rowData) => rowData.rataPromovare,
           sortable: true,
         },
         {
           type: "number",
           decimals: 0,
-          header: "Elevi Bac",
+          header: `Elevi Bac ${anBac}`,
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },

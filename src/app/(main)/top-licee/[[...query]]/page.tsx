@@ -188,7 +188,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <TabelLicee
           data={createStaticData(liceeData, liceeData.slice(0, 51))}
-          anAdmitere={anAdmitere?.an != +an ? anAdmitere?.an : undefined}
+          anAdmitere={anAdmitere?.an ?? an}
+          anBac={an}
         />
       </MainContainer>
     </>
