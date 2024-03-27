@@ -26,17 +26,18 @@ export function generateMetadata({
   params: { query: string[] };
 }): Metadata {
   const [an, judet] = parseParamsTop(params.query, ultimulAnBac);
+  const anCurent = new Date().getFullYear();
 
   let title, description;
 
   if (!judet) {
-    title = `Top licee ${an} la Bac și Admitere`;
+    title = `Top licee ${anCurent} la Bac și Admitere`;
     description = `Liceele clasate după mediile la Bac și Admitere în ${an}. Harta liceelor`;
   } else if (judet.nume == "BUCURESTI") {
-    title = `Top licee din București ${an} la Bac și Admitere`;
+    title = `Top licee din București ${anCurent} la Bac și Admitere`;
     description = `Liceele din București clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din București`;
   } else {
-    title = `Licee ${judet.numeIntreg} ${an} – admitere, bac, top, hartă`;
+    title = `Licee ${judet.numeIntreg} ${anCurent} – admitere, bac, top, hartă`;
     description = `Liceele din ${judet.numeIntreg} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${judet.numeIntreg}`;
   }
 

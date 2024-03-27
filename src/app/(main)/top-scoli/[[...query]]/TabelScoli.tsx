@@ -9,8 +9,10 @@ import { useStaticData } from "~/static-data/useStaticData";
 
 export function TabelScoli({
   data: staticData,
+  an,
 }: {
   data: StaticData<ScoalaDataArray[]>;
+  an: number;
 }) {
   const data = useStaticData(staticData);
 
@@ -54,7 +56,7 @@ export function TabelScoli({
         {
           type: "number",
           decimals: 2,
-          header: "Medie Evaluare",
+          header: `Medie Evaluare ${an}`,
           value: (rowData) => rowData.medieEvaluareNationala,
           sortable: true,
           defaultSortingColumn: true,
@@ -62,21 +64,21 @@ export function TabelScoli({
         {
           type: "number",
           decimals: 2,
-          header: "Medie Română",
+          header: `Medie Română ${an}`,
           value: (rowData) => rowData.medieLimbaRomana,
           sortable: true,
         },
         {
           type: "number",
           decimals: 2,
-          header: "Medie Matematică",
+          header: `Medie Matematică ${an}`,
           value: (rowData) => rowData.medieMatematica,
           sortable: true,
         },
         {
           type: "number",
           decimals: 0,
-          header: "Elevi",
+          header: `Elevi ${an}`,
           value: (rowData) => rowData.numCandidati,
           sortable: true,
         },

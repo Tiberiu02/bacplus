@@ -23,10 +23,11 @@ export function generateMetadata({
   params: { query: string[] };
 }): Metadata {
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
+  const anCurent = new Date().getFullYear();
 
   const title = judet?.numeIntreg
-    ? `Școli gimnaziale ${judet?.numeIntreg} ${an} la Evaluarea Națională`
-    : `Școli gimnaziale ${an} la Evaluarea Națională`;
+    ? `Școli gimnaziale ${judet?.numeIntreg} ${anCurent} la Evaluarea Națională`
+    : `Școli gimnaziale ${anCurent} la Evaluarea Națională`;
 
   const description = `Descoperă clasamentul școlilor din ${
     judet?.numeIntreg ?? "România"
@@ -188,6 +189,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <TabelScoli
           data={createStaticData(scoliData, scoliData.slice(0, 50))}
+          an={an}
         />
       </MainContainer>
     </>
