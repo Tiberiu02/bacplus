@@ -219,6 +219,16 @@ function Institutie({
           <FaExternalLinkAlt className="mr-2 mt-[-2px] inline" />
           Caută siglă pe Google
         </LinkText>
+        <LinkText
+          href={
+            "https://www.bing.com/images/search?q=" +
+            encodeURIComponent(nume + " " + judet.numeIntreg + " sigla")
+          }
+          target="_blank"
+        >
+          <FaExternalLinkAlt className="mr-2 mt-[-2px] inline" />
+          Caută siglă pe Bing
+        </LinkText>
         {website && (
           <LinkText href={website} target="_blank">
             <FaExternalLinkAlt className="mr-2 mt-[-2px] inline" />
