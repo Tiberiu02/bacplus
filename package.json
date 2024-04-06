@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "prisma generate && next build",
-    "dev": "concurrently --kill-others \"npx next dev\" \"npx ts-node-dev -r tsconfig-paths/register infra/backend/dev/server.ts\"",
+    "dev": "next dev",
     "prisma": "npx prisma db pull && npx prisma generate",
     "lint": "next lint",
     "start": "next start",
