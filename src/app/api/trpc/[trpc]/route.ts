@@ -10,3 +10,12 @@ const handler = (req: Request) =>
   });
 
 export { handler as GET, handler as POST };
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "100mb",
+    },
+    responseLimit: "100mb",
+  },
+};
