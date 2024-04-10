@@ -13,8 +13,10 @@ const config = {
 
   staticPageGenerationTimeout: 600,
 
-  serverActions: {
-    bodySizeLimit: "15mb", // Image upload limit (base64)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "15mb", // Image upload limit (base64)
+    },
   },
 
   /**
