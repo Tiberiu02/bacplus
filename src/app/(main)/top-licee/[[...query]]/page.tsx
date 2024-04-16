@@ -162,7 +162,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <Link target="_blank" href="https://zecelaen.ro" className="">
+        {/* <Link target="_blank" href="https://zecelaen.ro" className="">
           <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
             <span className="font-bold">Evaluarea Națională</span> bate la ușă?
             Hai cu noi pe{" "}
@@ -170,7 +170,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
             Avem subiecte oficiale cu grile interactive și explicații video,
             complet gratuit.
           </div>
-        </Link>
+        </Link> */}
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
