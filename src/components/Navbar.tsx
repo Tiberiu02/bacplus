@@ -24,11 +24,11 @@ const PAGES = {
     name: "Hartă",
     path: "/harta",
   },
-  testeEN: {
-    name: "Teste\xa0Evaluare",
-    path: "https://zecelaen.ro",
-    external: true,
-  },
+  // testeEN: {
+  //   name: "Teste\xa0Evaluare",
+  //   path: "https://zecelaen.ro",
+  //   external: true,
+  // },
 } as { [key: string]: { name: string; path: string; external?: boolean } };
 
 const HOME_PATH = "/";
