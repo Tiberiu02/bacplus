@@ -239,10 +239,10 @@ export default function Home() {
             cunoaștem îndeaproape, cu bune și cu rele. Am început acest proiect
             în 2021 ca un mic pas în direcția mult mai largă a digitalizării
             sistemului educațional românesc. Există nenumărate soluții digitale
-            care, dacă ar fi dezvoltate, ar putea putea fi de un real folos
-            pentru elevii, profesorii și părinții din învățământul românesc.
-            Depinde doar de noi ca următoarele generații să beneficieze de o
-            educație mai bună.
+            care, dacă ar fi dezvoltate, ar putea fi de un real folos pentru
+            elevii, profesorii și părinții din învățământul românesc. Depinde
+            doar de noi ca următoarele generații să beneficieze de o educație
+            mai bună.
           </p>
           <p>
             Pentru sugestii, idei, probleme cu platforma, sau orice altceva, ne

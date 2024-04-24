@@ -4,9 +4,11 @@ Welcome to the bacplus.ro website!
 
 # Planning
 
-- backend + admin panel
 - licee si scoli dupa localitate, in loc de judet. Majoritatea institutiilor au localitatea in SIIIR, in afara de ~100
 - harta: sigle si nume licee, bara de cautare
+- improve admin page
+- teste EN + admin
+- drizzle instead of prisma + disable static generation of institutions pages
 
 # Hetzner setup
 
