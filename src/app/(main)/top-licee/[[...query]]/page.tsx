@@ -33,11 +33,8 @@ export function generateMetadata({
   if (!judet) {
     title = `Top licee ${anCurent} la Bac și Admitere`;
     description = `Liceele clasate după mediile la Bac și Admitere în ${an}. Harta liceelor`;
-  } else if (judet.nume == "BUCURESTI") {
-    title = `Top licee din București ${anCurent} la Bac și Admitere`;
-    description = `Liceele din București clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din București`;
   } else {
-    title = `Licee ${judet.numeIntreg} ${anCurent} – admitere, bac, top, hartă`;
+    title = `Licee ${judet.numeIntreg} ${anCurent} – Admitere, Bac, Clasament, Hartă`;
     description = `Liceele din ${judet.numeIntreg} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${judet.numeIntreg}`;
   }
 
@@ -156,8 +153,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Clasamentul liceelor {judet && `din ${judet.numeIntreg}`} la
-          Bacalaureat și Admitere
+          Licee {judet && judet.numeIntreg} la Bacalaureat și Admitere
         </Title>
 
         <Announcements />
