@@ -235,17 +235,17 @@ export default function Home() {
         </Section>
         <Section title="Câteva cuvinte despre noi">
           <p>
-            După cei 12 ani petrecuți în sistemul educațional, am ajuns să îl
-            cunoaștem îndeaproape, cu bune și cu rele. Am început acest proiect
-            în 2021 ca un mic pas în direcția mult mai largă a digitalizării
-            sistemului educațional românesc. Există nenumărate soluții digitale
-            care, dacă ar fi dezvoltate, ar putea fi de un real folos pentru
-            elevii, profesorii și părinții din învățământul românesc. Depinde
-            doar de noi ca următoarele generații să beneficieze de o educație
-            mai bună.
+            La fel ca oricine a trecut prin sistemul educațional, și noi am
+            ajuns să îl cunoaștem îndeaproape, cu bune și cu rele. Am început
+            acest proiect în 2021 ca un mic pas în direcția mult mai largă a
+            digitalizării sistemului educațional românesc. Există nenumărate
+            soluții digitale care, dacă ar fi dezvoltate, ar putea fi de un real
+            folos pentru elevii, profesorii și părinții din învățământul
+            românesc. Ne dorim ca următoarele generații să beneficieze de o
+            educație mai bună.
           </p>
           <p>
-            Pentru sugestii, idei, probleme cu platforma, sau orice altceva, ne
+            Pentru sugestii, idei, probleme cu site-ul, sau orice altceva, ne
             puteți contacta prin e-mail la adresa{" "}
             <b>
               <i>contact@bacplus.ro.</i>
@@ -253,7 +253,7 @@ export default function Home() {
             Orice feedback este binevenit!
           </p>
 
-          <Authors />
+          {/* <Authors /> */}
         </Section>
       </MainContainer>
     </main>
