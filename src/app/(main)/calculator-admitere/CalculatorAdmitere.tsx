@@ -156,7 +156,7 @@ function InfoLiceu({
   return (
     <Card className="mt-4">
       <div className="flex items-center gap-4 font-bold">
-        <FaSchool className="inline shrink-0 text-2xl text-blue-500 opacity-60" />{" "}
+        <FaSchool className="hidden shrink-0 text-2xl text-blue-500 opacity-60 sm:inline" />{" "}
         {numeLiceu(idLiceu)}
       </div>
 
@@ -170,7 +170,7 @@ function InfoLiceu({
           ([specializare, rezultate]) => (
             <div className="mt-6" key={specializare}>
               <div className="font-bold">{specializare}</div>
-              <ul className="ml-4 mt-2 list-inside list-disc">
+              <ul className="ml-1 mt-2 list-inside list-disc">
                 {rezultate.map((a) => (
                   <li key={`${a.an}-${a.specializare}`}>
                     Ultima poziție {a.an}:{" "}
@@ -179,10 +179,10 @@ function InfoLiceu({
                   </li>
                 ))}
               </ul>
-              <div className="ml-0 mt-2 flex items-center gap-3">
+              <div className="ml-0 mt-2 flex items-center gap-4">
                 <div>Șanse de admitere:</div>
                 <PercentageBar
-                  className="inline-block w-20 text-center"
+                  className="mx-0"
                   value={probabilitate(pozitie, rezultate.at(-1)?.pozitie ?? 0)}
                 />
               </div>

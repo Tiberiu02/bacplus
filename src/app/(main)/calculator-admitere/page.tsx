@@ -102,11 +102,12 @@ export default function Calculator() {
           admis la liceul respectiv în anul anterior.
         </p>
         <p>
-          <b>Atenție!</b> Acest calculator este doar o estimare și nu garantează
-          că vei fi admis la liceul dorit. Rezultatele repartizării vor depinde
-          de alegerile celorlalți elevi, care variază de la un an la altul. De
-          asemenea, calculatorul nu poate lua în considerare modificări precum
-          specializarile adăugate, eliminate sau cu număr modificat de locuri.
+          <b>Atenție!</b> Acest calculator prezintă doar o estimare și nu
+          garantează că vei fi admis la liceul dorit. Rezultatele repartizării
+          vor fi influențate de alegerile celorlalți elevi, care variază de la
+          un an la altul. De asemenea, calculatorul nu poate lua în considerare
+          modificări precum specializarile adăugate, eliminate sau cu număr
+          modificat de locuri.
         </p>
 
         <ShareButtons className="my-4" />
