@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import { FiMenu, FiX } from "react-icons/fi";
@@ -52,6 +52,8 @@ export function Navbar({
   )?.[0];
   const isHomePage = false && currentPath == HOME_PATH;
 
+  const isPrideMonth = new Date().getMonth() == 5 || new Date().getMonth() == 6;
+
   return (
     <nav
       className={twMerge(
@@ -72,15 +74,24 @@ export function Navbar({
           <Link
             href={HOME_PATH}
             aria-label="Acasă"
-            className="flex items-center gap-2 text-lg"
+            className="relative flex items-center gap-2 text-lg"
           >
-            <Image
-              className="w-16"
-              src="/logo-text.svg"
-              alt="Logo"
-              width={96.25}
-              height={29.726563}
-            />
+            {isPrideMonth && (
+              <div
+                className={
+                  "bg-rainbow absolute h-full w-full rounded-xl opacity-20"
+                }
+              />
+            )}
+            <div className="relative m-[0.3rem] rounded-lg bg-white/40 p-[0.2rem_0.4rem]">
+              <Image
+                className="relative h-[1.5rem] w-16"
+                src="/logo-text.svg"
+                alt="Logo"
+                width={96.25}
+                height={29}
+              />
+            </div>
           </Link>
           <button
             className="text-2xl text-black sm:hidden"
