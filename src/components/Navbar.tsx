@@ -66,7 +66,7 @@ export function Navbar({
     >
       <div
         className={twMerge(
-          "flex w-full max-w-6xl flex-col bg-transparent px-5 py-5",
+          "flex w-full max-w-6xl flex-col bg-transparent px-5 py-4",
           isOverlay && "py-4"
         )}
       >
