@@ -52,7 +52,7 @@ export function Navbar({
   )?.[0];
   const isHomePage = false && currentPath == HOME_PATH;
 
-  const isPrideMonth = new Date().getMonth() == 5 || new Date().getMonth() == 6;
+  const isPrideMonth = new Date().getMonth() == 5;
 
   return (
     <nav
