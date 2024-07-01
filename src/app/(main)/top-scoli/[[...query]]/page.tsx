@@ -26,8 +26,8 @@ export function generateMetadata({
   const anCurent = new Date().getFullYear();
 
   const title = judet?.numeIntreg
-    ? `Școli gimnaziale ${judet?.numeIntreg} ${anCurent} la Evaluarea Națională`
-    : `Școli gimnaziale ${anCurent} la Evaluarea Națională`;
+    ? `Școli Gimnaziale ${judet?.numeIntreg} ${anCurent} - Hartă, Clasament, Evaluare`
+    : `Școli Gimnaziale ${anCurent} - Hartă, Clasament, Evaluare`;
 
   const description = `Descoperă clasamentul școlilor din ${
     judet?.numeIntreg ?? "România"
