@@ -105,9 +105,9 @@ export default function Calculator() {
           <b>Atenție!</b> Acest calculator prezintă doar o estimare și nu
           garantează că vei fi admis la liceul dorit. Rezultatele repartizării
           vor fi influențate de alegerile celorlalți elevi, care variază de la
-          un an la altul. De asemenea, calculatorul nu poate lua în considerare
-          modificări precum specializarile adăugate, eliminate sau cu număr
-          modificat de locuri.
+          un an la altul. De asemenea, calculatorul nu ține cont de criteriile
+          de departajare și nici de specializările modificate față de anul
+          precendent.
         </p>
 
         <ShareButtons className="my-4" />
