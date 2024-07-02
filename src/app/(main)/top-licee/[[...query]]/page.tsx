@@ -28,11 +28,9 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnBac);
   const anCurent = new Date().getFullYear();
 
-  let title, description;
-
   const numeJudet = judet?.numeIntreg ?? "România";
-  title = `Licee ${numeJudet} ${anCurent} – Admitere, Bac, Clasament, Hartă`;
-  description = `Liceele din ${numeJudet} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${numeJudet}`;
+  const title = `Licee ${numeJudet} ${anCurent} – Admitere, Bac, Clasament, Hartă`;
+  const description = `Liceele din ${numeJudet} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${numeJudet}`;
 
   return {
     title,

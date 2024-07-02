@@ -9,7 +9,7 @@ import { env } from "~/env.js";
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Calculator Admitere ${ultimulAnEn} | Bac Plus`,
+    title: `Calculator Admitere ${ultimulAnEn}`,
     description: `Află ce șanse ai să intri la liceul dorit în funcție de media obținută la Evaluare.`,
 
     openGraph: {

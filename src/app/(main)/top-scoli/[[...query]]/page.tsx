@@ -25,13 +25,11 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
   const anCurent = new Date().getFullYear();
 
-  const title = `Școli Gimnaziale ${
-    judet?.numeIntreg || "România"
-  } ${anCurent} - Hartă, Clasament, Evaluare`;
+  const numeJudet = judet?.numeIntreg ?? "România";
 
-  const description = `Descoperă clasamentul școlilor din ${
-    judet?.numeIntreg ?? "România"
-  } la Evaluarea Națională ${an}`;
+  const title = `Școli Gimnaziale ${numeJudet} ${anCurent} – Evaluare Națională, Clasament, Hartă`;
+
+  const description = `Descoperă clasamentul școlilor din ${numeJudet} la Evaluarea Națională ${an}`;
 
   return {
     title,
