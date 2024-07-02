@@ -25,9 +25,9 @@ export function generateMetadata({
   const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
   const anCurent = new Date().getFullYear();
 
-  const title = judet?.numeIntreg
-    ? `Școli Gimnaziale ${judet?.numeIntreg} ${anCurent} - Hartă, Clasament, Evaluare`
-    : `Școli Gimnaziale ${anCurent} - Hartă, Clasament, Evaluare`;
+  const title = `Școli Gimnaziale ${
+    judet?.numeIntreg || "România"
+  } ${anCurent} - Hartă, Clasament, Evaluare`;
 
   const description = `Descoperă clasamentul școlilor din ${
     judet?.numeIntreg ?? "România"
@@ -40,7 +40,7 @@ export function generateMetadata({
       title,
       description,
       siteName: "Bac Plus",
-      images: ["/og-banner.jpg"],
+      images: ["/og-banner.webp"],
       url: env.WEBSITE_URL,
     },
     robots: an != ultimulAnEn ? "noindex" : undefined,

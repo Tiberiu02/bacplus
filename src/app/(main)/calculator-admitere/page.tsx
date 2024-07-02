@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
       description:
         "Află ce șanse ai să intri la liceul dorit în funcție de media obținută la Evaluare.",
       siteName: "Bac Plus",
-      images: ["/og-banner.jpg"],
+      images: ["/og-banner.webp"],
       url: env.WEBSITE_URL,
     },
   };

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Descoperă statistici despre examenele de Bacalaureat și Evaluare Națională la nivel de liceu, școală generală, județ sau țară, precum și clasamente ale liceelor, școlilor generale și județelor.",
     siteName: "Bac Plus",
-    images: ["/og-banner.jpg"],
+    images: ["/og-banner.webp"],
     url: env.WEBSITE_URL,
   },
 };

@@ -30,13 +30,9 @@ export function generateMetadata({
 
   let title, description;
 
-  if (!judet) {
-    title = `Top licee ${anCurent} la Bac și Admitere`;
-    description = `Liceele clasate după mediile la Bac și Admitere în ${an}. Harta liceelor`;
-  } else {
-    title = `Licee ${judet.numeIntreg} ${anCurent} – Admitere, Bac, Clasament, Hartă`;
-    description = `Liceele din ${judet.numeIntreg} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${judet.numeIntreg}`;
-  }
+  const numeJudet = judet?.numeIntreg ?? "România";
+  title = `Licee ${numeJudet} ${anCurent} – Admitere, Bac, Clasament, Hartă`;
+  description = `Liceele din ${numeJudet} clasate după mediile la Bac și Admitere în ${an}. Harta liceelor din ${numeJudet}`;
 
   return {
     title,
@@ -45,7 +41,7 @@ export function generateMetadata({
       title,
       description,
       siteName: "Bac Plus",
-      images: ["/og-banner.jpg"],
+      images: ["/og-banner.webp"],
       url: env.WEBSITE_URL,
     },
     robots: an != ultimulAnBac ? "noindex" : undefined,

@@ -49,7 +49,7 @@ export function generateMetadata({
       title,
       description,
       siteName: "Bac Plus",
-      images: ["/og-banner.jpg"],
+      images: ["/og-banner.webp"],
       url: env.WEBSITE_URL,
     },
   };
