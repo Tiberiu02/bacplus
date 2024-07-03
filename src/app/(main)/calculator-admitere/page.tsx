@@ -53,7 +53,7 @@ export default function Calculator() {
   Object.entries(ierarhie).forEach(([_an, ierarhie]) => {
     Object.entries(ierarhie).forEach(([_judet, ierarhie]) => {
       for (let i = ierarhie.length - 2; i >= 0; i--) {
-        ierarhie[i] += ierarhie[i + 1] || 0;
+        ierarhie[i] = (ierarhie[i + 1] || 0) + (ierarhie[i] || 0);
       }
     });
   });
