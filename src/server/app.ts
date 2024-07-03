@@ -200,7 +200,7 @@ export const appRouter = router({
           orderBy: {
             rank: "asc",
           },
-          take: 100,
+          take: 1000,
         })
       ).map((i) => ({
         id: i.id,
@@ -240,7 +240,7 @@ export const appRouter = router({
           orderBy: {
             last_updated: "desc",
           },
-          take: 100,
+          take: 1000,
         })
       ).map((i) => ({
         id: i.id,

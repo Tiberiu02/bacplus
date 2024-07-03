@@ -168,6 +168,11 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
+        <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
+          <span className="font-bold">Nou!</span> Am adăugat rezultatele la
+          Evaluarea Națională 2024 înainte de contestații.
+        </div>
+
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
             defaultValue={judet?.nume ?? ""}

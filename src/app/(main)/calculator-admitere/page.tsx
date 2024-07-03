@@ -7,6 +7,8 @@ import { query, ultimulAnEn } from "~/data/dbQuery";
 import type { DateLicee, Ierarhie } from "./data";
 import { env } from "~/env.js";
 
+const NUM_ANI_AFISATI = 2;
+
 export function generateMetadata(): Metadata {
   return {
     title: `Calculator Admitere ${ultimulAnEn}`,
@@ -60,7 +62,7 @@ export default function Calculator() {
     const liceu = s.repartizat_id_liceu;
     const medie = s._min.medie_adm;
 
-    if (!liceu || !medie) return acc;
+    if (!liceu || !medie || s.an < ultimulAnEn - NUM_ANI_AFISATI) return acc;
 
     const judet = liceu.split("_").at(-1);
 

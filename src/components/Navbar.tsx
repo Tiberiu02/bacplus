@@ -24,6 +24,10 @@ const PAGES = {
     name: "Hartă",
     path: "/harta",
   },
+  calculatorAdmitere: {
+    name: "Calculator Admitere",
+    path: "/calculator-admitere",
+  },
   // testeEN: {
   //   name: "Teste\xa0Evaluare",
   //   path: "https://zecelaen.ro",
@@ -100,7 +104,7 @@ export function Navbar({
           >
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
-          <div className="hidden flex-row gap-6 sm:flex">
+          <div className="hidden flex-row gap-8 sm:flex">
             {Object.entries(PAGES).map(([key, { name, path, external }]) => (
               <Link
                 href={path}

@@ -152,15 +152,16 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        {/* <Link target="_blank" href="https://zecelaen.ro" className="">
+        <Link target="_blank" href="/calculator-admitere" className="">
           <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
-            <span className="font-bold">Evaluarea Națională</span> bate la ușă?
-            Hai cu noi pe{" "}
-            <span className="font-semibold text-blue-800">ZeceLaEN.ro</span>!
-            Avem subiecte oficiale cu grile interactive și explicații video,
-            complet gratuit.
+            <span className="font-bold">Ai dat Evaluarea Națională?</span> Află
+            ce șanse ai să intrii la liceul dorit folosind pagina{" "}
+            <span className="font-semibold text-blue-800">
+              Calculator Admitere
+            </span>
+            !
           </div>
-        </Link> */}
+        </Link>
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect

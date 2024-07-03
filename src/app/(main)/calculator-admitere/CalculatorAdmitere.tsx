@@ -197,7 +197,7 @@ function InfoLiceu({
 function probabilitate(pozitie: number, ultimaPozitie: number) {
   let p = normalcdf(0, Math.log(1.5), Math.log(ultimaPozitie / pozitie));
   p = Math.round(p * 100);
-  p = Math.max(5, Math.min(95, p));
+  p = Math.max(1, Math.min(95, p));
   return p;
 }
 
