@@ -155,7 +155,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
         <Link target="_blank" href="/calculator-admitere" className="">
           <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
             <span className="font-bold">Ai dat Evaluarea Națională?</span> Află
-            ce șanse ai să intrii la liceul dorit folosind pagina{" "}
+            ce șanse ai să intri la liceul dorit folosind pagina{" "}
             <span className="font-semibold text-blue-800">
               Calculator Admitere
             </span>
