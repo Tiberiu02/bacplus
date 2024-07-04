@@ -171,13 +171,15 @@ function InfoLiceu({
             <div className="mt-6" key={specializare}>
               <div className="font-bold">{specializare}</div>
               <ul className="ml-1 mt-2 list-inside list-disc">
-                {rezultate.map((a) => (
-                  <li key={`${a.an}-${a.specializare}`}>
-                    Ultima poziție {a.an}:{" "}
-                    <span className="font-medium">{a.pozitie}</span> (medie:{" "}
-                    {a.medie}, locuri: {a.locuri})
-                  </li>
-                ))}
+                {rezultate
+                  .sort((x, y) => y.an - x.an)
+                  .map((a) => (
+                    <li key={`${a.an}-${a.specializare}`}>
+                      Ultima poziție {a.an}:{" "}
+                      <span className="font-medium">{a.pozitie}</span> (medie:{" "}
+                      {a.medie}, locuri: {a.locuri})
+                    </li>
+                  ))}
               </ul>
               <div className="ml-0 mt-2 flex items-center gap-4">
                 <div>Șanse de admitere:</div>

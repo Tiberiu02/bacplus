@@ -133,7 +133,7 @@ export function Navbar({
                   .replaceAll("${ultimulAnEn}", ultimulAnEn.toString())}
                 className={key == activePage ? "text-black" : ""}
               >
-                {name}
+                {name.replaceAll(" ", "\u00A0")}
               </Link>
             </div>
           ))}
