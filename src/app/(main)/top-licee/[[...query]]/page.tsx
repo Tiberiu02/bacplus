@@ -147,7 +147,8 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Licee {judet && judet.numeIntreg} la Bacalaureat și Admitere
+          Clasamentul Liceelor {judet && judet.numeIntreg} la Bacalaureat și
+          Admitere
         </Title>
 
         <Announcements />

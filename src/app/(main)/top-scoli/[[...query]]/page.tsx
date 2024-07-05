@@ -162,7 +162,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
       <MainContainer>
         <Title>
-          Clasamentul gimnaziilor {judet && `din ${judet.numeIntreg}`} la
+          Clasamentul Gimnaziilor {judet && `din ${judet.numeIntreg}`} la
           Evaluarea Națională
         </Title>
 
