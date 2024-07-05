@@ -103,13 +103,16 @@ export default function Calculator() {
           județeană din {ultimulAnEn} și o va compara cu poziția ultimului elev
           admis la liceul respectiv în anul anterior.
         </p>
-        <p>
+        <p className="-mx-1 rounded-xl border-2 border-red-100 bg-red-50 px-3 py-2 font-medium sm:px-4">
           <b>Atenție!</b> Acest calculator prezintă doar o estimare și nu
-          garantează admiterea la liceul dorit. Rezultatele repartizării vor fi
+          garantează admiterea la liceul dorit! Rezultatele repartizării vor fi
           influențate de alegerile celorlalți elevi, care variază de la un an la
           altul. De asemenea, calculatorul nu ține cont de criteriile de
           departajare și nici de specializările modificate față de anul
-          precendent. Folosiți acest calculator doar cu scop orientativ.
+          precendent.{" "}
+          <span className="underline">
+            Nu folosiți acest calculator pentru a decide opțiunile de admitere!
+          </span>
         </p>
 
         <ShareButtons className="my-4" />
