@@ -109,8 +109,8 @@ export default function Calculator() {
         </p>
 
         <p>
-          Pentru mai multe informații despre liceele din România, vizitați și
-          pagina <LinkText href="/top-licee">Licee 2024</LinkText>.
+          Vizitați și pagina <LinkText href="/top-licee">Licee 2024</LinkText>{" "}
+          pentru mai multe informații despre liceele din România.
         </p>
 
         <ShareButtons className="my-4" />
