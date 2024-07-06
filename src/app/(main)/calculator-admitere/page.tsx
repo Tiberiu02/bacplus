@@ -120,7 +120,8 @@ export default function Calculator() {
           garantează admiterea la liceul dorit! Rezultatele repartizării variază
           de la un an la altul. De asemenea, calculatorul nu ține cont de
           criteriile de departajare și nici de specializările modificate față de
-          anul precendent.{" "}
+          anul precendent.
+          <br />
           <span className="underline">
             Nu folosiți acest calculator pentru a decide opțiunile de admitere!
           </span>
