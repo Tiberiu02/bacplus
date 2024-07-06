@@ -6,6 +6,10 @@ import { CalculatorAdmitere } from "./CalculatorAdmitere";
 import { query, ultimulAnEn } from "~/data/dbQuery";
 import type { DateLicee, Ierarhie } from "./data";
 import { env } from "~/env.js";
+import { Button } from "~/components/Button";
+import LinkButton from "~/components/LinkButton";
+import Link from "next/link";
+import { LinkText } from "~/components/LinkText";
 
 const NUM_ANI_AFISATI = 2;
 
@@ -103,6 +107,12 @@ export default function Calculator() {
           județeană din {ultimulAnEn} și o va compara cu poziția ultimului elev
           admis la liceul respectiv în anul anterior.
         </p>
+
+        <p>
+          Pentru mai multe informații despre liceele din România, vizitați și
+          pagina <LinkText href="/top-licee">Licee 2024</LinkText>.
+        </p>
+
         <ShareButtons className="my-4" />
 
         <p className="-mx-1 mb-4 rounded-xl border-2 border-red-100 bg-red-50 px-3 py-2 font-medium sm:px-4">
