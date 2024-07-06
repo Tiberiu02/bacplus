@@ -111,7 +111,7 @@ export function Navbar({
                 className={twMerge(
                   "border-b-2 border-black border-opacity-0",
                   key == activePage
-                    ? "border-opacity-100 font-semibold tracking-[-0.018em]"
+                    ? "border-opacity-100 font-semibold tracking-[-0.016em]"
                     : "hover:text-black"
                 )}
                 target={external ? "_blank" : undefined}
