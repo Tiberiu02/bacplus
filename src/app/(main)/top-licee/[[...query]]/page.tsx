@@ -164,6 +164,11 @@ export default function Page({ params }: { params: { query: string[] } }) {
           </div>
         </Link>
 
+        <div className="rounded-xl border-2 border-blue-100 bg-blue-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
+          <span className="font-bold">Nou!</span> Am adăugat rezultatele la
+          Bacalaureat 2024 înainte de contestații.
+        </div>
+
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
             defaultValue={judet?.nume ?? ""}
