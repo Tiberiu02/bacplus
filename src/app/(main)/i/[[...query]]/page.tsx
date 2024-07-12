@@ -389,7 +389,7 @@ function PaginaLiceu({ id }: { id: string }) {
         )}
       </div>
 
-      <TabelDisciplineBac discipline={disciplineBac} />
+      {/* <TabelDisciplineBac discipline={disciplineBac} /> */}
     </>
   );
 }
