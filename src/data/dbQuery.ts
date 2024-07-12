@@ -221,7 +221,7 @@ const queryFunctions = {
     prisma.bac.groupBy({
       by: ["an", "id_liceu", "disciplina_alegere"],
       _avg: {
-        do_final: true,
+        da_final: true,
       },
       _count: {
         _all: true,

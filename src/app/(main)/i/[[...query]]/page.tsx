@@ -389,7 +389,7 @@ function PaginaLiceu({ id }: { id: string }) {
         )}
       </div>
 
-      {/* <TabelDisciplineBac discipline={disciplineBac} /> */}
+      <TabelDisciplineBac discipline={disciplineBac} />
     </>
   );
 }
@@ -441,7 +441,7 @@ function getInfoLiceu(id: string) {
       .filter((s) => s.id_liceu == id)
       .map((s) => ({
         nume: s.disciplina_alegere,
-        medie: s._avg.do_final,
+        medie: s._avg.da_final,
         elevi: s._count._all,
         an: s.an,
       })),
