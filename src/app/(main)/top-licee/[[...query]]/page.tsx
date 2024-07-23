@@ -153,7 +153,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <Link target="_blank" href="/calculator-admitere" className="">
+        {/* <Link target="_blank" href="/calculator-admitere" className="">
           <div className="rounded-xl border-2 border-emerald-100 bg-emerald-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
             <span className="font-bold">Ai dat Evaluarea Națională?</span> Află
             ce șanse ai să intri la liceul dorit folosind pagina{" "}
@@ -162,11 +162,11 @@ export default function Page({ params }: { params: { query: string[] } }) {
             </span>
             !
           </div>
-        </Link>
+        </Link> */}
 
-        <div className="rounded-xl border-2 border-blue-100 bg-blue-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
+        <div className="rounded-xl border-2 border-yellow-100 bg-yellow-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
           <span className="font-bold">Nou!</span> Am adăugat rezultatele la
-          Bacalaureat 2024 înainte de contestații.
+          Bacalaureat 2024 după contestații.
         </div>
 
         <div className="flex flex-wrap-reverse justify-between gap-4">

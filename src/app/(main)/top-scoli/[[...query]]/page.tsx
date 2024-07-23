@@ -168,10 +168,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
         <Announcements />
 
-        <div className="rounded-xl border-2 border-blue-100 bg-blue-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
+        {/* <div className="rounded-xl border-2 border-blue-100 bg-blue-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
           <span className="font-bold">Nou!</span> Am adăugat rezultatele la
           Evaluarea Națională 2024 după de contestații.
-        </div>
+        </div> */}
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect

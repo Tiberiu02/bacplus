@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import { FiMenu, FiX } from "react-icons/fi";
@@ -24,10 +24,10 @@ const PAGES = {
     name: "Hartă",
     path: "/harta",
   },
-  calculatorAdmitere: {
-    name: "Calculator Admitere",
-    path: "/calculator-admitere",
-  },
+  // calculatorAdmitere: {
+  //   name: "Calculator Admitere",
+  //   path: "/calculator-admitere",
+  // },
   // testeEN: {
   //   name: "Teste\xa0Evaluare",
   //   path: "https://zecelaen.ro",
