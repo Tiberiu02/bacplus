@@ -20,6 +20,7 @@ import { nonBreakableName } from "~/data/nonBreakableName";
 import { getIdFromUrl, getUrlFromId } from "~/data/institutie/urlFromId";
 import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { capitalize } from "~/data/capitalize";
 
 export function generateStaticParams() {
   return query.institutii.flatMap((i) =>
@@ -432,7 +433,7 @@ function getInfoLiceu(id: string) {
     ...query.bacDisciplineObligatorii
       .filter((s) => s.id_liceu == id)
       .map((s) => ({
-        nume: s.disciplina_obligatorie,
+        nume: capitalize(s.disciplina_obligatorie),
         medie: s._avg.do_final,
         elevi: s._count._all,
         an: s.an,
@@ -440,7 +441,7 @@ function getInfoLiceu(id: string) {
     ...query.bacDisciplineAlegere
       .filter((s) => s.id_liceu == id)
       .map((s) => ({
-        nume: s.disciplina_alegere,
+        nume: capitalize(s.disciplina_alegere),
         medie: s._avg.da_final,
         elevi: s._count._all,
         an: s.an,
@@ -528,7 +529,9 @@ function getInfoLiceu(id: string) {
       const d = rezultateBac[e.an];
 
       if (d) {
-        d.limbiStraine[e.limba_moderna] = {
+        const limba = "L" + e.limba_moderna.toLowerCase().slice(1);
+
+        d.limbiStraine[limba] = {
           candidati: e._count._all,
         };
       }
@@ -540,7 +543,7 @@ function getInfoLiceu(id: string) {
       const d = rezultateBac[e.an];
 
       if (d) {
-        d.specializari[e.specializare] = {
+        d.specializari[capitalize(e.specializare)] = {
           candidati: e._count._all,
         };
       }
