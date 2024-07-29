@@ -120,13 +120,18 @@ export default function Home() {
         <Section title="De ce?">
           <blockquote className="border-l-4 border-gray-300 pl-4">
             <q className="text-xl italic">
-              Investiția în educație plătește mereu cea mai bună dobândă.
+              Educația este cea mai puternică armă pe care o poți folosi pentru
+              a schimba lumea.
             </q>
             <footer className="text-gray-500">
-              Benjamin Franklin în{" "}
-              <q title="The Way to Wealth: Ben Franklin on Money and Success">
-                The Way to Wealth
-              </q>
+              Nelson Mandela în{" "}
+              <LinkText
+                href="https://www.youtube.com/watch?v=e6X5rCyQqn0"
+                target="_blank"
+              >
+                discursul
+              </LinkText>{" "}
+              ținut la lansarea „Mindset Network”, 16 iulie 2003
             </footer>
           </blockquote>
 

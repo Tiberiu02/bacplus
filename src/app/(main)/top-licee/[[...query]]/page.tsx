@@ -164,10 +164,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
           </div>
         </Link> */}
 
-        <div className="rounded-xl border-2 border-teal-100 bg-teal-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
+        {/* <div className="rounded-xl border-2 border-teal-100 bg-teal-50 px-3 py-2 text-center font-medium [text-wrap:balance] sm:px-4">
           <span className="font-bold">Nou!</span> Am adăugat rezultatele la
           Admitere 2024.
-        </div>
+        </div> */}
 
         <div className="flex flex-wrap-reverse justify-between gap-4">
           <LinkSelect
