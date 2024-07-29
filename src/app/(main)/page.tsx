@@ -59,6 +59,8 @@ function CountUpCard({
   );
 }
 
+intended compiler error
+
 export default function Home() {
   return (
     <main>
