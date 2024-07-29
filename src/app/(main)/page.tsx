@@ -154,10 +154,7 @@ export default function Home() {
           <p>
             Toate datele de pe acest site au fost sintetizate folosind
             informații publicate de Ministerul Educației Naționale pe{" "}
-            <LinkText
-              target="_blank"
-              href="http://static.bacalaureat.edu.ro/2023/"
-            >
+            <LinkText target="_blank" href="http://bacalaureat.edu.ro/2023/">
               bacalaureat.edu.ro
             </LinkText>
             ,{" "}
@@ -168,11 +165,11 @@ export default function Home() {
               data.gov.ro
             </LinkText>
             ,{" "}
-            <LinkText target="_blank" href="http://static.admitere.edu.ro/">
+            <LinkText target="_blank" href="http://admitere.edu.ro/">
               admitere.edu.ro
             </LinkText>
             {" și "}
-            <LinkText target="_blank" href="http://static.evaluare.edu.ro/">
+            <LinkText target="_blank" href="http://evaluare.edu.ro/">
               evaluare.edu.ro.
             </LinkText>
           </p>
