@@ -47,7 +47,7 @@ export function Select<T extends string | number>({
   return (
     <button
       className={twMerge(
-        "relative flex min-h-[2.5rem] items-center rounded px-2 text-left text-base [text-wrap:balance] hover:bg-blue-50",
+        "relative flex min-h-[2.5rem] items-center  rounded px-2 text-left text-base [text-wrap:balance] hover:bg-blue-50",
         className
       )}
       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -62,7 +62,7 @@ export function Select<T extends string | number>({
       {selectedOption.label}
       <div
         className={twMerge(
-          "absolute left-0 top-full z-50 mt-1 flex max-h-64 min-w-full flex-col overflow-auto whitespace-nowrap rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
+          "absolute left-0 top-full z-50 mt-1 flex max-h-64 min-w-full flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
           !isDropdownOpen && "hidden"
         )}
       >
