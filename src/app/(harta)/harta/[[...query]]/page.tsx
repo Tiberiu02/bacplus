@@ -1,5 +1,5 @@
 import { judetDupaCod } from "~/data/coduriJudete";
-import { query } from "~/data/dbQuery";
+import { institutiiBac, institutiiEn, query } from "~/data/dbQuery";
 
 import type { Metadata, Viewport } from "next";
 import { env } from "~/env.js";
@@ -78,15 +78,14 @@ export default function Page({ params }: { params: { query: string[] } }) {
   const markers = query.institutii
     .filter((i) => i.latlong)
     .map((institutie) => ({
-      id: institutie.id,
-      url: getUrlFromId(institutie.id),
+      id: institutie.cod_siiir,
+      url: getUrlFromId(institutie.cod_siiir) || "",
       nume: institutie.nume,
-      judet: judetDupaCod(institutie.id.split("_").at(-1) || "").nume,
       lat: parseFloat(institutie.latlong?.split(",")[0] || "0"),
       long: parseFloat(institutie.latlong?.split(",")[1] || "0"),
-      liceu: !!institutie.liceu,
-      gimnaziu: !!institutie.gimnaziu,
-      icon: largeIcons[institutie.id] || false,
+      liceu: institutiiBac.has(institutie.cod_siiir),
+      gimnaziu: institutiiEn.has(institutie.cod_siiir),
+      icon: !!institutie.sigla_lg,
     }));
 
   return (

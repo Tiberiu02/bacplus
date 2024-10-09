@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { query, ultimulAnEn } from "~/data/dbQuery";
+import { enData, institutiiBac, query, ultimulAnEn } from "~/data/dbQuery";
 
 import { MainContainer } from "~/components/MainContainer";
 import { scoalaToDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
@@ -10,12 +10,11 @@ import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.js";
 import { Announcements } from "~/components/Announcements";
 import { TabelScoli } from "~/app/(main)/top-scoli/[[...query]]/TabelScoli";
-import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
-import { smallIcons } from "~/data/icons";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { createStaticData } from "~/static-data/createStaticData";
+import { beautifyNameNullable } from "~/data/institutie/beautifyName";
 
 export function generateMetadata({
   params,
@@ -109,57 +108,6 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   return (
     <>
-      <LdJson
-        name={
-          judet?.numeIntreg
-            ? `Top școli ${judet?.numeIntreg} ${an}`
-            : `Top școli ${an}`
-        }
-        description={`Descoperă cele mai bune școli din ${
-          judet?.numeIntreg ?? "România"
-        } conform rezultatelor oficiale la Evaluarea Națională ${an} publicate de Ministerul Educației Naționale.`}
-        data={scoli
-          .filter((a) => a.medieEvaluareNationala)
-          .sort((a, b) =>
-            a.medieEvaluareNationala && b.medieEvaluareNationala
-              ? b.medieEvaluareNationala - a.medieEvaluareNationala
-              : 0
-          )
-          .slice(0, 10)}
-        id={(scoala) => scoala.id}
-        columns={[
-          {
-            name: "Nume scoala",
-            value: (scoala) => scoala.numeScoala,
-            type: "string",
-          },
-          {
-            name: "Medie Evaluare",
-            value: (scoala) =>
-              scoala.medieEvaluareNationala
-                ? Math.round(scoala.medieEvaluareNationala * 100) / 100
-                : undefined,
-            type: "decimal",
-          },
-          {
-            name: "Medie Română",
-            value: (scoala) =>
-              scoala.medieLimbaRomana
-                ? Math.round(scoala.medieLimbaRomana * 100) / 100
-                : undefined,
-            type: "decimal",
-          },
-          {
-            name: "Medie Matematică",
-            value: (scoala) =>
-              scoala.medieMatematica
-                ? Math.round(scoala.medieMatematica * 100) / 100
-                : undefined,
-            type: "decimal",
-          },
-        ]}
-      />
-
       <MainContainer>
         <Title>
           Clasamentul Gimnaziilor {judet && `din ${judet.numeIntreg}`} la
@@ -202,37 +150,39 @@ function getScoli(an: number, judet?: string) {
     [id: string]: Scoala;
   };
 
-  query.en
+  enData
     .filter(
       (result) =>
-        result.an === an && (result.id_judet === judet || judet === undefined)
+        result.an === an &&
+        (judet === undefined ||
+          result.unitate_cod_judet === judet ||
+          result.siiirData?.judet_pj == judet)
     )
     .forEach((result) => {
-      if (result.id_scoala === null) return;
+      const id =
+        result.unitate_siiir ??
+        (result.unitate_nume ?? "") + (result.unitate_cod_judet ?? "");
 
-      scoli[result.id_scoala] = {
-        id: result.id_scoala,
-        codJudet: result.id_judet,
-        numeScoala: "",
+      scoli[id] = {
+        numeScoala:
+          result.data?.nume ??
+          beautifyNameNullable(result.siiirData?.denumire_lunga_unitate) ??
+          beautifyNameNullable(result.unitate_nume) ??
+          "",
+        siiir: result.unitate_siiir ?? undefined,
+        icon: !!result.data?.sigla_xs,
+        url: result.unitate_siiir
+          ? getUrlFromId(result.unitate_siiir)
+          : undefined,
         numCandidati: result._count._all,
-        medieLimbaRomana: result._avg.lr_final ?? undefined,
-        medieLimbaMaterna: result._avg.lm_final ?? undefined,
-        medieMatematica: result._avg.ma_final ?? undefined,
-        medieAbsolvire: result._avg.medie_abs ?? undefined,
-        medieEvaluareNationala: result._avg.medie_en ?? undefined,
-        icon: smallIcons[result.id_scoala] ?? false,
-        url: getUrlFromId(result.id_scoala),
-        liceu: false,
+        medieLimbaRomana: result._avg.lr_final?.toNumber() ?? undefined,
+        medieLimbaMaterna: result._avg.lm_final?.toNumber() ?? undefined,
+        medieMatematica: result._avg.ma_final?.toNumber() ?? undefined,
+        medieAbsolvire: result._avg.medie_abs?.toNumber() ?? undefined,
+        medieEvaluareNationala: result._avg.medie_en?.toNumber() ?? undefined,
+        liceu: institutiiBac.has(result.unitate_siiir ?? ""),
       };
     });
-
-  query.institutii.forEach((scoala) => {
-    const obj = scoli[scoala.id];
-    if (obj != undefined) {
-      obj.numeScoala = scoala.nume;
-      obj.liceu = !!scoala.liceu;
-    }
-  });
 
   return Object.values(scoli);
 }

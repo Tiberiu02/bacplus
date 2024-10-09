@@ -1,6 +1,6 @@
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { licee, query } from "~/data/dbQuery";
+import { institutiiBac, institutiiEn, licee, query } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
@@ -12,7 +12,6 @@ import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
 import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
 import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
-import { largeIcons } from "~/data/icons";
 import { twMerge } from "tailwind-merge";
 import { TabelDateIstoriceLiceu } from "~/components/tables/TabelDateIstoriceLiceu";
 import { ierarhieLicee, ierarhieScoli } from "~/data/ierarhie";
@@ -21,21 +20,27 @@ import { getIdFromUrl, getUrlFromId } from "~/data/institutie/urlFromId";
 import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { capitalize } from "~/data/capitalize";
+import {
+  type RezultateBacClase,
+  TabelRezultateBacClase,
+} from "~/components/tables/TabelRezultateBacClase";
 
 export function generateStaticParams() {
   return query.institutii.flatMap((i) =>
-    i.liceu && i.gimnaziu
+    !i.cod_siiir || !getUrlFromId(i.cod_siiir)
+      ? []
+      : institutiiBac.has(i.cod_siiir) && institutiiEn.has(i.cod_siiir)
       ? [
           {
-            query: [getUrlFromId(i.id)],
+            query: [getUrlFromId(i.cod_siiir)],
           },
           {
-            query: [getUrlFromId(i.id), "gimnaziu"],
+            query: [getUrlFromId(i.cod_siiir), "gimnaziu"],
           },
         ]
       : [
           {
-            query: [getUrlFromId(i.id)],
+            query: [getUrlFromId(i.cod_siiir)],
           },
         ]
   );
@@ -49,6 +54,8 @@ export function generateMetadata({
   const [urlId, gimnaziu] = params.query;
   const id = getIdFromUrl(urlId);
 
+  if (!id) return {};
+
   const institutie = query.institutii.find((i) => i.id == id);
 
   if (!institutie) return {};
@@ -56,7 +63,7 @@ export function generateMetadata({
   const title =
     institutie.nume +
     " – " +
-    (institutie.liceu && !gimnaziu
+    (institutiiBac.has(institutie.cod_siiir) && !gimnaziu
       ? "Admitere, Bac, rezultate, informații"
       : "Evaluare Națională, rezultate, informații");
   const description = `Descoperă informații detaliate despre ${institutie.nume}, bazate pe rezultatele oficiale de la examenele de Bacalaureat și Evaluare Națională publicate de Ministerul Educației Naționale.`;
@@ -81,9 +88,11 @@ export default function PaginaInstitutie({
 }: {
   params: { query: [string, string?] };
 }) {
-  const id = getIdFromUrl(idUrl);
+  const siiir = getIdFromUrl(idUrl);
 
-  const institutie = query.institutii.find((i) => i.id == id);
+  if (!siiir) notFound();
+
+  const institutie = query.institutii.find((i) => i.cod_siiir == siiir);
 
   if (!institutie) notFound();
 
@@ -91,9 +100,9 @@ export default function PaginaInstitutie({
     <MainContainer>
       <div className="flex w-full flex-col items-center gap-32">
         <div className="mt-12 flex w-full flex-col items-center gap-8 ">
-          {largeIcons[id] && (
+          {institutie.sigla_lg && (
             <img
-              src={`https://assets.bacplus.ro/sigle/lg/${id}.webp`}
+              src={`https://assets.bacplus.ro/institutii/${institutie.cod_siiir}/sigla-lg.webp`}
               alt={institutie.nume}
               className="mx-auto h-40 w-40"
             />
@@ -129,11 +138,11 @@ export default function PaginaInstitutie({
             </div>
           )}
 
-          {institutie.liceu && institutie.gimnaziu && (
+          {institutiiBac.has(siiir) && institutiiEn.has(siiir) && (
             <div className="flex w-full select-none justify-center gap-4 pb-2">
               {gimnaziu ? (
                 <Link
-                  href={`/i/${getUrlFromId(id)}`}
+                  href={`/i/${getUrlFromId(siiir)}`}
                   replace={true}
                   scroll={false}
                 >
@@ -148,7 +157,7 @@ export default function PaginaInstitutie({
               )}
               {!gimnaziu ? (
                 <Link
-                  href={`/i/${getUrlFromId(id)}/gimnaziu`}
+                  href={`/i/${getUrlFromId(siiir)}/gimnaziu`}
                   replace={true}
                   scroll={false}
                 >
@@ -167,10 +176,10 @@ export default function PaginaInstitutie({
 
         <Announcements />
 
-        {gimnaziu || !institutie.liceu ? (
-          <PaginaGimnaziu id={id} />
+        {gimnaziu || !institutiiBac.has(siiir) ? (
+          <PaginaGimnaziu id={siiir} />
         ) : (
-          <PaginaLiceu id={id} />
+          <PaginaLiceu id={siiir} />
         )}
       </div>
     </MainContainer>
@@ -178,12 +187,12 @@ export default function PaginaInstitutie({
 }
 
 function PaginaGimnaziu({ id }: { id: string }) {
-  const { numeScoala, codJudet, rezultateEn, liceu, website, address } =
+  const { numeScoala, rezultateEn, liceu, website, address } =
     getInfoScoala(id);
 
   const data = Object.entries(rezultateEn).at(-1);
 
-  if (!data || !codJudet || !numeScoala) notFound();
+  if (!data || !numeScoala) notFound();
 
   return (
     <>
@@ -212,7 +221,8 @@ function PaginaGimnaziu({ id }: { id: string }) {
       />
 
       {(Object.keys(data[1].limbiMaterne).length > 1 ||
-        Object.keys(data[1].limbiMaterne)[0] != "Limba română") && (
+        (Object.keys(data[1].limbiMaterne).length == 1 &&
+          Object.keys(data[1].limbiMaterne)[0] != "Limba română")) && (
         <div className="flex flex-col items-center">
           <ChartCard title={`Limbi materne ${data[0]}`}>
             <PieChart
@@ -228,10 +238,8 @@ function PaginaGimnaziu({ id }: { id: string }) {
   );
 }
 
-function getInfoScoala(id: string) {
-  const codJudet = query.en.find((result) => result.id_scoala == id)?.id_judet;
-
-  const scoala = query.institutii.find((result) => result.id == id);
+function getInfoScoala(siiir: string) {
+  const scoala = query.institutii.find((result) => result.cod_siiir == siiir);
 
   const rezultateEn = {} as {
     [an: number]: {
@@ -250,21 +258,21 @@ function getInfoScoala(id: string) {
   };
 
   query.en.forEach((result) => {
-    if (result.id_scoala != id) return;
+    if (result.unitate_siiir != siiir) return;
 
     rezultateEn[result.an] = {
-      medieEvaluareNationala: result._avg.medie_en ?? undefined,
-      medieLimbaRomana: result._avg.lr_final ?? undefined,
-      medieMatematica: result._avg.ma_final ?? undefined,
-      medieLimbaMaterna: result._avg.lm_final ?? undefined,
-      medieAbsolvire: result._avg.medie_abs ?? undefined,
+      medieEvaluareNationala: result._avg.medie_en?.toNumber(),
+      medieLimbaRomana: result._avg.lr_final?.toNumber(),
+      medieMatematica: result._avg.ma_final?.toNumber(),
+      medieLimbaMaterna: result._avg.lm_final?.toNumber(),
+      medieAbsolvire: result._avg.medie_abs?.toNumber(),
       candidati: result._count._all,
       limbiMaterne: {},
     };
   });
 
   query.limbiMaterneEn.forEach((result) => {
-    if (result.id_scoala != id) return;
+    if (result.unitate_siiir != siiir) return;
 
     const obj = rezultateEn[result.an];
     if (obj != undefined) {
@@ -275,9 +283,8 @@ function getInfoScoala(id: string) {
   });
 
   return {
-    liceu: !!scoala?.liceu,
+    liceu: institutiiBac.has(siiir),
     rezultateEn,
-    codJudet,
     numeScoala: scoala?.nume,
     website: scoala?.website,
     address: scoala?.adresa,
@@ -290,18 +297,18 @@ function PaginaLiceu({ id }: { id: string }) {
     gimnaziu,
     website,
     adresa,
-    codJudet,
     rezultateBac,
     admitere,
     genderData,
     specializari,
     disciplineBac,
+    rezultateClase,
   } = getInfoLiceu(id);
 
   const dataBac = Object.entries(rezultateBac).at(-1);
   const dataAdm = Object.entries(admitere).at(-1) as [string, number];
 
-  if (!dataBac || !codJudet || !numeLiceu) notFound();
+  if (!dataBac || !numeLiceu) notFound();
 
   return (
     <>
@@ -391,58 +398,60 @@ function PaginaLiceu({ id }: { id: string }) {
       </div>
 
       <TabelDisciplineBac discipline={disciplineBac} />
+
+      <TabelRezultateBacClase rezultate={rezultateClase} />
     </>
   );
 }
 
-function getInfoLiceu(id: string) {
-  const codJudet = query.bac.find((result) => result.id_liceu == id)?.id_judet;
+function getInfoLiceu(siiir: string) {
   const {
     nume: numeLiceu,
     website,
     adresa,
-    gimnaziu,
-  } = licee.find((result) => result.id == id) || {};
+  } = licee.find((result) => result.cod_siiir == siiir) || {};
+
+  const gimnaziu = institutiiEn.has(siiir);
 
   const specializari = query.specializariAdm
-    .filter((s) => s.repartizat_id_liceu == id)
+    .filter((s) => s.repartizat_liceu_siiir == siiir)
     .map((s) => ({
       nume: s.repartizat_specializare ?? "",
       admisi: s._count._all,
-      medie: s._min.medie_adm,
+      medie: s._min.medie_adm?.toNumber(),
       an: s.an,
     }));
 
   const disciplineBac = [
     ...query.bacRomana
-      .filter((s) => s.id_liceu == id)
+      .filter((s) => s.unitate_siiir == siiir)
       .map((s) => ({
         nume: "Limba română",
-        medie: s._avg.lr_final,
+        medie: s._avg.lr_final?.toNumber(),
         elevi: s._count._all,
         an: s.an,
       })),
     ...query.bacLimbaMaterna
-      .filter((s) => s.id_liceu == id)
+      .filter((s) => s.unitate_siiir == siiir)
       .map((s) => ({
         nume: s.limba_materna ?? "",
-        medie: s._avg.lm_final,
+        medie: s._avg.lm_final?.toNumber(),
         elevi: s._count._all,
         an: s.an,
       })),
     ...query.bacDisciplineObligatorii
-      .filter((s) => s.id_liceu == id)
+      .filter((s) => s.unitate_siiir == siiir)
       .map((s) => ({
         nume: capitalize(s.disciplina_obligatorie),
-        medie: s._avg.do_final,
+        medie: s._avg.do_final?.toNumber(),
         elevi: s._count._all,
         an: s.an,
       })),
     ...query.bacDisciplineAlegere
-      .filter((s) => s.id_liceu == id)
+      .filter((s) => s.unitate_siiir == siiir)
       .map((s) => ({
         nume: capitalize(s.disciplina_alegere),
-        medie: s._avg.da_final,
+        medie: s._avg.da_final?.toNumber(),
         elevi: s._count._all,
         an: s.an,
       })),
@@ -474,18 +483,18 @@ function getInfoLiceu(id: string) {
 
   const admitere = Object.fromEntries(
     query.mediiAdmLicee
-      .filter((result) => result.repartizat_id_liceu == id)
+      .filter((result) => result.repartizat_liceu_siiir == siiir)
       .sort((a, b) => b.an - a.an)
-      .map((e) => [e.an, e._min.medie_adm])
+      .map((e) => [e.an, e._min.medie_adm?.toNumber()])
   );
 
   query.bac
-    .filter((result) => result.id_liceu == id)
+    .filter((result) => result.unitate_siiir == siiir)
     .forEach((result) => {
       rezultateBac[result.an] = {
-        medie: result._avg.my_medie || undefined,
+        medie: result._avg.medie?.toNumber() || undefined,
         candidati: result._count._all,
-        candidatiValizi: result._count.my_medie,
+        candidatiValizi: result._count.medie,
         rataPromovare: 0,
         limbiMaterne: {},
         limbiStraine: {},
@@ -494,7 +503,7 @@ function getInfoLiceu(id: string) {
     });
 
   query.promovatiBac
-    .filter((result) => result.id_liceu == id)
+    .filter((result) => result.unitate_siiir == siiir)
     .forEach((result) => {
       const d = rezultateBac[result.an];
 
@@ -504,7 +513,7 @@ function getInfoLiceu(id: string) {
     });
 
   query.limbiMaterneBac
-    .filter((result) => result.id_liceu == id)
+    .filter((result) => result.unitate_siiir == siiir)
     .forEach((e) => {
       const d = rezultateBac[e.an];
 
@@ -524,7 +533,7 @@ function getInfoLiceu(id: string) {
     });
 
   query.limbiStraineBac
-    .filter((result) => result.id_liceu == id)
+    .filter((result) => result.unitate_siiir == siiir)
     .forEach((e) => {
       const d = rezultateBac[e.an];
 
@@ -538,7 +547,7 @@ function getInfoLiceu(id: string) {
     });
 
   query.specializariBac
-    .filter((result) => result.id_liceu == id)
+    .filter((result) => result.unitate_siiir == siiir)
     .forEach((e) => {
       const d = rezultateBac[e.an];
 
@@ -550,11 +559,11 @@ function getInfoLiceu(id: string) {
     });
 
   const males =
-    query.gender.find((e) => e.id_liceu == id && e.sex == "M")?._count._all ||
-    null;
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "M")?._count
+      ._all || null;
   const females =
-    query.gender.find((e) => e.id_liceu == id && e.sex == "F")?._count._all ||
-    null;
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "F")?._count
+      ._all || null;
 
   const genderData =
     males != null && females != null
@@ -564,16 +573,136 @@ function getInfoLiceu(id: string) {
         }
       : undefined;
 
+  const rezultateClase = {} as RezultateBacClase;
+
+  query.bacMedieClase
+    .filter((r) => r.unitate_siiir == siiir)
+    .forEach((r) => {
+      const an = r.an;
+      const medie = r._avg.medie?.toNumber();
+      const candidati = r._count._all;
+      const clasa = r.clasa;
+
+      if (!clasa || !medie) return;
+
+      const rezAn = (rezultateClase[an] = rezultateClase[an] || {
+        discipline: {},
+        clase: {},
+      });
+      const rezClasa = (rezAn.clase[clasa] = rezAn.clase[clasa] || {});
+
+      rezAn.discipline["Medie generală"] = true;
+      rezClasa["Medie generală"] = {
+        medie,
+        candidati,
+      };
+    });
+
+  query.bacRomanaClase
+    .filter((r) => r.unitate_siiir == siiir)
+    .forEach((r) => {
+      const an = r.an;
+      const medie = r._avg.lr_final?.toNumber();
+      const candidati = r._count._all;
+      const clasa = r.clasa;
+
+      if (!clasa || !medie) return;
+
+      const rezAn = (rezultateClase[an] = rezultateClase[an] || {
+        discipline: {},
+        clase: {},
+      });
+      const rezClasa = (rezAn.clase[clasa] = rezAn.clase[clasa] || {});
+
+      rezAn.discipline["Limba română"] = true;
+      rezClasa["Limba română"] = {
+        medie,
+        candidati,
+      };
+    });
+
+  query.bacLimbaMaternaClase
+    .filter((r) => r.unitate_siiir == siiir)
+    .forEach((r) => {
+      const an = r.an;
+      const medie = r._avg.lm_final?.toNumber();
+      const candidati = r._count._all;
+      const clasa = r.clasa;
+      const limba = r.limba_materna;
+
+      if (!clasa || !medie || !limba) return;
+
+      const rezAn = (rezultateClase[an] = rezultateClase[an] || {
+        discipline: {},
+        clase: {},
+      });
+      const rezClasa = (rezAn.clase[clasa] = rezAn.clase[clasa] || {});
+
+      rezAn.discipline[limba] = true;
+      rezClasa[limba] = {
+        medie,
+        candidati,
+      };
+    });
+
+  query.bacDisciplineAlegereClase
+    .filter((r) => r.unitate_siiir == siiir)
+    .forEach((r) => {
+      const an = r.an;
+      const medie = r._avg.da_final?.toNumber();
+      const candidati = r._count._all;
+      const clasa = r.clasa;
+      const disciplina = r.disciplina_alegere;
+
+      if (!clasa || !medie || !disciplina) return;
+
+      const rezAn = (rezultateClase[an] = rezultateClase[an] || {
+        discipline: {},
+        clase: {},
+      });
+      const rezClasa = (rezAn.clase[clasa] = rezAn.clase[clasa] || {});
+
+      rezAn.discipline[disciplina] = true;
+      rezClasa[disciplina] = {
+        medie,
+        candidati,
+      };
+    });
+
+  query.bacDisciplineObligatoriiClase
+    .filter((r) => r.unitate_siiir == siiir)
+    .forEach((r) => {
+      const an = r.an;
+      const medie = r._avg.do_final?.toNumber();
+      const candidati = r._count._all;
+      const clasa = r.clasa;
+      const disciplina = r.disciplina_obligatorie;
+
+      if (!clasa || !medie || !disciplina) return;
+
+      const rezAn = (rezultateClase[an] = rezultateClase[an] || {
+        discipline: {},
+        clase: {},
+      });
+      const rezClasa = (rezAn.clase[clasa] = rezAn.clase[clasa] || {});
+
+      rezAn.discipline[disciplina] = true;
+      rezClasa[disciplina] = {
+        medie,
+        candidati,
+      };
+    });
+
   return {
     numeLiceu,
     gimnaziu: !!gimnaziu,
     website,
     adresa,
-    codJudet,
     rezultateBac,
     admitere,
     genderData,
     specializari,
     disciplineBac,
+    rezultateClase,
   };
 }

@@ -10,7 +10,7 @@ export function TabelSpecializari({
   specializari: {
     nume: string;
     admisi: number;
-    medie: number | null;
+    medie: number | undefined;
     an: number;
   }[];
 }) {
@@ -20,7 +20,7 @@ export function TabelSpecializari({
   if (an == 0) return null;
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full max-w-4xl flex-col items-center gap-4">
       <div className="relative w-full max-w-full flex-col items-center gap-4">
         <div className="text-center text-2xl font-semibold opacity-90 sm:text-3xl">
           Admitere specializări

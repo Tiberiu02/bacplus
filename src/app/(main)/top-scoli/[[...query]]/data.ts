@@ -1,12 +1,8 @@
-import { getId } from "~/data/institutie/idFromName";
 import { roundDecimals } from "../../../../data/roundDecimals";
 import { getUrlFromName } from "~/data/institutie/urlFromName";
-import { judetDupaCod } from "~/data/coduriJudete";
 
 export type Scoala = {
-  id: string;
   numeScoala: string;
-  codJudet: string;
   numCandidati: number;
   medieLimbaRomana?: number;
   medieLimbaMaterna?: number;
@@ -14,62 +10,93 @@ export type Scoala = {
   medieAbsolvire?: number;
   medieEvaluareNationala?: number;
   icon: boolean;
-  url: string;
+  url?: string;
   liceu: boolean;
+  siiir?: string;
 };
 
 export type ScoalaDataArray = [
   string, // numeScoala
-  string, // codJudet
+  string | undefined, // siiir
   number, // numarCandidati
   number | undefined, // medieLimbaRomana
   number | undefined, // medieLimbaMaterna
   number | undefined, // medieMatematica
   number | undefined, // medieAbsolvire
   number | undefined, // medieEvaluareNationala
-  string | undefined, // idScoala
   boolean, // icon
-  boolean, // url contains judet
+  boolean, // hasUrl
+  boolean, // urlContainsSiiir
   boolean // liceu
 ];
 
 export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
-  const idSintetic = getId(scoala.numeScoala, scoala.codJudet);
+  const cannonicalUrl = getUrlFromName(scoala.numeScoala);
+  const urlContainsSiiir =
+    scoala.url != undefined && scoala.url !== cannonicalUrl;
+
+  // Sanity check
+  if (
+    scoala.url &&
+    scoala.url != cannonicalUrl &&
+    scoala.url != `${cannonicalUrl}-${scoala.siiir}`
+  ) {
+    throw new Error(
+      `Malformed url '${scoala.url}' for '${scoala.numeScoala}', siiir='${scoala.siiir}'`
+    );
+  }
 
   return [
     scoala.numeScoala,
-    scoala.codJudet,
+    scoala.siiir,
     scoala.numCandidati,
     roundDecimals(scoala.medieLimbaRomana, 3),
     roundDecimals(scoala.medieLimbaMaterna, 3),
     roundDecimals(scoala.medieMatematica, 3),
     roundDecimals(scoala.medieAbsolvire, 3),
     roundDecimals(scoala.medieEvaluareNationala, 3),
-    idSintetic == scoala.id ? undefined : scoala.id,
     scoala.icon,
-    scoala.url !== getUrlFromName(scoala.numeScoala),
+    scoala.url != undefined,
+    urlContainsSiiir,
     scoala.liceu,
   ];
 }
 
 export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
-  const judet = judetDupaCod(dataArray[1]);
-  const url = dataArray[10]
-    ? getUrlFromName(dataArray[0]) + "-" + judet.nume.toLowerCase()
-    : getUrlFromName(dataArray[0]);
+  const [
+    numeScoala,
+    siiir,
+    numCandidati,
+    medieLimbaRomana,
+    medieLimbaMaterna,
+    medieMatematica,
+    medieAbsolvire,
+    medieEvaluareNationala,
+    icon,
+    hasUrl,
+    urlContainsSiiir,
+    liceu,
+  ] = dataArray;
+
+  const cannonicalUrl = getUrlFromName(numeScoala);
+  const url =
+    siiir && hasUrl
+      ? urlContainsSiiir
+        ? cannonicalUrl + "-" + siiir
+        : cannonicalUrl
+      : undefined;
 
   return {
-    id: dataArray[8] ?? getId(dataArray[0], dataArray[1]),
-    numeScoala: dataArray[0],
-    codJudet: dataArray[1],
-    numCandidati: dataArray[2],
-    medieLimbaRomana: dataArray[3],
-    medieLimbaMaterna: dataArray[4],
-    medieMatematica: dataArray[5],
-    medieAbsolvire: dataArray[6],
-    medieEvaluareNationala: dataArray[7],
-    icon: dataArray[9],
+    numeScoala,
+    siiir,
+    numCandidati,
+    medieLimbaRomana,
+    medieLimbaMaterna,
+    medieMatematica,
+    medieAbsolvire,
+    medieEvaluareNationala,
+    icon,
     url,
-    liceu: dataArray[11],
+    liceu,
   };
 }

@@ -65,34 +65,33 @@ model alias {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model institutii {
-  id           String  @id(map: "idx_16404_sqlite_autoindex_institutii_1")
-  nume         String
-  rank         Int?
-  adresa       String?
-  website      String?
-  email        String?
-  telefon      String?
-  wikipedia    String?
-  facebook     String?
-  instagram    String?
-  youtube      String?
-  cod_siiir    String? @unique(map: "idx_16404_sqlite_autoindex_institutii_2")
-  cod_fiscal   String?
-  liceu        String?
-  gimnaziu     String?
-  latlong      String?
-  sigla        String?
-  sigla_lg     String?
-  sigla_xs     String?
-  last_updated BigInt?
-  last_author  String?
-  sigla_lipsa  Boolean @default(false)
-  siiir        siiir?  @relation(fields: [cod_siiir], references: [cod], onDelete: NoAction, onUpdate: NoAction)
+  id              String  @id(map: "idx_16404_sqlite_autoindex_institutii_1")
+  nume            String
+  rank            Int?
+  adresa          String?
+  website         String?
+  email           String?
+  telefon         String?
+  wikipedia       String?
+  facebook        String?
+  instagram       String?
+  youtube         String?
+  cod_siiir       String  @unique(map: "idx_16404_sqlite_autoindex_institutii_2")
+  cod_fiscal      String?
+  liceu_legacy    String?
+  gimnaziu_legacy String?
+  latlong         String?
+  sigla           String?
+  sigla_lg        String?
+  sigla_xs        String?
+  last_updated    BigInt?
+  last_author     String?
+  sigla_lipsa     Boolean @default(false)
 }
 
 model siiir {
-  cod                   String      @id(map: "idx_16389_sqlite_autoindex_siiir_1")
-  aux_id                String?     @unique(map: "idx_16389_index_aux_id")
+  cod                   String  @id(map: "idx_16389_sqlite_autoindex_siiir_1")
+  aux_id                String? @unique(map: "idx_16389_index_aux_id")
   denumire              String?
   denumire_scurta       String?
   localitate            String?
@@ -109,7 +108,6 @@ model siiir {
   cod_sirues            String?
   cod_fiscal            String?
   mod_operare           String?
-  institutii            institutii?
 }
 
 model users {
@@ -117,4 +115,158 @@ model users {
   email    String
   password String
   name     String
+}
+
+model bac_new {
+  an                     Int
+  cod_candidat           String
+  sex                    String?
+  specializare           String
+  promotie_anterioara    Boolean
+  unitate_siiir          String?
+  unitate_nume           String?
+  unitate_cod_judet      String?
+  clasa                  String?
+  lr_init                Decimal? @db.Decimal
+  lr_cont                Decimal? @db.Decimal
+  lr_final               Decimal? @db.Decimal
+  limba_materna          String?
+  lm_init                Decimal? @db.Decimal
+  lm_cont                Decimal? @db.Decimal
+  lm_final               Decimal? @db.Decimal
+  disciplina_obligatorie String
+  do_init                Decimal? @db.Decimal
+  do_cont                Decimal? @db.Decimal
+  do_final               Decimal? @db.Decimal
+  disciplina_alegere     String
+  da_init                Decimal? @db.Decimal
+  da_cont                Decimal? @db.Decimal
+  da_final               Decimal? @db.Decimal
+  limba_moderna          String
+  medie                  Decimal? @db.Decimal
+  rezultat               String
+
+  @@id([an, cod_candidat], map: "bac_pkey")
+}
+
+model en_new {
+  an                      Int
+  cod_candidat            String
+  sex                     String?
+  unitate_siiir           String?
+  unitate_nume            String?
+  unitate_cod_judet       String?
+  lr_init                 Decimal? @db.Decimal
+  lr_cont                 Decimal? @db.Decimal
+  lr_final                Decimal? @db.Decimal
+  limba_materna           String?
+  lm_init                 Decimal? @db.Decimal
+  lm_cont                 Decimal? @db.Decimal
+  lm_final                Decimal? @db.Decimal
+  ma_init                 Decimal? @db.Decimal
+  ma_cont                 Decimal? @db.Decimal
+  ma_final                Decimal? @db.Decimal
+  medie_en                Decimal? @db.Decimal
+  medie_abs               Decimal? @db.Decimal
+  medie_adm               Decimal? @db.Decimal
+  repartizat_liceu_nume   String?
+  repartizat_specializare String?
+  repartizat_liceu_siiir  String?
+  repartizat_cod_judet    String?
+
+  @@id([an, cod_candidat], map: "en_pkey")
+}
+
+model siiir_new {
+  an                      String?
+  judet_pj                String?
+  localitate_pj           String?
+  cod_siruta_pj           String?
+  mediu_loc_pj            String?
+  cod_siiir_pj            String?
+  denumire_pj             String?
+  localitate_unitate      String?
+  cod_siruta_unitate      String?
+  mediu_loc_unitate       String?
+  cod_sirues              String?
+  cod_siiir_unitate       String    @id(map: "siiir_pkey")
+  denumire_scurta_unitate String?
+  denumire_lunga_unitate  String
+  tip_unitate             String?
+  statut_unitate          String?
+  cod_fiscal              String?
+  mod_functionare         String?
+  forma_finantare         String?
+  forma_proprietate       String?
+  strada                  String?
+  numar                   String?
+  cod_postal              String?
+  telefon                 String?
+  fax                     String?
+  email                   String?
+  atribut_website         String?
+  data_website            DateTime? @db.Date
+  atribut_email           String?
+  data_email              DateTime? @db.Date
+  numar_niveluri_asociate Int?
+  stare_antepre_colar     String?   @map("stare_antepreșcolar")
+  data_antepre_colar      DateTime? @map("data_antepreșcolar") @db.Date
+  stare_pre_colar         String?   @map("stare_preșcolar")
+  data_pre_colar          DateTime? @map("data_preșcolar") @db.Date
+  stare_primar            String?
+  data_primar             DateTime? @db.Date
+  stare_gimnazial         String?
+  data_gimnazial          DateTime? @db.Date
+  stare_liceal            String?
+  data_liceal             DateTime? @db.Date
+  stare_postliceal        String?
+  data_postliceal         DateTime? @db.Date
+  stare_profesional       String?
+  data_profesional        DateTime? @db.Date
+}
+
+model institutii_new_bad {
+  cod_siiir String  @id(map: "institutii_new_pkey")
+  nume      String
+  website   String?
+  email     String?
+  telefon   String?
+  sigla     String?
+  sigla_xs  Boolean @default(false)
+  sigla_lg  Boolean @default(false)
+  facebook  String?
+  wikipedia String?
+  instagram String?
+  tiktok    String?
+  youtube   String?
+  linkedin  String?
+  legacy_id String?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model institutii_backup {
+  id           String?
+  nume         String?
+  rank         Int?
+  adresa       String?
+  website      String?
+  email        String?
+  telefon      String?
+  wikipedia    String?
+  facebook     String?
+  instagram    String?
+  youtube      String?
+  cod_siiir    String?
+  cod_fiscal   String?
+  liceu        String?
+  gimnaziu     String?
+  latlong      String?
+  sigla        String?
+  sigla_lg     String?
+  sigla_xs     String?
+  last_updated BigInt?
+  last_author  String?
+  sigla_lipsa  Boolean?
+
+  @@ignore
 }

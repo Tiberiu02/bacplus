@@ -37,7 +37,6 @@ export function Harta({
       nume: string;
       liceu: boolean;
       gimnaziu: boolean;
-      judet: string;
       long: number;
       lat: number;
       icon: boolean;
@@ -93,11 +92,7 @@ export function Harta({
               <div className="flex w-[12rem] flex-col items-center text-center [text-wrap:balance]">
                 {institutie.icon && (
                   <img
-                    src={
-                      "https://assets.bacplus.ro/sigle/lg/" +
-                      institutie.id +
-                      ".webp"
-                    }
+                    src={`https://assets.bacplus.ro/institutii/${institutie.id}/sigla-lg.webp`}
                     className="mb-2 h-12 w-12"
                   />
                 )}

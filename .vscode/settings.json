@@ -4,5 +4,6 @@
       "className",
       "ngClass",
       ".*ClassName*"
-    ]
+    ],
+    "typescript.tsdk": "node_modules\\typescript\\lib"
   }

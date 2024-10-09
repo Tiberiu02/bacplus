@@ -213,6 +213,38 @@ export const uploadFile = async (
   });
 };
 
+export const downloadFile = async (
+  path: string,
+  storageZone: StorageZone,
+  retries: number = 5
+): Promise<Buffer> => {
+  const url = `https://${storageZone.StorageHostname}/${storageZone.Name}/${path}`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "*/*",
+      AccessKey: storageZone.Password,
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch file ${path}: ${response.statusText}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  } catch (error) {
+    console.log(`Error downloading ${path}: ${error}`);
+    if (retries <= 0) {
+      throw error;
+    }
+    return downloadFile(path, storageZone, retries - 1);
+  }
+};
+
 function parallelFor<T>(
   data: T[],
   callback: (item: T, index: number) => Promise<void>,

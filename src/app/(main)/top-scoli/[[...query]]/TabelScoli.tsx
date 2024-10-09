@@ -21,7 +21,7 @@ export function TabelScoli({
       data={data}
       decompressionFn={scoalaFromDataArray}
       searchPlaceholder="Caută școală"
-      keyFn={(rowData) => rowData.id}
+      keyFn={(rowData) => rowData.siiir ?? JSON.stringify(rowData)}
       columns={[
         {
           type: "number",
@@ -42,9 +42,9 @@ export function TabelScoli({
           tdClassName: "min-w-[14rem] [text-wrap:balance]",
           customRender: (rowData) => (
             <>
-              {rowData.icon && (
+              {rowData.icon && rowData.siiir && (
                 <img
-                  src={`https://assets.bacplus.ro/sigle/xs/${rowData.id}.webp`}
+                  src={`https://assets.bacplus.ro/institutii/${rowData.siiir}/sigla-xs.webp`}
                   alt=""
                   className="mr-2 inline-block h-5 w-5 translate-y-[-1px] transition-opacity duration-200 group-hover:opacity-50"
                 />

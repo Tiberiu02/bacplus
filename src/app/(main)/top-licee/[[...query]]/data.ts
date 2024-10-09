@@ -4,65 +4,83 @@ import { getUrlFromName } from "~/data/institutie/urlFromName";
 import { getId } from "../../../../data/institutie/idFromName";
 
 export type Liceu = {
-  id: string;
   medieBac?: number;
   numCandidati: number;
   numCandidatiValizi?: number;
   numeLiceu: string;
-  url: string;
+  url?: string;
   rataPromovare: number;
-  codJudet: string;
   medieAdm?: number;
   icon: boolean;
+  siiir?: string;
 };
 
 export type LiceuDataArray = [
+  string, // numeLiceu
+  string | undefined, // siiir
   number | undefined, // medieBac
   number, // numCandidati
   number, // rataPromovare
-  string, // numeLiceu
-  string, // codJudet
-  // codJudet
   number | undefined, // medieAdm
-  // medieAdm
-  string | undefined, // idLiceu
   boolean, // icon
-  boolean // url contains judet
+  boolean // urlContainsSiiir
 ];
 
 export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
-  const idSintetic = getId(liceu.numeLiceu, liceu.codJudet);
+  const cannonicalUrl = getUrlFromName(liceu.numeLiceu);
+  const urlContainsSiiir =
+    liceu.url != undefined && liceu.url !== cannonicalUrl;
 
-  const urlContainsJudet = liceu.url !== getUrlFromName(liceu.numeLiceu);
+  // Sanity check
+  if (
+    liceu.siiir &&
+    liceu.url != cannonicalUrl &&
+    liceu.url != `${cannonicalUrl}-${liceu.siiir}`
+  ) {
+    throw new Error(
+      `Malformed url '${liceu.url}' for '${liceu.numeLiceu}', siiir='${liceu.siiir}'`
+    );
+  }
 
   return [
-    liceu.medieBac ? roundDecimals(liceu.medieBac, 3) : undefined,
+    liceu.numeLiceu,
+    liceu.siiir,
+    roundDecimals(liceu.medieBac, 3),
     liceu.numCandidati,
     liceu.rataPromovare,
-    liceu.numeLiceu,
-    liceu.codJudet,
     liceu.medieAdm,
-    idSintetic == liceu.id ? undefined : liceu.id,
     liceu.icon,
-    urlContainsJudet,
+    urlContainsSiiir,
   ];
 }
 
 export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
-  const judet = judetDupaCod(dataArray[4]);
-  const url = dataArray[8]
-    ? getUrlFromName(dataArray[3]) + "-" + judet.nume.toLowerCase()
-    : getUrlFromName(dataArray[3]);
+  const [
+    numeLiceu,
+    siiir,
+    medieBac,
+    numCandidati,
+    rataPromovare,
+    medieAdm,
+    icon,
+    urlContainsSiiir,
+  ] = dataArray;
+
+  const cannonicalUrl = getUrlFromName(numeLiceu);
+  const url = siiir
+    ? urlContainsSiiir
+      ? cannonicalUrl + "-" + siiir
+      : cannonicalUrl
+    : undefined;
 
   return {
-    id: dataArray[6] ?? getId(dataArray[3], dataArray[4]),
-    medieBac: dataArray[0],
-    numCandidati: dataArray[1],
-    rataPromovare: dataArray[2],
-    numeLiceu: dataArray[3],
-    codJudet: dataArray[4],
-    medieAdm: dataArray[5],
-    icon: dataArray[7],
+    medieBac,
+    numCandidati,
+    rataPromovare,
+    numeLiceu,
+    medieAdm,
+    icon,
     url,
+    siiir,
   };
 }

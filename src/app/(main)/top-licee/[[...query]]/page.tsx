@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { query, ultimulAnBac } from "~/data/dbQuery";
+import { bacData, query, ultimulAnBac } from "~/data/dbQuery";
 
 import { TabelLicee } from "~/app/(main)/top-licee/[[...query]]/TabelLicee";
 import {
@@ -12,11 +12,8 @@ import type { Metadata } from "next";
 import { LinkSelect } from "~/components/LinkSelect";
 import { env } from "~/env.js";
 import { Announcements } from "~/components/Announcements";
-import { LdJson } from "~/components/LdJson";
 import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
-import { smallIcons } from "~/data/icons";
-import Link from "next/link";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { createStaticData } from "~/static-data/createStaticData";
 
@@ -101,50 +98,6 @@ export default function Page({ params }: { params: { query: string[] } }) {
 
   return (
     <>
-      <LdJson
-        name={
-          judet?.numeIntreg
-            ? `Top licee ${judet?.numeIntreg} ${an}`
-            : `Top licee ${an}`
-        }
-        description={`Descoperă cele mai bune licee din ${
-          judet?.numeIntreg ?? "România"
-        } conform rezultatelor oficiale la examenele de Bacalaureat și Evauare Națională ${an} publicate de Ministerul Educației Naționale.`}
-        data={licee
-          .filter((a) => a.medieBac)
-          .sort((a, b) =>
-            a.medieBac && b.medieBac ? b.medieBac - a.medieBac : 0
-          )
-          .slice(0, 10)}
-        id={(liceu: Liceu) => liceu.id}
-        columns={[
-          {
-            name: "Nume liceu",
-            value: (liceu: Liceu) => liceu.numeLiceu,
-            type: "string",
-          },
-          {
-            name: "Medie Bac",
-            value: (liceu: Liceu) =>
-              liceu.medieBac
-                ? Math.round(liceu.medieBac * 100) / 100
-                : undefined,
-            type: "decimal",
-          },
-          {
-            name: "Rată de promovare",
-            value: (liceu: Liceu) =>
-              Math.round(liceu.rataPromovare * 100) / 100,
-            type: "decimal",
-          },
-          {
-            name: "Elevi",
-            value: (liceu: Liceu) => liceu.numCandidati,
-            type: "integer",
-          },
-        ]}
-      />
-
       <MainContainer>
         <Title>
           Clasamentul Liceelor {judet && "din " + judet.numeIntreg} la
@@ -199,33 +152,45 @@ function getLicee(an: number, judet?: string) {
     [id: string]: Liceu;
   };
 
-  query.bac
+  bacData
     .filter(
       (result) =>
-        result.an === an && (result.id_judet === judet || judet === undefined)
+        result.an === an &&
+        (judet === undefined ||
+          result.unitate_cod_judet === judet ||
+          result.siiirData?.judet_pj === judet)
     )
     .forEach((result) => {
-      if (result.id_liceu === null) return;
+      const id =
+        result.unitate_siiir ??
+        (result.unitate_nume ?? "") + (result.unitate_cod_judet ?? "");
 
-      licee[result.id_liceu] = {
-        id: result.id_liceu,
-        medieBac: result._avg.my_medie ?? undefined,
+      licee[id] = {
+        numeLiceu:
+          result.data?.nume ??
+          result.siiirData?.denumire_lunga_unitate ??
+          result.unitate_nume ??
+          "",
+        siiir: result.unitate_siiir ?? undefined,
+        icon: !!result.data?.sigla_xs,
+        url: result.unitate_siiir
+          ? getUrlFromId(result.unitate_siiir)
+          : undefined,
+        medieBac: result._avg.medie?.toNumber() ?? undefined,
         numCandidati: result._count._all,
-        numCandidatiValizi: result._count.my_medie,
+        numCandidatiValizi: result._count.medie,
         rataPromovare: 0,
-        numeLiceu: "",
-        codJudet: result.id_liceu.split("_").at(-1) ?? "",
-        icon: smallIcons[result.id_liceu] ?? false,
-        url: getUrlFromId(result.id_liceu),
       };
     });
 
   query.promovatiBac
     .filter((result) => result.an === an)
     .forEach((result) => {
-      if (result.id_liceu === null) return;
+      const id =
+        result.unitate_siiir ??
+        (result.unitate_nume ?? "") + (result.unitate_cod_judet ?? "");
 
-      const liceu = licee[result.id_liceu];
+      const liceu = licee[id];
 
       if (liceu && liceu.numCandidatiValizi) {
         liceu.rataPromovare =
@@ -242,12 +207,12 @@ function getLicee(an: number, judet?: string) {
   query.mediiAdmLicee
     .filter((result) => result.an === anAdmitere?.an)
     .forEach((result) => {
-      if (result.repartizat_id_liceu === null) return;
+      if (result.repartizat_liceu_siiir === null) return;
 
-      const liceu = licee[result.repartizat_id_liceu];
+      const liceu = licee[result.repartizat_liceu_siiir];
 
       if (liceu) {
-        liceu.medieAdm = result._min.medie_adm ?? undefined;
+        liceu.medieAdm = result._min.medie_adm?.toNumber() ?? undefined;
       }
     });
 

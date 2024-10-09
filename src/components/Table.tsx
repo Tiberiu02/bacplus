@@ -174,14 +174,14 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                   )}
                   onClick={() => {
                     if (column.sortable) {
+                      const primarySortOrder =
+                        column.primarySortOrder == "ASC" ? 1 : -1;
                       setSortOrder(
                         sortColumnIx == cIx
                           ? sortOrder == 1
                             ? -1
                             : 1
-                          : column.primarySortOrder == "ASC"
-                          ? 1
-                          : -1
+                          : primarySortOrder
                       );
                       setSortColumnIx(cIx);
                       setShowRows(SHOW_ROWS_DEFAULT);
@@ -192,9 +192,9 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                     className={twMerge(
                       "left-0 flex flex-row items-center gap-2",
                       column.textAlign == "left"
-                        ? "justify-left"
+                        ? "justify-start"
                         : column.textAlign == "right"
-                        ? "justify-right"
+                        ? "justify-end"
                         : "justify-center"
                     )}
                   >

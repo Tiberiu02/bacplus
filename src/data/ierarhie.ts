@@ -6,8 +6,8 @@ for (const an of query.aniBac) {
   const liceeSortate = query.bac
     .filter((b) => b.an === an.an)
     .sort((a, b) => {
-      const aVal = a._avg.my_medie;
-      const bVal = b._avg.my_medie;
+      const aVal = a._avg.medie;
+      const bVal = b._avg.medie;
 
       const aNull = aVal === null;
       const bNull = bVal === null;
@@ -21,10 +21,10 @@ for (const an of query.aniBac) {
 
   let pos = 1;
   liceeSortate.forEach((liceu, i) => {
-    if (liceu._avg.my_medie !== liceeSortate[i - 1]?._avg.my_medie) {
+    if (liceu._avg.medie !== liceeSortate[i - 1]?._avg.medie) {
       pos = i + 1;
     }
-    const idLiceu = liceu.id_liceu;
+    const idLiceu = liceu.unitate_siiir;
     if (!idLiceu) return;
 
     const ierarhieLiceu =
@@ -57,7 +57,7 @@ for (const an of query.aniEn) {
     if (scoala._avg.medie_en !== scoliSortate[i - 1]?._avg.medie_en) {
       pos = i + 1;
     }
-    const idScoala = scoala.id_scoala;
+    const idScoala = scoala.unitate_siiir;
     if (!idScoala) return;
 
     const ierarhieScoala =

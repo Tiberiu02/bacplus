@@ -4,12 +4,9 @@ import { FaSchool as FaSchool2, FaUserGraduate } from "react-icons/fa";
 import { FaSchool } from "react-icons/fa6";
 import { LinkText } from "~/components/LinkText";
 import { CountUp } from "~/components/CountUp";
-
-import { Authors } from "~/components/Authors";
-import { query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
+import { bacData, query, ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 import { env } from "~/env.js";
 import { MainContainer } from "~/components/MainContainer";
-import { smallIcons } from "~/data/icons";
 import { VerticalTrack } from "~/components/VerticalTrack";
 import Link from "next/link";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
@@ -89,26 +86,25 @@ export default function Home() {
         <div className="h-full"></div>
 
         <VerticalTrack className="shrink-0 gap-5 bg-white py-3 pl-3">
-          {query.bac
+          {bacData
             .filter(
-              (a) =>
-                a.an == ultimulAnBac &&
-                a._avg.my_medie &&
-                smallIcons[a.id_liceu ?? ""]
+              (a) => a.an == ultimulAnBac && a._avg.medie && a.data?.sigla_xs
             )
-            .sort((a, b) => (b._avg.my_medie ?? 0) - (a._avg.my_medie ?? 0))
+            .sort(
+              (a, b) =>
+                (b._avg.medie?.toNumber() ?? 0) -
+                (a._avg.medie?.toNumber() ?? 0)
+            )
             .slice(0, 50)
             .map((a) => (
               <Link
-                href={`/i/${getUrlFromId(a.id_liceu || "")}`}
-                key={a.id_liceu}
+                href={`/i/${getUrlFromId(a.unitate_siiir || "")}`}
+                key={a.unitate_siiir}
                 className="h-8 w-8 shrink-0"
                 target="_blank"
               >
                 <img
-                  src={`https://assets.bacplus.ro/sigle/xs/${
-                    a.id_liceu || ""
-                  }.webp`}
+                  src={`https://assets.bacplus.ro/institutii/${a.unitate_siiir}/sigla-xs.webp`}
                   className="h-8 w-8"
                 />
               </Link>
@@ -154,15 +150,15 @@ export default function Home() {
           <p>
             Toate datele de pe acest site au fost sintetizate folosind
             informații publicate de Ministerul Educației Naționale pe{" "}
-            <LinkText target="_blank" href="http://bacalaureat.edu.ro/2023/">
-              bacalaureat.edu.ro
-            </LinkText>
-            ,{" "}
             <LinkText
               target="_blank"
               href="https://data.gov.ro/en/organization/men"
             >
               data.gov.ro
+            </LinkText>
+            ,{" "}
+            <LinkText target="_blank" href="http://bacalaureat.edu.ro/2023/">
+              bacalaureat.edu.ro
             </LinkText>
             ,{" "}
             <LinkText target="_blank" href="http://admitere.edu.ro/">

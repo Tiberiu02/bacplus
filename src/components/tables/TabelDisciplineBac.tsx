@@ -10,7 +10,7 @@ export function TabelDisciplineBac({
   discipline: {
     nume: string;
     elevi: number;
-    medie: number | null;
+    medie: number | undefined;
     an: number;
   }[];
 }) {
@@ -20,7 +20,7 @@ export function TabelDisciplineBac({
   if (an == 0) return null;
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full max-w-3xl flex-col items-center gap-4">
       <div className="relative max-w-full flex-col items-center justify-between gap-4">
         <div className="text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
           Rezultate Bacalaureat pe discipline
@@ -29,7 +29,7 @@ export function TabelDisciplineBac({
           options={ani.map((e) => ({ value: e, label: e.toString() }))}
           value={an}
           onChange={setAn}
-          ariaLabel="An specializări admitere"
+          ariaLabel="An discipline bac"
           className="mx-auto"
         />
       </div>

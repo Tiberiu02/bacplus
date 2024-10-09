@@ -3,41 +3,19 @@ import { computeAllQueries } from "~/data/cacheQuery";
 
 const queryFunctions = {
   bac: () =>
-    prisma.bac.groupBy({
-      by: ["id_liceu", "an", "id_judet"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
-        my_medie: true, // only set when valid candidate
+        medie: true, // only set when valid candidate
       },
       _avg: {
-        my_medie: true,
-      },
-    }),
-  bacJudete: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_judet"],
-      _count: {
-        _all: true,
-        my_medie: true, // only set when valid candidate
-      },
-      _avg: {
-        my_medie: true,
-      },
-    }),
-  bacNational: () =>
-    prisma.bac.groupBy({
-      by: ["an"],
-      _count: {
-        _all: true,
-        my_medie: true, // only set when valid candidate
-      },
-      _avg: {
-        my_medie: true,
+        medie: true,
       },
     }),
   en: () =>
-    prisma.en.groupBy({
-      by: ["id_scoala", "an", "id_judet"],
+    prisma.en_new.groupBy({
+      by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
       },
@@ -49,129 +27,61 @@ const queryFunctions = {
         medie_en: true,
       },
     }),
-  enJudete: () =>
-    prisma.en.groupBy({
-      by: ["an", "id_judet"],
-      _count: {
-        _all: true,
-      },
-      _avg: {
-        medie_en: true,
-      },
-    }),
-  enNational: () =>
-    prisma.en.groupBy({
-      by: ["an"],
-      _count: {
-        _all: true,
-      },
-      _avg: {
-        medie_en: true,
-      },
-    }),
   gender: () =>
-    prisma.bac.groupBy({
-      by: ["id_liceu", "sex"],
+    prisma.bac_new.groupBy({
+      by: ["unitate_siiir", "sex"],
       _count: {
         _all: true,
       },
     }),
   promovatiBac: () =>
-    prisma.bac.groupBy({
-      by: ["id_liceu", "an", "id_judet"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
       },
       where: {
-        rezultat: "REUSIT",
-      },
-    }),
-  promovatiBacJudete: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_judet"],
-      _count: {
-        _all: true,
-      },
-      where: {
-        rezultat: "REUSIT",
-      },
-    }),
-  promovatiBacNational: () =>
-    prisma.bac.groupBy({
-      by: ["an"],
-      _count: {
-        _all: true,
-      },
-      where: {
-        rezultat: "REUSIT",
+        rezultat: "promovat",
       },
     }),
   limbiMaterneBac: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "limba_materna"],
-      _count: {
-        _all: true,
-      },
-    }),
-  limbiMaterneBacJudete: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_judet", "limba_materna"],
-      _count: {
-        _all: true,
-      },
-    }),
-  limbiMaterneBacNational: () =>
-    prisma.bac.groupBy({
-      by: ["an", "limba_materna"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "limba_materna"],
       _count: {
         _all: true,
       },
     }),
   limbiMaterneEn: () =>
-    prisma.en.groupBy({
-      by: ["an", "id_scoala", "limba_materna"],
+    prisma.en_new.groupBy({
+      by: ["an", "unitate_siiir", "limba_materna"],
       _count: {
         _all: true,
       },
     }),
   limbiStraineBac: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "limba_moderna"],
-      _count: {
-        _all: true,
-      },
-    }),
-  limbiStraineBacJudete: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_judet", "limba_moderna"],
-      _count: {
-        _all: true,
-      },
-    }),
-  limbiStraineBacNational: () =>
-    prisma.bac.groupBy({
-      by: ["an", "limba_moderna"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "limba_moderna"],
       _count: {
         _all: true,
       },
     }),
   specializariBac: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "specializare"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "specializare"],
       _count: {
         _all: true,
       },
     }),
   mediiAdmLicee: () =>
-    prisma.en.groupBy({
-      by: ["repartizat_id_liceu", "an"],
+    prisma.en_new.groupBy({
+      by: ["repartizat_liceu_siiir", "an"],
       _min: {
         medie_adm: true,
       },
     }),
   bacRomana: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir"],
       _avg: {
         lr_final: true,
       },
@@ -185,8 +95,8 @@ const queryFunctions = {
       },
     }),
   bacLimbaMaterna: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "limba_materna"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "limba_materna"],
       _avg: {
         lm_final: true,
       },
@@ -203,8 +113,8 @@ const queryFunctions = {
       },
     }),
   bacDisciplineObligatorii: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "disciplina_obligatorie"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "disciplina_obligatorie"],
       _avg: {
         do_final: true,
       },
@@ -218,8 +128,81 @@ const queryFunctions = {
       },
     }),
   bacDisciplineAlegere: () =>
-    prisma.bac.groupBy({
-      by: ["an", "id_liceu", "disciplina_alegere"],
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "disciplina_alegere"],
+      _avg: {
+        da_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        da_final: {
+          not: null,
+        },
+      },
+    }),
+  bacMedieClase: () =>
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "clasa"],
+      _avg: {
+        medie: true,
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  bacRomanaClase: () =>
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "clasa"],
+      _avg: {
+        lr_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        lr_final: {
+          not: null,
+        },
+      },
+    }),
+  bacLimbaMaternaClase: () =>
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "limba_materna", "clasa"],
+      _avg: {
+        lm_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        lm_final: {
+          not: null,
+        },
+        limba_materna: {
+          not: null,
+        },
+      },
+    }),
+  bacDisciplineObligatoriiClase: () =>
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "disciplina_obligatorie", "clasa"],
+      _avg: {
+        do_final: true,
+      },
+      _count: {
+        _all: true,
+      },
+      where: {
+        do_final: {
+          not: null,
+        },
+      },
+    }),
+  bacDisciplineAlegereClase: () =>
+    prisma.bac_new.groupBy({
+      by: ["an", "unitate_siiir", "disciplina_alegere", "clasa"],
       _avg: {
         da_final: true,
       },
@@ -233,13 +216,23 @@ const queryFunctions = {
       },
     }),
   institutii: () => prisma.institutii.findMany(),
-  scoliCuElevi: () =>
-    prisma.en.groupBy({
-      by: ["id_scoala"],
+  institutiiBac: () =>
+    prisma.bac_new.findMany({
+      select: {
+        unitate_siiir: true,
+      },
+      distinct: ["unitate_siiir"],
+    }),
+  institutiiEn: () =>
+    prisma.en_new.findMany({
+      select: {
+        unitate_siiir: true,
+      },
+      distinct: ["unitate_siiir"],
     }),
   specializariAdm: () =>
-    prisma.en.groupBy({
-      by: ["an", "repartizat_id_liceu", "repartizat_specializare"],
+    prisma.en_new.groupBy({
+      by: ["an", "repartizat_liceu_siiir", "repartizat_specializare"],
       _count: {
         _all: true,
       },
@@ -247,41 +240,42 @@ const queryFunctions = {
         medie_adm: true,
       },
       where: {
-        repartizat_id_liceu: {
+        repartizat_liceu_siiir: {
           not: null,
         },
       },
     }),
   ierarhieAdm: () =>
-    prisma.en.groupBy({
-      by: ["an", "id_judet", "medie_adm"],
+    prisma.en_new.groupBy({
+      by: ["an", "unitate_cod_judet", "medie_adm"],
       _count: {
         _all: true,
       },
     }),
   aniBac: () =>
-    prisma.bac.findMany({
+    prisma.bac_new.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
     }),
   aniAdm: () =>
-    prisma.en.findMany({
+    prisma.en_new.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
       where: {
-        repartizat_id_liceu: {
+        repartizat_liceu_siiir: {
           not: null,
         },
       },
     }),
   aniEn: () =>
-    prisma.en.findMany({
+    prisma.en_new.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
     }),
+  siiir: () => prisma.siiir_new.findMany(),
 };
 
 export const query = await computeAllQueries(queryFunctions);
@@ -294,8 +288,46 @@ if (!query.aniEn[0]) {
   throw new Error("No data found in EN table");
 }
 
+export const siiir = query.siiir.reduce((acc, s) => {
+  acc[s.cod_siiir_unitate] = s;
+  return acc;
+}, {} as Record<string, (typeof query.siiir)[0]>);
+
+export const institutii = query.institutii.reduce((acc, i) => {
+  acc[i.cod_siiir ?? "null"] = i;
+  return acc;
+}, {} as Record<string, (typeof query.institutii)[0]>);
+
+function appendInstitutionData<T extends { unitate_siiir: string | null }>(
+  rows: T[]
+) {
+  return rows.map((row) => {
+    const rowWithData = row as T & {
+      siiirData?: (typeof siiir)[keyof typeof siiir];
+      data?: (typeof institutii)[keyof typeof institutii];
+    };
+    rowWithData.siiirData = siiir[row.unitate_siiir ?? ""];
+    rowWithData.data = institutii[row.unitate_siiir ?? ""];
+    return rowWithData;
+  });
+}
+
+export const bacData = appendInstitutionData(query.bac);
+export const enData = appendInstitutionData(query.en);
+
 export const ultimulAnBac = query.aniBac[0].an;
 export const ultimulAnEn = query.aniEn[0].an;
 
-export const licee = query.institutii.filter((i) => i.liceu);
-export const gimnazii = query.institutii.filter((i) => i.gimnaziu);
+export const institutiiBac = new Set(
+  query.institutiiBac.map((i) => i.unitate_siiir)
+);
+export const institutiiEn = new Set(
+  query.institutiiEn.map((i) => i.unitate_siiir)
+);
+
+export const licee = query.institutii.filter((i) =>
+  institutiiBac.has(i.cod_siiir)
+);
+export const gimnazii = query.institutii.filter((i) =>
+  institutiiEn.has(i.cod_siiir)
+);

@@ -16,7 +16,7 @@ export function TabelDateIstoriceLiceu({
     };
   };
   admitere: {
-    [an: string]: number | null;
+    [an: string]: number | undefined;
   };
   ierarhie: {
     [an: string]: number;

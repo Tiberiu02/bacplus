@@ -5,23 +5,37 @@
 
 import path from "path";
 import { promises as fs } from "fs";
+import { Prisma } from "@prisma/client";
 
 const cacheDir = path.join(process.cwd(), ".next", "cache", "db-query");
+
+const DECIMAL_KEY = "D!$:";
 
 async function computeQuery(key, f) {
   const cachePath = path.join(cacheDir, key + ".json");
 
   try {
     const cached = await fs.readFile(cachePath, "utf-8");
-    return JSON.parse(cached);
+    return JSON.parse(cached, (_, v) => {
+      if (typeof v === "string" && v.startsWith(DECIMAL_KEY)) {
+        return Prisma.Decimal(parseFloat(v.slice(DECIMAL_KEY.length)));
+      }
+      return v;
+    });
   } catch (e) {
     const result = await f();
     await fs.mkdir(cacheDir, { recursive: true });
+    
+    Prisma.Decimal.prototype.toJSON = function () {
+      return DECIMAL_KEY + this.toNumber();
+    }
+    const serialized = JSON.stringify(result, (_, v) => {
+      if (typeof v === "bigint") return v.toString();
+      return v;
+    });
     await fs.writeFile(
       cachePath,
-      JSON.stringify(result, (_, v) =>
-        typeof v === "bigint" ? v.toString() : v
-      )
+      serialized
     );
     return result;
   }
