@@ -55,34 +55,38 @@ function LoadingSpinner({
 
 function Institutie({
   id,
+  cod_judet,
   nume,
   rank,
   website,
   sigla,
+  ext_sigla,
   sigla_xs,
   sigla_lg,
   sigla_lipsa,
   info_modificare,
 }: {
   id: string;
+  cod_judet: string;
   nume: string;
-  rank: number | null;
+  rank: number | undefined;
   website: string | null;
-  sigla: string | null;
-  sigla_xs: string | null;
-  sigla_lg: string | null;
-  sigla_lipsa: boolean | null;
+  sigla: boolean;
+  ext_sigla: string | null;
+  sigla_xs: boolean;
+  sigla_lg: boolean;
+  sigla_lipsa: boolean;
   info_modificare?: string;
 }) {
-  const judet = judetDupaCod(id.split("_").at(-1) || "");
+  const judet = judetDupaCod(cod_judet);
   const [faraSigla, setFaraSigla] = useState(!!sigla_lipsa);
   const [isLoading, setIsLoading] = useState(false);
 
   const [images, setImages] = useState<ImageListType>(
-    sigla
+    sigla && ext_sigla
       ? [
           {
-            dataURL: "https://assets.bacplus.ro/sigle/original/" + sigla,
+            dataURL: `https://assets.bacplus.ro/institutii/${id}/sigla.${ext_sigla}`,
           },
         ]
       : []
@@ -187,7 +191,9 @@ function Institutie({
       <div className="flex flex-col">
         <div className="mb-2 font-semibold">
           {rank || "?"}. {nume}{" "}
-          <span className="font-normal">({judet.numeIntreg})</span>
+          <span className="font-normal">
+            ({judet.numeIntreg}), {id}.
+          </span>
           {faraSigla || sigla_lg || uploaded ? (
             <div className="ml-4 inline font-medium text-green-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
@@ -331,20 +337,24 @@ function Dashboard() {
       </div>
 
       {data.data ? (
-        (page == "lipsa" ? data.data.lipsa : data.data.complet).map((i) => (
-          <Institutie
-            key={i.id}
-            id={i.id}
-            nume={i.nume}
-            rank={i.rank}
-            website={i.website}
-            sigla={i.sigla}
-            sigla_xs={i.sigla_xs}
-            sigla_lg={i.sigla_lg}
-            sigla_lipsa={i.sigla_lipsa}
-            info_modificare={i.info_modificare}
-          />
-        ))
+        (page == "lipsa" ? data.data.lipsa : data.data.complet)
+          .slice(0, 100)
+          .map((i) => (
+            <Institutie
+              key={i.id}
+              id={i.id}
+              cod_judet={i.cod_judet}
+              nume={i.nume}
+              rank={i.rank}
+              website={i.website}
+              sigla={i.sigla}
+              ext_sigla={i.sigla_file_type}
+              sigla_xs={i.sigla_xs}
+              sigla_lg={i.sigla_lg}
+              sigla_lipsa={i.sigla_lipsa}
+              info_modificare={i.info_modificare}
+            />
+          ))
       ) : (
         <LoadingSpinner className="mx-auto" />
       )}

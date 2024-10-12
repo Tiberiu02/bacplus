@@ -66,7 +66,8 @@ export function beautifyName(name: string): string {
     // Check if the word is a link word and not the first word
     if (!isLinkWord) {
       // Capitalize the first character and leave the rest as-is
-      const newWord = originalWord[0]?.toUpperCase() + originalWord.slice(1);
+      const newWord =
+        (originalWord[0]?.toUpperCase() || "") + originalWord.slice(1);
       name = name.slice(0, index) + newWord + name.slice(index + word.length);
     }
   });

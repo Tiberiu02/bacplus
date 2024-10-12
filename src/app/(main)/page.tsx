@@ -104,7 +104,9 @@ export default function Home() {
                 target="_blank"
               >
                 <img
-                  src={`https://assets.bacplus.ro/institutii/${a.unitate_siiir}/sigla-xs.webp`}
+                  src={`https://assets.bacplus.ro/institutii/${
+                    a.unitate_siiir || ""
+                  }/sigla-xs.webp`}
                   className="h-8 w-8"
                 />
               </Link>

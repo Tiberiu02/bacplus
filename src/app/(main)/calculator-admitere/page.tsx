@@ -3,12 +3,9 @@ import { MainContainer } from "~/components/MainContainer";
 import { ShareButtons } from "~/components/ShareButtons";
 import { Title } from "~/components/Title";
 import { CalculatorAdmitere } from "./CalculatorAdmitere";
-import { query, ultimulAnEn } from "~/data/dbQuery";
+import { institutii, query, ultimulAnEn } from "~/data/dbQuery";
 import type { DateLicee, Ierarhie } from "./data";
 import { env } from "~/env.js";
-import { Button } from "~/components/Button";
-import LinkButton from "~/components/LinkButton";
-import Link from "next/link";
 import { LinkText } from "~/components/LinkText";
 
 const NUM_ANI_AFISATI = 2;
@@ -31,22 +28,23 @@ export function generateMetadata(): Metadata {
 
 export default function Calculator() {
   const ierarhie = query.ierarhieAdm.reduce((acc, i) => {
-    const { an, id_judet, medie_adm } = i;
+    const { an, unitate_cod_judet, medie_adm } = i;
 
-    if (!an || !id_judet || !medie_adm) return acc;
+    if (!an || !unitate_cod_judet || !medie_adm) return acc;
 
     let accAn = acc[an];
 
     if (!accAn) accAn = acc[an] = {};
 
-    let accJudet = accAn[id_judet];
+    let accJudet = accAn[unitate_cod_judet];
 
-    if (!accJudet) accJudet = accAn[id_judet] = new Array<number>(901).fill(0);
+    if (!accJudet)
+      accJudet = accAn[unitate_cod_judet] = new Array<number>(901).fill(0);
 
-    const ix = Math.round(medie_adm * 100 - 100);
+    const ix = Math.round(medie_adm.toNumber() * 100 - 100);
 
     if (ix < 0 || ix > 900) {
-      console.error(`Invalid index ${ix} for ${i.id_judet}`);
+      console.error(`Invalid index ${ix} for ${unitate_cod_judet}`);
     } else {
       accJudet[ix] = i._count._all;
     }
@@ -63,12 +61,16 @@ export default function Calculator() {
   });
 
   const licee = query.specializariAdm.reduce((acc, s) => {
-    const liceu = s.repartizat_id_liceu;
-    const medie = s._min.medie_adm;
+    const liceu = s.repartizat_liceu_siiir;
+    const medie = s._min.medie_adm?.toNumber();
 
     if (!liceu || !medie || s.an < ultimulAnEn - NUM_ANI_AFISATI) return acc;
 
-    const judet = liceu.split("_").at(-1);
+    const i = institutii[liceu];
+
+    if (!i) return acc;
+
+    const judet = i.cod_judet;
 
     if (!judet) return acc;
 
@@ -76,9 +78,14 @@ export default function Calculator() {
 
     if (!pozitie) throw new Error(`No pozitie for ${liceu} ${medie} ${judet}`);
 
-    if (!acc[liceu]) acc[liceu] = [];
+    if (!acc[liceu])
+      acc[liceu] = {
+        nume: i.nume,
+        codJudet: judet,
+        rezultate: [],
+      };
 
-    acc[liceu]?.push({
+    acc[liceu]?.rezultate.push({
       an: s.an,
       specializare: s.repartizat_specializare || "",
       locuri: s._count._all,

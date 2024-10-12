@@ -1,6 +1,6 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { bacData, query, ultimulAnBac } from "~/data/dbQuery";
+import { bacData, institutii, query, ultimulAnBac } from "~/data/dbQuery";
 
 import { TabelLicee } from "~/app/(main)/top-licee/[[...query]]/TabelLicee";
 import {
@@ -172,10 +172,11 @@ function getLicee(an: number, judet?: string) {
           result.unitate_nume ??
           "",
         siiir: result.unitate_siiir ?? undefined,
-        icon: !!result.data?.sigla_xs,
-        url: result.unitate_siiir
-          ? getUrlFromId(result.unitate_siiir)
-          : undefined,
+        icon: result.data?.sigla_xs ?? false,
+        urlId:
+          result.unitate_siiir && institutii[result.unitate_siiir]
+            ? getUrlFromId(result.unitate_siiir)
+            : undefined,
         medieBac: result._avg.medie?.toNumber() ?? undefined,
         numCandidati: result._count._all,
         numCandidatiValizi: result._count.medie,
@@ -215,13 +216,6 @@ function getLicee(an: number, judet?: string) {
         liceu.medieAdm = result._min.medie_adm?.toNumber() ?? undefined;
       }
     });
-
-  query.institutii.forEach((liceu) => {
-    const obj = licee[liceu.id];
-    if (obj != undefined) {
-      obj.numeLiceu = liceu.nume;
-    }
-  });
 
   return { licee: Object.values(licee), anAdmitere };
 }

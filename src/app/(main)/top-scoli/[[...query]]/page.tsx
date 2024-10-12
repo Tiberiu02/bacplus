@@ -1,6 +1,12 @@
 import { Title } from "~/components/Title";
 import { JUDETE } from "~/data/coduriJudete";
-import { enData, institutiiBac, query, ultimulAnEn } from "~/data/dbQuery";
+import {
+  enData,
+  institutii,
+  institutiiBac,
+  query,
+  ultimulAnEn,
+} from "~/data/dbQuery";
 
 import { MainContainer } from "~/components/MainContainer";
 import { scoalaToDataArray } from "~/app/(main)/top-scoli/[[...query]]/data";
@@ -170,10 +176,11 @@ function getScoli(an: number, judet?: string) {
           beautifyNameNullable(result.unitate_nume) ??
           "",
         siiir: result.unitate_siiir ?? undefined,
-        icon: !!result.data?.sigla_xs,
-        url: result.unitate_siiir
-          ? getUrlFromId(result.unitate_siiir)
-          : undefined,
+        icon: result.data?.sigla_xs ?? false,
+        url:
+          result.unitate_siiir && institutii[result.unitate_siiir]
+            ? getUrlFromId(result.unitate_siiir)
+            : undefined,
         numCandidati: result._count._all,
         medieLimbaRomana: result._avg.lr_final?.toNumber() ?? undefined,
         medieLimbaMaterna: result._avg.lm_final?.toNumber() ?? undefined,

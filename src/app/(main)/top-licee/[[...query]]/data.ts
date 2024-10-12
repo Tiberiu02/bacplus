@@ -1,14 +1,16 @@
-import { judetDupaCod } from "~/data/coduriJudete";
 import { roundDecimals } from "~/data/roundDecimals";
-import { getUrlFromName } from "~/data/institutie/urlFromName";
-import { getId } from "../../../../data/institutie/idFromName";
+import {
+  CompressedUrlData,
+  getCompressedUrlData,
+  getUrlFromCompressedData,
+} from "~/data/institutie/compressedUrl";
 
 export type Liceu = {
   medieBac?: number;
   numCandidati: number;
   numCandidatiValizi?: number;
   numeLiceu: string;
-  url?: string;
+  urlId?: string;
   rataPromovare: number;
   medieAdm?: number;
   icon: boolean;
@@ -23,25 +25,10 @@ export type LiceuDataArray = [
   number, // rataPromovare
   number | undefined, // medieAdm
   boolean, // icon
-  boolean // urlContainsSiiir
+  CompressedUrlData // compressedUrlData
 ];
 
 export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
-  const cannonicalUrl = getUrlFromName(liceu.numeLiceu);
-  const urlContainsSiiir =
-    liceu.url != undefined && liceu.url !== cannonicalUrl;
-
-  // Sanity check
-  if (
-    liceu.siiir &&
-    liceu.url != cannonicalUrl &&
-    liceu.url != `${cannonicalUrl}-${liceu.siiir}`
-  ) {
-    throw new Error(
-      `Malformed url '${liceu.url}' for '${liceu.numeLiceu}', siiir='${liceu.siiir}'`
-    );
-  }
-
   return [
     liceu.numeLiceu,
     liceu.siiir,
@@ -50,7 +37,7 @@ export function liceuToDataArray(liceu: Liceu): LiceuDataArray {
     liceu.rataPromovare,
     liceu.medieAdm,
     liceu.icon,
-    urlContainsSiiir,
+    getCompressedUrlData(liceu.urlId, liceu.numeLiceu, liceu.siiir),
   ];
 }
 
@@ -63,15 +50,8 @@ export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
     rataPromovare,
     medieAdm,
     icon,
-    urlContainsSiiir,
+    compressedUrlData,
   ] = dataArray;
-
-  const cannonicalUrl = getUrlFromName(numeLiceu);
-  const url = siiir
-    ? urlContainsSiiir
-      ? cannonicalUrl + "-" + siiir
-      : cannonicalUrl
-    : undefined;
 
   return {
     medieBac,
@@ -80,7 +60,7 @@ export function liceuFromDataArray(dataArray: LiceuDataArray): Liceu {
     numeLiceu,
     medieAdm,
     icon,
-    url,
+    urlId: getUrlFromCompressedData(numeLiceu, siiir, compressedUrlData),
     siiir,
   };
 }

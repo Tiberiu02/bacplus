@@ -176,6 +176,8 @@ export const uploadFile = async (
   storageZone: StorageZone,
   retries: number = 5
 ) => {
+  console.log(`Uploading ${destinationPath}...`);
+
   const readStream =
     file instanceof Buffer ? Readable.from(file) : fs.createReadStream(file);
 

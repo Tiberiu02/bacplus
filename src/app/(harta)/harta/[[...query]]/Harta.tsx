@@ -94,6 +94,7 @@ export function Harta({
                   <img
                     src={`https://assets.bacplus.ro/institutii/${institutie.id}/sigla-lg.webp`}
                     className="mb-2 h-12 w-12"
+                    alt={`Sigla ${institutie.nume}`}
                   />
                 )}
                 <div className="font-bold">{institutie.nume}</div>

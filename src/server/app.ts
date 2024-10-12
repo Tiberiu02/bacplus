@@ -7,6 +7,8 @@ import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deplo
 import sharp from "sharp";
 import { findStorageZone, purgeUrl, uploadFile } from "../../infra/cdn/bunny";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { ierarhieLicee, ierarhieScoli } from "~/data/ierarhie";
+import { ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
 
 const User = z.object({
   id: z.string(),
@@ -103,7 +105,7 @@ export const appRouter = router({
 
   stats: protectedProcedure.query(async ({ ctx }) => {
     const users = await ctx.prisma.users.findMany();
-    const contributii = await ctx.prisma.institutii.groupBy({
+    const contributii = await ctx.prisma.institutii_new.groupBy({
       by: ["last_author"],
       _count: {
         last_author: true,
@@ -115,39 +117,29 @@ export const appRouter = router({
       },
     });
 
-    const institutiiComplet = await ctx.prisma.institutii.aggregate({
+    const institutiiComplet = await ctx.prisma.institutii_new.aggregate({
       _count: true,
       where: {
         AND: [
           {
             OR: [
               {
-                sigla_lg: {
-                  not: null,
-                },
+                sigla_lg: true,
               },
               {
                 sigla_lipsa: true,
               },
             ],
           },
-          {
-            rank: {
-              lt: 10000,
-            },
-          },
         ],
       },
     });
 
-    const institutiiLipsa = await ctx.prisma.institutii.aggregate({
+    const institutiiLipsa = await ctx.prisma.institutii_new.aggregate({
       _count: true,
       where: {
         sigla_lipsa: false,
-        sigla_lg: null,
-        rank: {
-          lt: 10000,
-        },
+        sigla_lg: false,
       },
     });
 
@@ -189,51 +181,38 @@ export const appRouter = router({
       }
 
       const lipsa = (
-        await ctx.prisma.institutii.findMany({
+        await ctx.prisma.institutii_new.findMany({
           where: {
             sigla_lipsa: false,
-            sigla_lg: null,
-            rank: {
-              lt: 10000,
-            },
-          },
-          orderBy: {
-            rank: "asc",
+            sigla_lg: false,
           },
           take: 1000,
         })
       ).map((i) => ({
-        id: i.id,
+        id: i.cod_siiir,
         nume: i.nume,
+        cod_judet: i.cod_judet,
         website: i.website,
-        rank: i.rank,
         sigla: i.sigla,
+        sigla_file_type: i.sigla_file_type,
         sigla_xs: i.sigla_xs,
         sigla_lg: i.sigla_lg,
         sigla_lipsa: i.sigla_lipsa,
         info_modificare: getInfoModificare(i.last_author, i.last_updated),
+        rank:
+          ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
+          ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
       }));
 
       const complet = (
-        await ctx.prisma.institutii.findMany({
+        await ctx.prisma.institutii_new.findMany({
           where: {
-            AND: [
+            OR: [
               {
-                rank: {
-                  lt: 10000,
-                },
+                sigla_lg: true,
               },
               {
-                OR: [
-                  {
-                    sigla_lg: {
-                      not: null,
-                    },
-                  },
-                  {
-                    sigla_lipsa: true,
-                  },
-                ],
+                sigla_lipsa: true,
               },
             ],
           },
@@ -243,15 +222,19 @@ export const appRouter = router({
           take: 1000,
         })
       ).map((i) => ({
-        id: i.id,
+        id: i.cod_siiir,
         nume: i.nume,
+        cod_judet: i.cod_judet,
         website: i.website,
-        rank: i.rank,
         sigla: i.sigla,
+        sigla_file_type: i.sigla_file_type,
         sigla_xs: i.sigla_xs,
         sigla_lg: i.sigla_lg,
         sigla_lipsa: i.sigla_lipsa,
         info_modificare: getInfoModificare(i.last_author, i.last_updated),
+        rank:
+          ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
+          ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
       }));
 
       return {
@@ -293,44 +276,45 @@ export const appRouter = router({
 
         console.log("uploading original");
         await uploadFile(
-          `sigle/original/${input.id}.${ext}`,
+          `institutii/${input.id}/sigla.${ext}`,
           buffer,
           assetsStorageZone
         );
         await purgeUrl(
-          `https://bacplus-assets.b-cdn.net/sigle/original/${input.id}.${ext}`
+          `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla.${ext}`
         );
 
         if (imageLg) {
           console.log("uploading lg");
           await uploadFile(
-            `sigle/lg/${input.id}.webp`,
+            `institutii/${input.id}/sigla-lg.webp`,
             imageLg,
             assetsStorageZone
           );
           await purgeUrl(
-            `https://bacplus-assets.b-cdn.net/sigle/lg/${input.id}.webp`
+            `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla-lg.webp`
           );
         }
         if (imageXs) {
           console.log("uploading xs");
           await uploadFile(
-            `sigle/xs/${input.id}.webp`,
+            `institutii/${input.id}/sigla-xs.webp`,
             imageXs,
             assetsStorageZone
           );
           await purgeUrl(
-            `https://bacplus-assets.b-cdn.net/sigle/xs/${input.id}.webp`
+            `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla-xs.webp`
           );
         }
-        await ctx.prisma.institutii.update({
+        await ctx.prisma.institutii_new.update({
           where: {
-            id: input.id,
+            cod_siiir: input.id,
           },
           data: {
-            sigla: `${input.id}.${ext}`,
-            sigla_lg: imageLg ? "da" : null,
-            sigla_xs: imageXs ? "da" : null,
+            sigla: true,
+            sigla_file_type: ext,
+            sigla_lg: !!imageLg,
+            sigla_xs: !!imageXs,
             last_updated: Date.now(),
             last_author: ctx.user.id,
           },
@@ -343,14 +327,15 @@ export const appRouter = router({
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input, ctx }) => {
         console.log("deleting sigla for id", input.id);
-        await ctx.prisma.institutii.update({
+        await ctx.prisma.institutii_new.update({
           where: {
-            id: input.id,
+            cod_siiir: input.id,
           },
           data: {
-            sigla: null,
-            sigla_lg: null,
-            sigla_xs: null,
+            sigla: false,
+            sigla_file_type: null,
+            sigla_lg: false,
+            sigla_xs: false,
             last_updated: Date.now(),
             last_author: ctx.user.id,
           },
@@ -361,9 +346,9 @@ export const appRouter = router({
       .input(z.object({ id: z.string(), faraSigla: z.boolean() }))
       .mutation(async ({ input, ctx }) => {
         console.log("marcheaza fara sigla", input.id, input.faraSigla);
-        await ctx.prisma.institutii.update({
+        await ctx.prisma.institutii_new.update({
           where: {
-            id: input.id,
+            cod_siiir: input.id,
           },
           data: {
             sigla_lipsa: input.faraSigla,

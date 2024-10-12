@@ -11,18 +11,10 @@ import { FaSchool } from "react-icons/fa";
 import { groupBy } from "~/data/groupBy";
 import { PercentageBar } from "~/components/PercentageBar";
 
-function numeLiceu(id: string) {
-  const nume = id.split("_");
-  const codJudet = nume.at(-1) || "";
+function keyLiceu(nume: string, codJudet: string) {
   const judet = judetDupaCod(codJudet).nume;
-  return nume.slice(0, -1).join(" ") + ", " + judet;
-}
-
-function keyLiceu(id: string) {
-  const nume = id.split("_");
-  const codJudet = nume.at(-1) || "";
-  const judet = judetDupaCod(codJudet).nume;
-  return nume.slice(0, -1).join("") + judet;
+  const key = unidecode((nume + judet).toUpperCase()).replace(/[^A-Z]/g, "");
+  return key;
 }
 
 export function CalculatorAdmitere({
@@ -45,7 +37,9 @@ export function CalculatorAdmitere({
   const [liceuSelectat, setLiceuSelectat] = useState<string | undefined>();
 
   const liceeFiltered = Object.entries(licee)
-    .filter(([liceu]) => keyLiceu(liceu).includes(searchKey))
+    .filter(([, liceu]) =>
+      keyLiceu(liceu.nume, liceu.codJudet).includes(searchKey)
+    )
     .slice(0, 5);
 
   function updateMedie(newMedie: string) {
@@ -91,16 +85,16 @@ export function CalculatorAdmitere({
             {search.length > 0 && (
               <div className="absolute left-0 right-0 top-[100%] z-10 mt-1 flex flex-col items-start rounded border-[1px] border-gray-300 bg-white">
                 {liceeFiltered.length ? (
-                  liceeFiltered.map(([liceu, _date]) => (
+                  liceeFiltered.map(([siiir, liceu]) => (
                     <button
-                      key={liceu}
+                      key={siiir}
                       className="w-full cursor-pointer px-3 py-2 text-left duration-150 hover:bg-gray-100"
                       onClick={() => {
-                        setLiceuSelectat(liceu);
+                        setLiceuSelectat(siiir);
                         setSearch("");
                       }}
                     >
-                      {numeLiceu(liceu)}
+                      {liceu.nume}
                     </button>
                   ))
                 ) : (
@@ -115,7 +109,7 @@ export function CalculatorAdmitere({
       )}
       {liceuSelectat && medieValid && (
         <InfoLiceu
-          idLiceu={liceuSelectat}
+          codSiiir={liceuSelectat}
           medie={medieNumber}
           licee={licee}
           ierarhie={ierarhie}
@@ -127,23 +121,24 @@ export function CalculatorAdmitere({
 }
 
 function InfoLiceu({
-  idLiceu,
+  codSiiir,
   medie,
   licee,
   ierarhie,
   anCurent,
 }: {
-  idLiceu: string;
+  codSiiir: string;
   medie: number;
   licee: DateLicee;
   ierarhie: Ierarhie;
   anCurent: number;
 }) {
-  const liceu = licee[idLiceu];
-  const codJudet = idLiceu.split("_").at(-1) || "";
-  const judet = judetDupaCod(codJudet);
+  const liceu = licee[codSiiir];
 
-  if (!liceu) throw new Error(`Liceul ${idLiceu} nu exista in baza de date!`);
+  if (!liceu) throw new Error(`Liceul ${codSiiir} nu exista in baza de date!`);
+
+  const codJudet = liceu?.codJudet;
+  const judet = judetDupaCod(codJudet);
 
   const ierarhieJudet = ierarhie[judet.id];
 
@@ -157,7 +152,7 @@ function InfoLiceu({
     <Card className="mt-4">
       <div className="flex items-center gap-4 font-bold">
         <FaSchool className="hidden shrink-0 text-2xl text-blue-500 opacity-60 sm:inline" />{" "}
-        {numeLiceu(idLiceu)}
+        {liceu.nume}
       </div>
 
       <div className="mt-4">
@@ -166,7 +161,7 @@ function InfoLiceu({
       </div>
 
       <div className="grid-cols-2 lg:grid">
-        {groupBy(liceu, (s) => s.specializare).map(
+        {groupBy(liceu.rezultate, (s) => s.specializare).map(
           ([specializare, rezultate]) => (
             <div className="mt-6" key={specializare}>
               <div className="font-bold">{specializare}</div>

@@ -2,48 +2,55 @@ import { judetDupaCod } from "../coduriJudete";
 import { query } from "../dbQuery";
 import { getUrlFromName } from "./urlFromName";
 
-const occurences = new Map<string, string>();
+const occurences = new Map<string, number>();
+const occurencesWithCounty = new Map<string, number>();
 
 query.institutii.forEach((i) => {
   const url = getUrlFromName(i.nume);
+  const judet = judetDupaCod(i.cod_judet);
+  const urlWithCounty = url + "-" + judet.nume.toLowerCase();
   const schoolId = i.cod_siiir;
-  const o = occurences.get(url);
   if (!schoolId) return;
-  if (o == undefined) {
-    occurences.set(url, schoolId);
-  } else if (o != schoolId) {
-    occurences.set(url, "collision");
-  }
+  occurences.set(url, (occurences.get(url) || 0) + 1);
+  occurencesWithCounty.set(
+    urlWithCounty,
+    (occurencesWithCounty.get(urlWithCounty) || 0) + 1
+  );
 });
 
 const urlFromId = new Map<string, string>();
+const urlTypeFromId = new Map<string, "basic" | "judet" | "siiir">();
 const idFromUrl = new Map<string, string>();
 
-[...query.institutii]
-  .sort((a, b) => (b.rank ?? 1e9) - (a.rank ?? 1e9))
-  .forEach((i) => {
-    const url = getUrlFromName(i.nume);
-    const id = i.cod_siiir;
-    if (!id) return;
-    if (occurences.get(url) != "collision") {
-      if (idFromUrl.has(url)) {
-        registerFakeCollision(idFromUrl.get(url) || "", id);
-      }
-      urlFromId.set(id, url);
-      idFromUrl.set(url, id);
-    } else {
-      const newUrl = `${url}-${id}`;
-      urlFromId.set(id, newUrl);
-      idFromUrl.set(newUrl, id);
-    }
-  });
+[...query.institutii].forEach((i) => {
+  const url = getUrlFromName(i.nume);
+  const judet = judetDupaCod(i.cod_judet);
+  const urlWithCounty = url + "-" + judet.nume.toLowerCase();
+  const id = i.cod_siiir;
+  if (!id) return;
+  if (occurences.get(url) == 1) {
+    // if (idFromUrl.has(url)) {
+    //   registerFakeCollision(idFromUrl.get(url) || "", id);
+    // }
+    urlFromId.set(id, url);
+    idFromUrl.set(url, id);
+    urlTypeFromId.set(id, "basic");
+  } else if (occurencesWithCounty.get(urlWithCounty) == 1) {
+    urlFromId.set(id, urlWithCounty);
+    idFromUrl.set(urlWithCounty, id);
+    urlTypeFromId.set(id, "judet");
+    // console.log("Collision resolved: " + urlWithCounty);
+  } else {
+    const newUrl = `${url}-${id}`;
+    urlFromId.set(id, newUrl);
+    idFromUrl.set(newUrl, id);
+    urlTypeFromId.set(id, "siiir");
+    console.log("Collision: " + newUrl);
+  }
+});
 
 export function getUrlFromId(id: string) {
   const url = urlFromId.get(id);
-  if (!url) {
-    console.log("Instituția nu are ID URL: " + id);
-    return undefined;
-  }
   if (!url) throw new Error("Instituția nu are ID URL: " + id);
   return url;
 }
@@ -58,14 +65,14 @@ export function getIdFromUrl(url: string) {
   return id;
 }
 
-function registerFakeCollision(correct: string, alternative: string) {
-  if (correct.replace(/[AI]/g, "*") == alternative.replace(/[AI]/g, "*")) {
-    if (
-      (correct.match(/A/g) || []).length <
-      (alternative.match(/A/g) || []).length
-    ) {
-      [correct, alternative] = [alternative, correct];
-    }
-  }
-  console.log(alternative, correct);
-}
+// function registerFakeCollision(correct: string, alternative: string) {
+//   if (correct.replace(/[AI]/g, "*") == alternative.replace(/[AI]/g, "*")) {
+//     if (
+//       (correct.match(/A/g) || []).length <
+//       (alternative.match(/A/g) || []).length
+//     ) {
+//       [correct, alternative] = [alternative, correct];
+//     }
+//   }
+//   console.log(alternative, correct);
+// }

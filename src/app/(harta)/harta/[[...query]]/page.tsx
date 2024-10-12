@@ -1,4 +1,3 @@
-import { judetDupaCod } from "~/data/coduriJudete";
 import { institutiiBac, institutiiEn, query } from "~/data/dbQuery";
 
 import type { Metadata, Viewport } from "next";
@@ -7,7 +6,6 @@ import { parseParamsHarta } from "~/data/parseParams";
 import { Harta } from "./Harta";
 
 import "leaflet/dist/leaflet.css";
-import { largeIcons } from "~/data/icons";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { Suspense } from "react";
 import { createStaticData } from "~/static-data/createStaticData";
@@ -56,25 +54,14 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  const params = [
-    [],
-    // ["licee"],
-    // ["gimnazii"],
-    // ...JUDETE.flatMap((judet) => [
-    //   [judet.nume.toLowerCase()],
-    //   [judet.nume.toLowerCase(), "licee"],
-    //   [judet.nume.toLowerCase(), "gimnazii"],
-    // ]),
-  ] as string[][];
+  const params = [[]] as string[][];
 
   return params.map((params) => ({
     query: params.map((p) => p.toString()),
   }));
 }
 
-export default function Page({ params }: { params: { query: string[] } }) {
-  // const [judet, arata] = parseParamsHarta(params.query);
-
+export default function Page() {
   const markers = query.institutii
     .filter((i) => i.latlong)
     .map((institutie) => ({
@@ -85,7 +72,7 @@ export default function Page({ params }: { params: { query: string[] } }) {
       long: parseFloat(institutie.latlong?.split(",")[1] || "0"),
       liceu: institutiiBac.has(institutie.cod_siiir),
       gimnaziu: institutiiEn.has(institutie.cod_siiir),
-      icon: !!institutie.sigla_lg,
+      icon: institutie.sigla_lg,
     }));
 
   return (

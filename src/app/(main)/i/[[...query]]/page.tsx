@@ -27,9 +27,7 @@ import {
 
 export function generateStaticParams() {
   return query.institutii.flatMap((i) =>
-    !i.cod_siiir || !getUrlFromId(i.cod_siiir)
-      ? []
-      : institutiiBac.has(i.cod_siiir) && institutiiEn.has(i.cod_siiir)
+    institutiiBac.has(i.cod_siiir) && institutiiEn.has(i.cod_siiir)
       ? [
           {
             query: [getUrlFromId(i.cod_siiir)],
@@ -56,7 +54,7 @@ export function generateMetadata({
 
   if (!id) return {};
 
-  const institutie = query.institutii.find((i) => i.id == id);
+  const institutie = query.institutii.find((i) => i.cod_siiir == id);
 
   if (!institutie) return {};
 
@@ -187,8 +185,7 @@ export default function PaginaInstitutie({
 }
 
 function PaginaGimnaziu({ id }: { id: string }) {
-  const { numeScoala, rezultateEn, liceu, website, address } =
-    getInfoScoala(id);
+  const { numeScoala, rezultateEn, genderData } = getInfoScoala(id);
 
   const data = Object.entries(rezultateEn).at(-1);
 
@@ -220,10 +217,10 @@ function PaginaGimnaziu({ id }: { id: string }) {
         ierarhie={ierarhieScoli[id] ?? {}}
       />
 
-      {(Object.keys(data[1].limbiMaterne).length > 1 ||
-        (Object.keys(data[1].limbiMaterne).length == 1 &&
-          Object.keys(data[1].limbiMaterne)[0] != "Limba română")) && (
-        <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center gap-16 sm:flex-row">
+        {(Object.keys(data[1].limbiMaterne).length > 1 ||
+          (Object.keys(data[1].limbiMaterne).length == 1 &&
+            Object.keys(data[1].limbiMaterne)[0] != "Limba română")) && (
           <ChartCard title={`Limbi materne ${data[0]}`}>
             <PieChart
               data={Object.entries(data[1].limbiMaterne).map(([limba, e]) => ({
@@ -232,8 +229,28 @@ function PaginaGimnaziu({ id }: { id: string }) {
               }))}
             />
           </ChartCard>
-        </div>
-      )}
+        )}
+
+        {genderData && (
+          <ChartCard title="Demografie elevi">
+            <PieChart
+              data={[
+                {
+                  name: "Masculin",
+                  value: genderData.males,
+                  color: "rgb(54, 162, 235)",
+                },
+                {
+                  name: "Feminin",
+                  value: genderData.females,
+                  color: "rgb(255, 99, 132)",
+                },
+              ]}
+              convertToPercentages
+            />
+          </ChartCard>
+        )}
+      </div>
     </>
   );
 }
@@ -282,21 +299,34 @@ function getInfoScoala(siiir: string) {
     }
   });
 
+  const males =
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "m")?._count
+      ._all || null;
+  const females =
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "f")?._count
+      ._all || null;
+
+  const genderData =
+    males != null && females != null
+      ? {
+          males,
+          females,
+        }
+      : undefined;
+
   return {
     liceu: institutiiBac.has(siiir),
     rezultateEn,
     numeScoala: scoala?.nume,
     website: scoala?.website,
     address: scoala?.adresa,
+    genderData,
   };
 }
 
 function PaginaLiceu({ id }: { id: string }) {
   const {
     numeLiceu,
-    gimnaziu,
-    website,
-    adresa,
     rezultateBac,
     admitere,
     genderData,
@@ -559,10 +589,10 @@ function getInfoLiceu(siiir: string) {
     });
 
   const males =
-    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "M")?._count
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "m")?._count
       ._all || null;
   const females =
-    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "F")?._count
+    query.gender.find((e) => e.unitate_siiir == siiir && e.sex == "f")?._count
       ._all || null;
 
   const genderData =

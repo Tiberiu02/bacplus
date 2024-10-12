@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
 import { CopyButton } from "~/components/CopyButton";
 import { Footer } from "~/components/Footer";
@@ -6,12 +5,13 @@ import { LinkText } from "~/components/LinkText";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
 import { judetDupaCod } from "~/data/coduriJudete";
-import { query } from "~/data/dbQuery";
-import { largeIcons, smallIcons } from "~/data/icons";
+import { query, ultimulAnBac } from "~/data/dbQuery";
+import { ierarhieLicee } from "~/data/ierarhie";
 
 export default function Page() {
-  const numLargeIcons = Object.entries(largeIcons).length;
-  const numSmallIcons = Object.entries(smallIcons).length;
+  const numLargeIcons = query.institutii.filter((i) => i.sigla_lg).length;
+  const numSmallIcons = query.institutii.filter((i) => i.sigla_xs).length;
+
   return (
     <MainContainer>
       <Title>Ghid adăugare sigle</Title>
@@ -105,18 +105,22 @@ export default function Page() {
 
       <div className="mt-12 flex flex-col gap-16">
         {[...query.institutii]
-          .sort((a, b) => (a.rank || 1e9) - (b.rank || 1e9))
-          .filter((i) => !largeIcons[i.id])
+          .sort(
+            (a, b) =>
+              (ierarhieLicee[a.cod_siiir]?.[ultimulAnBac] || 1e9) -
+              (ierarhieLicee[b.cod_siiir]?.[ultimulAnBac] || 1e9)
+          )
+          .filter((i) => !i.sigla_lg)
           .slice(0, 500)
           .map((i) => {
-            const judet = judetDupaCod(i.id.split("_").at(-1) || "");
+            const judet = judetDupaCod(i.cod_judet);
 
-            return largeIcons[i.id] ? null : (
-              <div key={i.id} className="flex flex-col">
+            return i.sigla_lg ? null : (
+              <div key={i.cod_siiir} className="flex flex-col">
                 <div className="font-semibold">
-                  {i.rank || "?"}. {i.nume}{" "}
+                  {ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] || "?"}. {i.nume}{" "}
                   <span className="font-normal">({judet.numeIntreg})</span>
-                  {smallIcons[i.id] ? (
+                  {i.sigla_xs ? (
                     <div className="ml-4 inline font-medium text-orange-500">
                       <FaDotCircle className="mr-2 mt-[-2px] inline" />
                       Siglă prea mică
@@ -128,11 +132,11 @@ export default function Page() {
                     </div>
                   )}
                 </div>
-                <div className="my-2">
+                {/* <div className="my-2">
                   Salvează sigla cu numele:{" "}
                   <span className="font-medium">{i.id}</span>
                   <CopyButton text={i.id} />
-                </div>
+                </div> */}
                 <LinkText
                   href={
                     "https://google.com/search?tbm=isch&q=" +

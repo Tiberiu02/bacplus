@@ -10,7 +10,7 @@ export default function Page() {
         paramName="name"
         data={licee.map((liceu) => ({
           value: liceu.nume,
-          redirect: `/i/${getUrlFromId(liceu.id)}`,
+          redirect: "/i/" + getUrlFromId(liceu.cod_siiir),
         }))}
         fallback={`/top-licee`}
       />

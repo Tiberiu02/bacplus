@@ -64,29 +64,32 @@ model alias {
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model institutii {
-  id              String  @id(map: "idx_16404_sqlite_autoindex_institutii_1")
-  nume            String
-  rank            Int?
-  adresa          String?
-  website         String?
-  email           String?
-  telefon         String?
-  wikipedia       String?
-  facebook        String?
-  instagram       String?
-  youtube         String?
-  cod_siiir       String  @unique(map: "idx_16404_sqlite_autoindex_institutii_2")
-  cod_fiscal      String?
-  liceu_legacy    String?
-  gimnaziu_legacy String?
-  latlong         String?
-  sigla           String?
-  sigla_lg        String?
-  sigla_xs        String?
-  last_updated    BigInt?
-  last_author     String?
-  sigla_lipsa     Boolean @default(false)
+  id           String?
+  nume         String?
+  rank         Int?
+  adresa       String?
+  website      String?
+  email        String?
+  telefon      String?
+  wikipedia    String?
+  facebook     String?
+  instagram    String?
+  youtube      String?
+  cod_siiir    String?
+  cod_fiscal   String?
+  liceu        String?
+  gimnaziu     String?
+  latlong      String?
+  sigla        String?
+  sigla_lg     String?
+  sigla_xs     String?
+  last_updated BigInt?
+  last_author  String?
+  sigla_lipsa  Boolean?
+
+  @@ignore
 }
 
 model siiir {
@@ -225,48 +228,32 @@ model siiir_new {
   data_profesional        DateTime? @db.Date
 }
 
-model institutii_new_bad {
-  cod_siiir String  @id(map: "institutii_new_pkey")
-  nume      String
-  website   String?
-  email     String?
-  telefon   String?
-  sigla     String?
-  sigla_xs  Boolean @default(false)
-  sigla_lg  Boolean @default(false)
-  facebook  String?
-  wikipedia String?
-  instagram String?
-  tiktok    String?
-  youtube   String?
-  linkedin  String?
-  legacy_id String?
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model institutii_backup {
-  id           String?
-  nume         String?
-  rank         Int?
-  adresa       String?
-  website      String?
-  email        String?
-  telefon      String?
-  wikipedia    String?
-  facebook     String?
-  instagram    String?
-  youtube      String?
-  cod_siiir    String?
-  cod_fiscal   String?
-  liceu        String?
-  gimnaziu     String?
-  latlong      String?
-  sigla        String?
-  sigla_lg     String?
-  sigla_xs     String?
-  last_updated BigInt?
-  last_author  String?
-  sigla_lipsa  Boolean?
-
-  @@ignore
+model institutii_new {
+  id_legacy       String
+  nume            String
+  rank_legacy     Int?
+  adresa          String?
+  website         String?
+  email           String?
+  telefon         String?
+  wikipedia       String?
+  facebook        String?
+  instagram       String?
+  youtube         String?
+  cod_siiir       String  @id @unique(map: "idx_16404_sqlite_autoindex_institutii_2")
+  cod_fiscal      String?
+  liceu_legacy    String?
+  gimnaziu_legacy String?
+  latlong         String?
+  sigla_legacy    String?
+  sigla_lg_legacy String?
+  sigla_xs_legacy String?
+  last_updated    BigInt?
+  last_author     String?
+  sigla_lipsa     Boolean @default(false)
+  sigla           Boolean @default(false)
+  sigla_file_type String?
+  sigla_lg        Boolean @default(false)
+  sigla_xs        Boolean @default(false)
+  cod_judet       String
 }

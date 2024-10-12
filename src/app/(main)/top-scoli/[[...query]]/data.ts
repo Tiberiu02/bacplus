@@ -1,3 +1,8 @@
+import {
+  CompressedUrlData,
+  getCompressedUrlData,
+  getUrlFromCompressedData,
+} from "~/data/institutie/compressedUrl";
 import { roundDecimals } from "../../../../data/roundDecimals";
 import { getUrlFromName } from "~/data/institutie/urlFromName";
 
@@ -25,27 +30,11 @@ export type ScoalaDataArray = [
   number | undefined, // medieAbsolvire
   number | undefined, // medieEvaluareNationala
   boolean, // icon
-  boolean, // hasUrl
-  boolean, // urlContainsSiiir
+  CompressedUrlData, // url
   boolean // liceu
 ];
 
 export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
-  const cannonicalUrl = getUrlFromName(scoala.numeScoala);
-  const urlContainsSiiir =
-    scoala.url != undefined && scoala.url !== cannonicalUrl;
-
-  // Sanity check
-  if (
-    scoala.url &&
-    scoala.url != cannonicalUrl &&
-    scoala.url != `${cannonicalUrl}-${scoala.siiir}`
-  ) {
-    throw new Error(
-      `Malformed url '${scoala.url}' for '${scoala.numeScoala}', siiir='${scoala.siiir}'`
-    );
-  }
-
   return [
     scoala.numeScoala,
     scoala.siiir,
@@ -56,8 +45,7 @@ export function scoalaToDataArray(scoala: Scoala): ScoalaDataArray {
     roundDecimals(scoala.medieAbsolvire, 3),
     roundDecimals(scoala.medieEvaluareNationala, 3),
     scoala.icon,
-    scoala.url != undefined,
-    urlContainsSiiir,
+    getCompressedUrlData(scoala.url, scoala.numeScoala, scoala.siiir),
     scoala.liceu,
   ];
 }
@@ -73,18 +61,9 @@ export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
     medieAbsolvire,
     medieEvaluareNationala,
     icon,
-    hasUrl,
-    urlContainsSiiir,
+    compressedUrlData,
     liceu,
   ] = dataArray;
-
-  const cannonicalUrl = getUrlFromName(numeScoala);
-  const url =
-    siiir && hasUrl
-      ? urlContainsSiiir
-        ? cannonicalUrl + "-" + siiir
-        : cannonicalUrl
-      : undefined;
 
   return {
     numeScoala,
@@ -96,7 +75,7 @@ export function scoalaFromDataArray(dataArray: ScoalaDataArray): Scoala {
     medieAbsolvire,
     medieEvaluareNationala,
     icon,
-    url,
+    url: getUrlFromCompressedData(numeScoala, siiir, compressedUrlData),
     liceu,
   };
 }

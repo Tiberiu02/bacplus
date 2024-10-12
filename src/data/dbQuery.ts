@@ -34,6 +34,13 @@ const queryFunctions = {
         _all: true,
       },
     }),
+  genderEn: () =>
+    prisma.en_new.groupBy({
+      by: ["unitate_siiir", "sex"],
+      _count: {
+        _all: true,
+      },
+    }),
   promovatiBac: () =>
     prisma.bac_new.groupBy({
       by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
@@ -215,7 +222,7 @@ const queryFunctions = {
         },
       },
     }),
-  institutii: () => prisma.institutii.findMany(),
+  institutii: () => prisma.institutii_new.findMany(),
   institutiiBac: () =>
     prisma.bac_new.findMany({
       select: {
@@ -294,7 +301,7 @@ export const siiir = query.siiir.reduce((acc, s) => {
 }, {} as Record<string, (typeof query.siiir)[0]>);
 
 export const institutii = query.institutii.reduce((acc, i) => {
-  acc[i.cod_siiir ?? "null"] = i;
+  acc[i.cod_siiir] = i;
   return acc;
 }, {} as Record<string, (typeof query.institutii)[0]>);
 

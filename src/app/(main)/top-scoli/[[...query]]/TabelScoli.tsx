@@ -35,7 +35,9 @@ export function TabelScoli({
           header: "Nume școală",
           value: (rowData) => rowData.numeScoala,
           href: (rowData) =>
-            `/i/${rowData.url}${rowData.liceu ? "/gimnaziu" : ""}`,
+            rowData.url
+              ? `/i/${rowData.url}${rowData.liceu ? "/gimnaziu" : ""}`
+              : "",
           widthGrow: true,
           searchable: true,
           textAlign: "left",
