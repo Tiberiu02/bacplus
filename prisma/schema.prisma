@@ -11,106 +11,61 @@ datasource db {
 model bac {
   an                     Int
   cod_candidat           String
-  id_judet               String?
-  id_liceu               String?
   sex                    String?
-  promotie_anterioara    String
   specializare           String
-  lr_init                Float?  @db.Real
-  lr_cont                Float?  @db.Real
-  lr_final               Float?  @db.Real
+  promotie_anterioara    Boolean
+  unitate_siiir          String?
+  unitate_nume           String?
+  unitate_cod_judet      String?
+  clasa                  String?
+  lr_init                Decimal? @db.Decimal
+  lr_cont                Decimal? @db.Decimal
+  lr_final               Decimal? @db.Decimal
   limba_materna          String?
-  lm_init                Float?  @db.Real
-  lm_cont                Float?  @db.Real
-  lm_final               Float?  @db.Real
-  limba_moderna          String
+  lm_init                Decimal? @db.Decimal
+  lm_cont                Decimal? @db.Decimal
+  lm_final               Decimal? @db.Decimal
   disciplina_obligatorie String
-  do_init                Float?  @db.Real
-  do_cont                Float?  @db.Real
-  do_final               Float?  @db.Real
+  do_init                Decimal? @db.Decimal
+  do_cont                Decimal? @db.Decimal
+  do_final               Decimal? @db.Decimal
   disciplina_alegere     String
-  da_init                Float?  @db.Real
-  da_cont                Float?  @db.Real
-  da_final               Float?  @db.Real
-  medie                  Float?  @db.Real
-  my_medie               Float?  @db.Real
+  da_init                Decimal? @db.Decimal
+  da_cont                Decimal? @db.Decimal
+  da_final               Decimal? @db.Decimal
+  limba_moderna          String
+  medie                  Decimal? @db.Decimal
   rezultat               String
 
-  @@id([an, cod_candidat], map: "idx_16399_sqlite_autoindex_bac_1")
+  @@id([an, cod_candidat], map: "bac_pkey_0")
 }
 
 model en {
   an                      Int
   cod_candidat            String
-  id_judet                String
-  id_scoala               String
-  lr_final                Float?  @db.Real
-  ma_final                Float?  @db.Real
+  sex                     String?
+  unitate_siiir           String?
+  unitate_nume            String?
+  unitate_cod_judet       String?
+  lr_init                 Decimal? @db.Decimal
+  lr_cont                 Decimal? @db.Decimal
+  lr_final                Decimal? @db.Decimal
   limba_materna           String?
-  lm_final                Float?  @db.Real
-  medie_en                Float?  @db.Real
-  medie_abs               Float?  @db.Real
-  medie_adm               Float?  @db.Real
-  repartizat_id_liceu     String?
+  lm_init                 Decimal? @db.Decimal
+  lm_cont                 Decimal? @db.Decimal
+  lm_final                Decimal? @db.Decimal
+  ma_init                 Decimal? @db.Decimal
+  ma_cont                 Decimal? @db.Decimal
+  ma_final                Decimal? @db.Decimal
+  medie_en                Decimal? @db.Decimal
+  medie_abs               Decimal? @db.Decimal
+  medie_adm               Decimal? @db.Decimal
+  repartizat_liceu_nume   String?
   repartizat_specializare String?
+  repartizat_liceu_siiir  String?
+  repartizat_cod_judet    String?
 
-  @@id([an, cod_candidat], map: "idx_16384_sqlite_autoindex_en_1")
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model alias {
-  alternativ String @id(map: "idx_16394_sqlite_autoindex_alias_1")
-  corect     String
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model institutii {
-  id           String?
-  nume         String?
-  rank         Int?
-  adresa       String?
-  website      String?
-  email        String?
-  telefon      String?
-  wikipedia    String?
-  facebook     String?
-  instagram    String?
-  youtube      String?
-  cod_siiir    String?
-  cod_fiscal   String?
-  liceu        String?
-  gimnaziu     String?
-  latlong      String?
-  sigla        String?
-  sigla_lg     String?
-  sigla_xs     String?
-  last_updated BigInt?
-  last_author  String?
-  sigla_lipsa  Boolean?
-
-  @@ignore
-}
-
-model siiir {
-  cod                   String  @id(map: "idx_16389_sqlite_autoindex_siiir_1")
-  aux_id                String? @unique(map: "idx_16389_index_aux_id")
-  denumire              String?
-  denumire_scurta       String?
-  localitate            String?
-  localitate_superioara String?
-  judet                 String?
-  statut                String?
-  tip_unitate           String?
-  forma_proprietate     String?
-  strada                String?
-  nr_strada             String?
-  cod_postal            String?
-  website               String?
-  telefon               String?
-  cod_sirues            String?
-  cod_fiscal            String?
-  mod_operare           String?
+  @@id([an, cod_candidat], map: "en_pkey_0")
 }
 
 model users {
@@ -256,4 +211,179 @@ model institutii_new {
   sigla_lg        Boolean @default(false)
   sigla_xs        Boolean @default(false)
   cod_judet       String
+}
+
+model legacy_alias {
+  alternativ String @id(map: "idx_16394_sqlite_autoindex_alias_1")
+  corect     String
+}
+
+model legacy_bac {
+  an                     Int
+  cod_candidat           String
+  id_judet               String?
+  id_liceu               String?
+  sex                    String?
+  promotie_anterioara    String
+  specializare           String
+  lr_init                Float?  @db.Real
+  lr_cont                Float?  @db.Real
+  lr_final               Float?  @db.Real
+  limba_materna          String?
+  lm_init                Float?  @db.Real
+  lm_cont                Float?  @db.Real
+  lm_final               Float?  @db.Real
+  limba_moderna          String
+  disciplina_obligatorie String
+  do_init                Float?  @db.Real
+  do_cont                Float?  @db.Real
+  do_final               Float?  @db.Real
+  disciplina_alegere     String
+  da_init                Float?  @db.Real
+  da_cont                Float?  @db.Real
+  da_final               Float?  @db.Real
+  medie                  Float?  @db.Real
+  my_medie               Float?  @db.Real
+  rezultat               String
+
+  @@id([an, cod_candidat], map: "idx_16399_sqlite_autoindex_bac_1")
+}
+
+model legacy_en {
+  an                      Int
+  cod_candidat            String
+  id_judet                String
+  id_scoala               String
+  lr_final                Float?  @db.Real
+  ma_final                Float?  @db.Real
+  limba_materna           String?
+  lm_final                Float?  @db.Real
+  medie_en                Float?  @db.Real
+  medie_abs               Float?  @db.Real
+  medie_adm               Float?  @db.Real
+  repartizat_id_liceu     String?
+  repartizat_specializare String?
+
+  @@id([an, cod_candidat], map: "idx_16384_sqlite_autoindex_en_1")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model legacy_institutii {
+  id           String?
+  nume         String?
+  rank         Int?
+  adresa       String?
+  website      String?
+  email        String?
+  telefon      String?
+  wikipedia    String?
+  facebook     String?
+  instagram    String?
+  youtube      String?
+  cod_siiir    String?
+  cod_fiscal   String?
+  liceu        String?
+  gimnaziu     String?
+  latlong      String?
+  sigla        String?
+  sigla_lg     String?
+  sigla_xs     String?
+  last_updated BigInt?
+  last_author  String?
+  sigla_lipsa  Boolean?
+
+  @@ignore
+}
+
+model legacy_siiir {
+  cod                   String  @id(map: "idx_16389_sqlite_autoindex_siiir_1")
+  aux_id                String? @unique(map: "idx_16389_index_aux_id")
+  denumire              String?
+  denumire_scurta       String?
+  localitate            String?
+  localitate_superioara String?
+  judet                 String?
+  statut                String?
+  tip_unitate           String?
+  forma_proprietate     String?
+  strada                String?
+  nr_strada             String?
+  cod_postal            String?
+  website               String?
+  telefon               String?
+  cod_sirues            String?
+  cod_fiscal            String?
+  mod_operare           String?
+}
+
+model institutii {
+  id_legacy       String?
+  nume            String
+  adresa          String?
+  website         String?
+  email           String?
+  telefon         String?
+  wikipedia       String?
+  facebook        String?
+  instagram       String?
+  youtube         String?
+  cod_siiir       String  @id
+  cod_fiscal      String?
+  latlong         String?
+  last_updated    BigInt?
+  last_author     String?
+  sigla_lipsa     Boolean @default(false)
+  sigla           Boolean @default(false)
+  sigla_file_type String?
+  sigla_lg        Boolean @default(false)
+  sigla_xs        Boolean @default(false)
+  cod_judet       String
+}
+
+model siiir {
+  an                      String?
+  judet_pj                String?
+  localitate_pj           String?
+  cod_siruta_pj           String?
+  mediu_loc_pj            String?
+  cod_siiir_pj            String?
+  denumire_pj             String?
+  localitate_unitate      String?
+  cod_siruta_unitate      String?
+  mediu_loc_unitate       String?
+  cod_sirues              String?
+  cod_siiir_unitate       String    @id(map: "siiir_pkey1")
+  denumire_scurta_unitate String?
+  denumire_lunga_unitate  String?
+  tip_unitate             String?
+  statut_unitate          String?
+  cod_fiscal              String?
+  mod_functionare         String?
+  forma_finantare         String?
+  forma_proprietate       String?
+  strada                  String?
+  numar                   String?
+  cod_postal              String?
+  telefon                 String?
+  fax                     String?
+  email                   String?
+  atribut_website         String?
+  data_website            DateTime? @db.Date
+  atribut_email           String?
+  data_email              DateTime? @db.Date
+  numar_niveluri_asociate Int?
+  stare_antepre_colar     String?   @map("stare_antepreșcolar")
+  data_antepre_colar      DateTime? @map("data_antepreșcolar") @db.Date
+  stare_pre_colar         String?   @map("stare_preșcolar")
+  data_pre_colar          DateTime? @map("data_preșcolar") @db.Date
+  stare_primar            String?
+  data_primar             DateTime? @db.Date
+  stare_gimnazial         String?
+  data_gimnazial          DateTime? @db.Date
+  stare_liceal            String?
+  data_liceal             DateTime? @db.Date
+  stare_postliceal        String?
+  data_postliceal         DateTime? @db.Date
+  stare_profesional       String?
+  data_profesional        DateTime? @db.Date
 }

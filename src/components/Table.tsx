@@ -228,6 +228,8 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                 onClick={
                   href
                     ? (e) => {
+                        const url = href(row, rIx);
+                        if (!url) return;
                         e.preventDefault();
                         window.open(href(row, rIx), "_blank");
                       }

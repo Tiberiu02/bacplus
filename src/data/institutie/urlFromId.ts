@@ -29,9 +29,6 @@ const idFromUrl = new Map<string, string>();
   const id = i.cod_siiir;
   if (!id) return;
   if (occurences.get(url) == 1) {
-    // if (idFromUrl.has(url)) {
-    //   registerFakeCollision(idFromUrl.get(url) || "", id);
-    // }
     urlFromId.set(id, url);
     idFromUrl.set(url, id);
     urlTypeFromId.set(id, "basic");
@@ -39,13 +36,12 @@ const idFromUrl = new Map<string, string>();
     urlFromId.set(id, urlWithCounty);
     idFromUrl.set(urlWithCounty, id);
     urlTypeFromId.set(id, "judet");
-    // console.log("Collision resolved: " + urlWithCounty);
   } else {
     const newUrl = `${url}-${id}`;
     urlFromId.set(id, newUrl);
     idFromUrl.set(newUrl, id);
     urlTypeFromId.set(id, "siiir");
-    console.log("Collision: " + newUrl);
+    // console.log("Collision: " + newUrl);
   }
 });
 
@@ -61,18 +57,5 @@ export function getIdFromUrl(url: string) {
     console.log("Instituția nu are URL ID: " + url);
     return undefined;
   }
-  if (!id) throw new Error("Instituția nu are URL ID: " + url);
   return id;
 }
-
-// function registerFakeCollision(correct: string, alternative: string) {
-//   if (correct.replace(/[AI]/g, "*") == alternative.replace(/[AI]/g, "*")) {
-//     if (
-//       (correct.match(/A/g) || []).length <
-//       (alternative.match(/A/g) || []).length
-//     ) {
-//       [correct, alternative] = [alternative, correct];
-//     }
-//   }
-//   console.log(alternative, correct);
-// }

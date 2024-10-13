@@ -11,10 +11,12 @@ export default function Page() {
     <Suspense>
       <DynamicRedirect
         paramName="id"
-        data={query.institutii.map((g) => ({
-          value: g.id_legacy,
-          redirect: `/i/${getUrlFromId(g.cod_siiir)}`,
-        }))}
+        data={query.institutii
+          .filter((i) => i.id_legacy)
+          .map((g) => ({
+            value: g.id_legacy ?? "",
+            redirect: `/i/${getUrlFromId(g.cod_siiir)}`,
+          }))}
         fallback={`/top-licee`}
       />
     </Suspense>

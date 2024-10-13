@@ -10,5 +10,5 @@ export function groupBy<T, D extends string>(
     }
     result[key].push(item);
   });
-  return Object.entries(result) as [D, T[]][];
+  return result;
 }

@@ -105,7 +105,7 @@ export const appRouter = router({
 
   stats: protectedProcedure.query(async ({ ctx }) => {
     const users = await ctx.prisma.users.findMany();
-    const contributii = await ctx.prisma.institutii_new.groupBy({
+    const contributii = await ctx.prisma.institutii.groupBy({
       by: ["last_author"],
       _count: {
         last_author: true,
@@ -117,7 +117,7 @@ export const appRouter = router({
       },
     });
 
-    const institutiiComplet = await ctx.prisma.institutii_new.aggregate({
+    const institutiiComplet = await ctx.prisma.institutii.aggregate({
       _count: true,
       where: {
         AND: [
@@ -135,7 +135,7 @@ export const appRouter = router({
       },
     });
 
-    const institutiiLipsa = await ctx.prisma.institutii_new.aggregate({
+    const institutiiLipsa = await ctx.prisma.institutii.aggregate({
       _count: true,
       where: {
         sigla_lipsa: false,
@@ -181,7 +181,7 @@ export const appRouter = router({
       }
 
       const lipsa = (
-        await ctx.prisma.institutii_new.findMany({
+        await ctx.prisma.institutii.findMany({
           where: {
             sigla_lipsa: false,
             sigla_lg: false,
@@ -205,7 +205,7 @@ export const appRouter = router({
       }));
 
       const complet = (
-        await ctx.prisma.institutii_new.findMany({
+        await ctx.prisma.institutii.findMany({
           where: {
             OR: [
               {
@@ -306,7 +306,7 @@ export const appRouter = router({
             `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla-xs.webp`
           );
         }
-        await ctx.prisma.institutii_new.update({
+        await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,
           },
@@ -327,7 +327,7 @@ export const appRouter = router({
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input, ctx }) => {
         console.log("deleting sigla for id", input.id);
-        await ctx.prisma.institutii_new.update({
+        await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,
           },
@@ -346,7 +346,7 @@ export const appRouter = router({
       .input(z.object({ id: z.string(), faraSigla: z.boolean() }))
       .mutation(async ({ input, ctx }) => {
         console.log("marcheaza fara sigla", input.id, input.faraSigla);
-        await ctx.prisma.institutii_new.update({
+        await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,
           },

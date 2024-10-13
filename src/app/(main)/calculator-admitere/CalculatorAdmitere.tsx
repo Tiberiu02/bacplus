@@ -161,7 +161,7 @@ function InfoLiceu({
       </div>
 
       <div className="grid-cols-2 lg:grid">
-        {groupBy(liceu.rezultate, (s) => s.specializare).map(
+        {Object.entries(groupBy(liceu.rezultate, (s) => s.specializare)).map(
           ([specializare, rezultate]) => (
             <div className="mt-6" key={specializare}>
               <div className="font-bold">{specializare}</div>

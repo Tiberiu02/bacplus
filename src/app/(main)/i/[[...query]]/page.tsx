@@ -1,6 +1,12 @@
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";
-import { institutiiBac, institutiiEn, licee, query } from "~/data/dbQuery";
+import {
+  institutii,
+  institutiiBac,
+  institutiiEn,
+  licee,
+  query,
+} from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
@@ -90,7 +96,7 @@ export default function PaginaInstitutie({
 
   if (!siiir) notFound();
 
-  const institutie = query.institutii.find((i) => i.cod_siiir == siiir);
+  const institutie = institutii[siiir];
 
   if (!institutie) notFound();
 
@@ -256,7 +262,9 @@ function PaginaGimnaziu({ id }: { id: string }) {
 }
 
 function getInfoScoala(siiir: string) {
-  const scoala = query.institutii.find((result) => result.cod_siiir == siiir);
+  const scoala = institutii[siiir];
+
+  if (!scoala) notFound();
 
   const rezultateEn = {} as {
     [an: number]: {
@@ -435,11 +443,7 @@ function PaginaLiceu({ id }: { id: string }) {
 }
 
 function getInfoLiceu(siiir: string) {
-  const {
-    nume: numeLiceu,
-    website,
-    adresa,
-  } = licee.find((result) => result.cod_siiir == siiir) || {};
+  const { nume: numeLiceu, website, adresa } = institutii[siiir] || {};
 
   const gimnaziu = institutiiEn.has(siiir);
 

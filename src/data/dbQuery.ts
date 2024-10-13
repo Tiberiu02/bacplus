@@ -1,9 +1,10 @@
 import { prisma } from "~/server/prisma";
 import { computeAllQueries } from "~/data/cacheQuery";
+import { groupBy } from "./groupBy";
 
 const queryFunctions = {
   bac: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
@@ -14,7 +15,7 @@ const queryFunctions = {
       },
     }),
   en: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
@@ -28,21 +29,21 @@ const queryFunctions = {
       },
     }),
   gender: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["unitate_siiir", "sex"],
       _count: {
         _all: true,
       },
     }),
   genderEn: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["unitate_siiir", "sex"],
       _count: {
         _all: true,
       },
     }),
   promovatiBac: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "unitate_nume", "unitate_cod_judet"],
       _count: {
         _all: true,
@@ -52,42 +53,42 @@ const queryFunctions = {
       },
     }),
   limbiMaterneBac: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "limba_materna"],
       _count: {
         _all: true,
       },
     }),
   limbiMaterneEn: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["an", "unitate_siiir", "limba_materna"],
       _count: {
         _all: true,
       },
     }),
   limbiStraineBac: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "limba_moderna"],
       _count: {
         _all: true,
       },
     }),
   specializariBac: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "specializare"],
       _count: {
         _all: true,
       },
     }),
   mediiAdmLicee: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["repartizat_liceu_siiir", "an"],
       _min: {
         medie_adm: true,
       },
     }),
   bacRomana: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir"],
       _avg: {
         lr_final: true,
@@ -102,7 +103,7 @@ const queryFunctions = {
       },
     }),
   bacLimbaMaterna: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "limba_materna"],
       _avg: {
         lm_final: true,
@@ -120,7 +121,7 @@ const queryFunctions = {
       },
     }),
   bacDisciplineObligatorii: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "disciplina_obligatorie"],
       _avg: {
         do_final: true,
@@ -135,7 +136,7 @@ const queryFunctions = {
       },
     }),
   bacDisciplineAlegere: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "disciplina_alegere"],
       _avg: {
         da_final: true,
@@ -150,7 +151,7 @@ const queryFunctions = {
       },
     }),
   bacMedieClase: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "clasa"],
       _avg: {
         medie: true,
@@ -160,7 +161,7 @@ const queryFunctions = {
       },
     }),
   bacRomanaClase: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "clasa"],
       _avg: {
         lr_final: true,
@@ -175,7 +176,7 @@ const queryFunctions = {
       },
     }),
   bacLimbaMaternaClase: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "limba_materna", "clasa"],
       _avg: {
         lm_final: true,
@@ -193,7 +194,7 @@ const queryFunctions = {
       },
     }),
   bacDisciplineObligatoriiClase: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "disciplina_obligatorie", "clasa"],
       _avg: {
         do_final: true,
@@ -208,7 +209,7 @@ const queryFunctions = {
       },
     }),
   bacDisciplineAlegereClase: () =>
-    prisma.bac_new.groupBy({
+    prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "disciplina_alegere", "clasa"],
       _avg: {
         da_final: true,
@@ -222,23 +223,23 @@ const queryFunctions = {
         },
       },
     }),
-  institutii: () => prisma.institutii_new.findMany(),
+  institutii: () => prisma.institutii.findMany(),
   institutiiBac: () =>
-    prisma.bac_new.findMany({
+    prisma.bac.findMany({
       select: {
         unitate_siiir: true,
       },
       distinct: ["unitate_siiir"],
     }),
   institutiiEn: () =>
-    prisma.en_new.findMany({
+    prisma.en.findMany({
       select: {
         unitate_siiir: true,
       },
       distinct: ["unitate_siiir"],
     }),
   specializariAdm: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["an", "repartizat_liceu_siiir", "repartizat_specializare"],
       _count: {
         _all: true,
@@ -253,20 +254,20 @@ const queryFunctions = {
       },
     }),
   ierarhieAdm: () =>
-    prisma.en_new.groupBy({
+    prisma.en.groupBy({
       by: ["an", "unitate_cod_judet", "medie_adm"],
       _count: {
         _all: true,
       },
     }),
   aniBac: () =>
-    prisma.bac_new.findMany({
+    prisma.bac.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
     }),
   aniAdm: () =>
-    prisma.en_new.findMany({
+    prisma.en.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
@@ -277,12 +278,12 @@ const queryFunctions = {
       },
     }),
   aniEn: () =>
-    prisma.en_new.findMany({
+    prisma.en.findMany({
       select: { an: true },
       distinct: ["an"],
       orderBy: { an: "desc" },
     }),
-  siiir: () => prisma.siiir_new.findMany(),
+  siiir: () => prisma.siiir.findMany(),
 };
 
 export const query = await computeAllQueries(queryFunctions);
