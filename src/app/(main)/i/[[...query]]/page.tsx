@@ -32,6 +32,7 @@ import {
 } from "~/components/tables/TabelRezultateBacClase";
 
 export function generateStaticParams() {
+  return [];
   return query.institutii.flatMap((i) =>
     institutiiBac.has(i.cod_siiir) && institutiiEn.has(i.cod_siiir)
       ? [
