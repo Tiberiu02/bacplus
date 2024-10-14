@@ -60,7 +60,6 @@ function Institutie({
   rank,
   website,
   sigla,
-  ext_sigla,
   sigla_xs,
   sigla_lg,
   sigla_lipsa,
@@ -71,8 +70,7 @@ function Institutie({
   nume: string;
   rank: number | undefined;
   website: string | null;
-  sigla: boolean;
-  ext_sigla: string | null;
+  sigla: string | null;
   sigla_xs: boolean;
   sigla_lg: boolean;
   sigla_lipsa: boolean;
@@ -83,10 +81,10 @@ function Institutie({
   const [isLoading, setIsLoading] = useState(false);
 
   const [images, setImages] = useState<ImageListType>(
-    sigla && ext_sigla
+    sigla
       ? [
           {
-            dataURL: `https://assets.bacplus.ro/institutii/${id}/sigla.${ext_sigla}`,
+            dataURL: `https://assets.bacplus.ro/files/${sigla}`,
           },
         ]
       : []
@@ -348,7 +346,6 @@ function Dashboard() {
               rank={i.rank}
               website={i.website}
               sigla={i.sigla}
-              ext_sigla={i.sigla_file_type}
               sigla_xs={i.sigla_xs}
               sigla_lg={i.sigla_lg}
               sigla_lipsa={i.sigla_lipsa}

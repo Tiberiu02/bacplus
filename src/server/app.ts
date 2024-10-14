@@ -9,6 +9,7 @@ import { findStorageZone, purgeUrl, uploadFile } from "../../infra/cdn/bunny";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { ierarhieLicee, ierarhieScoli } from "~/data/ierarhie";
 import { ultimulAnBac, ultimulAnEn } from "~/data/dbQuery";
+import { computeHash } from "./computeHash";
 
 const User = z.object({
   id: z.string(),
@@ -105,15 +106,16 @@ export const appRouter = router({
 
   stats: protectedProcedure.query(async ({ ctx }) => {
     const users = await ctx.prisma.users.findMany();
-    const contributii = await ctx.prisma.institutii.groupBy({
-      by: ["last_author"],
+    const contributii = await ctx.prisma.edit_logs.groupBy({
+      by: ["author_id"],
       _count: {
-        last_author: true,
+        author_id: true,
       },
       where: {
-        last_author: {
+        author_id: {
           not: null,
         },
+        field_name: "sigla",
       },
     });
 
@@ -146,8 +148,8 @@ export const appRouter = router({
     return {
       leaderboard: contributii
         .map((c) => ({
-          name: users.find((u) => u.id === c.last_author)?.name,
-          count: c._count.last_author,
+          name: users.find((u) => u.id === c.author_id)?.name,
+          count: c._count.author_id,
         }))
         .sort((a, b) => b.count - a.count),
       lipsa: institutiiLipsa._count,
@@ -194,7 +196,6 @@ export const appRouter = router({
         cod_judet: i.cod_judet,
         website: i.website,
         sigla: i.sigla,
-        sigla_file_type: i.sigla_file_type,
         sigla_xs: i.sigla_xs,
         sigla_lg: i.sigla_lg,
         sigla_lipsa: i.sigla_lipsa,
@@ -227,7 +228,6 @@ export const appRouter = router({
         cod_judet: i.cod_judet,
         website: i.website,
         sigla: i.sigla,
-        sigla_file_type: i.sigla_file_type,
         sigla_xs: i.sigla_xs,
         sigla_lg: i.sigla_lg,
         sigla_lipsa: i.sigla_lipsa,
@@ -257,6 +257,9 @@ export const appRouter = router({
         }
         const buffer = Buffer.from(data, "base64");
 
+        const hash = await computeHash(buffer);
+        const fileName = `${hash}.${ext}`;
+
         const image = sharp(buffer);
 
         const LG_SIZE = 320;
@@ -275,15 +278,42 @@ export const appRouter = router({
         console.log("processed image", input.id);
 
         console.log("uploading original");
-        await uploadFile(
-          `institutii/${input.id}/sigla.${ext}`,
-          buffer,
-          assetsStorageZone
-        );
-        await purgeUrl(
-          `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla.${ext}`
-        );
+        // await uploadFile(
+        //   `institutii/${input.id}/sigla.${ext}`,
+        //   buffer,
+        //   assetsStorageZone
+        // );
+        // await purgeUrl(
+        //   `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla.${ext}`
+        // );
 
+        // Find old sigla file name
+        const oldSigla = await ctx.prisma.institutii.findUnique({
+          where: {
+            cod_siiir: input.id,
+          },
+          select: {
+            sigla: true,
+          },
+        });
+
+        // Log the change
+        await ctx.prisma.edit_logs.create({
+          data: {
+            institution_id: input.id,
+            timestamp: new Date(),
+            author_id: ctx.user.id,
+            field_name: "sigla",
+            old_value: oldSigla?.sigla,
+            new_value: fileName,
+          },
+        });
+
+        // Upload the new sigla
+        await uploadFile(`files/${fileName}`, buffer, assetsStorageZone);
+        await purgeUrl(`https://bacplus-assets.b-cdn.net/files/${fileName}`);
+
+        // Upload the resized images
         if (imageLg) {
           console.log("uploading lg");
           await uploadFile(
@@ -306,13 +336,14 @@ export const appRouter = router({
             `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla-xs.webp`
           );
         }
+
+        // Update the database
         await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,
           },
           data: {
-            sigla: true,
-            sigla_file_type: ext,
+            sigla: fileName,
             sigla_lg: !!imageLg,
             sigla_xs: !!imageXs,
             last_updated: Date.now(),
@@ -327,13 +358,40 @@ export const appRouter = router({
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input, ctx }) => {
         console.log("deleting sigla for id", input.id);
+
+        // Find old sigla file name
+        const oldSigla = await ctx.prisma.institutii.findUnique({
+          where: {
+            cod_siiir: input.id,
+          },
+          select: {
+            sigla: true,
+          },
+        });
+
+        if (!oldSigla?.sigla) {
+          return;
+        }
+
+        // Log the change
+        await ctx.prisma.edit_logs.create({
+          data: {
+            institution_id: input.id,
+            timestamp: new Date(),
+            author_id: ctx.user.id,
+            field_name: "sigla",
+            old_value: oldSigla.sigla,
+            new_value: null,
+          },
+        });
+
+        // Delete the files
         await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,
           },
           data: {
-            sigla: false,
-            sigla_file_type: null,
+            sigla: null,
             sigla_lg: false,
             sigla_xs: false,
             last_updated: Date.now(),
@@ -346,6 +404,30 @@ export const appRouter = router({
       .input(z.object({ id: z.string(), faraSigla: z.boolean() }))
       .mutation(async ({ input, ctx }) => {
         console.log("marcheaza fara sigla", input.id, input.faraSigla);
+
+        // Find old sigla file name
+        const oldSigla = await ctx.prisma.institutii.findUnique({
+          where: {
+            cod_siiir: input.id,
+          },
+          select: {
+            sigla_lipsa: true,
+          },
+        });
+
+        // Log the change
+        await ctx.prisma.edit_logs.create({
+          data: {
+            institution_id: input.id,
+            timestamp: new Date(),
+            author_id: ctx.user.id,
+            field_name: "fara_sigla",
+            old_value: oldSigla?.sigla_lipsa ? "true" : "false",
+            new_value: input.faraSigla ? "true" : "false",
+          },
+        });
+
+        // Update the database
         await ctx.prisma.institutii.update({
           where: {
             cod_siiir: input.id,

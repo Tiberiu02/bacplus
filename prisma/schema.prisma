@@ -76,27 +76,28 @@ model users {
 }
 
 model institutii {
-  id_legacy       String?
-  nume            String
-  adresa          String?
-  website         String?
-  email           String?
-  telefon         String?
-  wikipedia       String?
-  facebook        String?
-  instagram       String?
-  youtube         String?
-  cod_siiir       String  @id
-  cod_fiscal      String?
-  latlong         String?
-  last_updated    BigInt?
-  last_author     String?
-  sigla_lipsa     Boolean @default(false)
-  sigla           Boolean @default(false)
-  sigla_file_type String?
-  sigla_lg        Boolean @default(false)
-  sigla_xs        Boolean @default(false)
-  cod_judet       String
+  id_legacy              String?
+  nume                   String
+  adresa                 String?
+  website                String?
+  email                  String?
+  telefon                String?
+  wikipedia              String?
+  facebook               String?
+  instagram              String?
+  youtube                String?
+  cod_siiir              String  @id
+  cod_fiscal             String?
+  latlong                String?
+  last_updated           BigInt?
+  last_author            String?
+  sigla_lipsa            Boolean @default(false)
+  sigla_legacy           Boolean @default(false)
+  sigla_file_type_legacy String?
+  sigla_lg               Boolean @default(false)
+  sigla_xs               Boolean @default(false)
+  cod_judet              String
+  sigla                  String?
 }
 
 model siiir {
@@ -145,4 +146,27 @@ model siiir {
   data_postliceal         DateTime? @db.Date
   stare_profesional       String?
   data_profesional        DateTime? @db.Date
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model edit_logs {
+  id             Int                    @id @default(autoincrement())
+  institution_id String
+  author_id      String?
+  old_value      String?
+  new_value      String?
+  timestamp      DateTime               @db.Timestamptz(6)
+  field_name     institution_field_name
+}
+
+enum institution_field_name {
+  sigla
+  fara_sigla
+  website
+  istoric
+  facebook
+  instagram
+  wikipedia
+  tiktok
+  youtube
 }
