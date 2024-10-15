@@ -188,22 +188,23 @@ export const appRouter = router({
             sigla_lipsa: false,
             sigla_lg: false,
           },
-          take: 1000,
         })
-      ).map((i) => ({
-        id: i.cod_siiir,
-        nume: i.nume,
-        cod_judet: i.cod_judet,
-        website: i.website,
-        sigla: i.sigla,
-        sigla_xs: i.sigla_xs,
-        sigla_lg: i.sigla_lg,
-        sigla_lipsa: i.sigla_lipsa,
-        info_modificare: getInfoModificare(i.last_author, i.last_updated),
-        rank:
-          ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
-          ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
-      }));
+      )
+        .map((i) => ({
+          id: i.cod_siiir,
+          nume: i.nume,
+          cod_judet: i.cod_judet,
+          website: i.website,
+          sigla: i.sigla,
+          sigla_xs: i.sigla_xs,
+          sigla_lg: i.sigla_lg,
+          sigla_lipsa: i.sigla_lipsa,
+          info_modificare: getInfoModificare(i.last_author, i.last_updated),
+          rank:
+            ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
+            ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
+        }))
+        .sort((a, b) => (a.rank ?? 100000) - (b.rank ?? 100000));
 
       const complet = (
         await ctx.prisma.institutii.findMany({
