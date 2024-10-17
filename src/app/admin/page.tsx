@@ -364,41 +364,42 @@ function Dashboard() {
         </div>
       </div>
 
-      <TextInput
-        placeHolder={"Caută instituție"}
-        onChange={onFilterChange}
-        Icon={FaMagnifyingGlass}
-      />
-
       {filteredData ? (
-        (page == "lipsa"
-          ? filteredData
-              .filter((i) => !i.sigla_lipsa && !i.sigla_lg)
-              .sort(
-                (a, b) =>
-                  (a.rankLiceu ?? (a.rankGimnaziu ?? 100000) * 5) -
-                  (b.rankLiceu ?? (b.rankGimnaziu ?? 100000) * 5)
-              )
-          : filteredData
-              .filter((i) => i.sigla_lg || i.sigla_lipsa)
-              .sort((a, b) => b.ultima_modificare - a.ultima_modificare)
-        )
-          .slice(0, 100)
-          .map((i) => (
-            <Institutie
-              key={i.id}
-              id={i.id}
-              cod_judet={i.cod_judet}
-              nume={i.nume}
-              rank={i.rankLiceu ?? i.rankGimnaziu}
-              website={i.website}
-              sigla={i.sigla}
-              sigla_xs={i.sigla_xs}
-              sigla_lg={i.sigla_lg}
-              sigla_lipsa={i.sigla_lipsa}
-              info_modificare={i.info_modificare}
-            />
-          ))
+        <>
+          <TextInput
+            placeHolder={"Caută instituție"}
+            onChange={onFilterChange}
+            Icon={FaMagnifyingGlass}
+          />
+          {(page == "lipsa"
+            ? filteredData
+                .filter((i) => !i.sigla_lipsa && !i.sigla_lg)
+                .sort(
+                  (a, b) =>
+                    (a.rankLiceu ?? (a.rankGimnaziu ?? 100000) * 5) -
+                    (b.rankLiceu ?? (b.rankGimnaziu ?? 100000) * 5)
+                )
+            : filteredData
+                .filter((i) => i.sigla_lg || i.sigla_lipsa)
+                .sort((a, b) => b.ultima_modificare - a.ultima_modificare)
+          )
+            .slice(0, 100)
+            .map((i) => (
+              <Institutie
+                key={i.id}
+                id={i.id}
+                cod_judet={i.cod_judet}
+                nume={i.nume}
+                rank={i.rankLiceu ?? i.rankGimnaziu}
+                website={i.website}
+                sigla={i.sigla}
+                sigla_xs={i.sigla_xs}
+                sigla_lg={i.sigla_lg}
+                sigla_lipsa={i.sigla_lipsa}
+                info_modificare={i.info_modificare}
+              />
+            ))}
+        </>
       ) : (
         <LoadingSpinner className="mx-auto" />
       )}
