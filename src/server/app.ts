@@ -182,15 +182,8 @@ export const appRouter = router({
         return info;
       }
 
-      const lipsa = (
-        await ctx.prisma.institutii.findMany({
-          where: {
-            sigla_lipsa: false,
-            sigla_lg: false,
-          },
-        })
-      )
-        .map((i) => ({
+      const institutii = (await ctx.prisma.institutii.findMany({})).map(
+        (i) => ({
           id: i.cod_siiir,
           nume: i.nume,
           cod_judet: i.cod_judet,
@@ -200,48 +193,13 @@ export const appRouter = router({
           sigla_lg: i.sigla_lg,
           sigla_lipsa: i.sigla_lipsa,
           info_modificare: getInfoModificare(i.last_author, i.last_updated),
-          rank:
-            ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
-            ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
-        }))
-        .sort((a, b) => (a.rank ?? 100000) - (b.rank ?? 100000));
-
-      const complet = (
-        await ctx.prisma.institutii.findMany({
-          where: {
-            OR: [
-              {
-                sigla_lg: true,
-              },
-              {
-                sigla_lipsa: true,
-              },
-            ],
-          },
-          orderBy: {
-            last_updated: "desc",
-          },
-          take: 1000,
+          ultima_modificare: Number(i.last_updated),
+          rankLiceu: ierarhieLicee[i.cod_siiir]?.[ultimulAnBac],
+          rankGimnaziu: ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
         })
-      ).map((i) => ({
-        id: i.cod_siiir,
-        nume: i.nume,
-        cod_judet: i.cod_judet,
-        website: i.website,
-        sigla: i.sigla,
-        sigla_xs: i.sigla_xs,
-        sigla_lg: i.sigla_lg,
-        sigla_lipsa: i.sigla_lipsa,
-        info_modificare: getInfoModificare(i.last_author, i.last_updated),
-        rank:
-          ierarhieLicee[i.cod_siiir]?.[ultimulAnBac] ??
-          ierarhieScoli[i.cod_siiir]?.[ultimulAnEn],
-      }));
+      );
 
-      return {
-        lipsa,
-        complet,
-      };
+      return institutii;
     }),
 
     upload: protectedProcedure

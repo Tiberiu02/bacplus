@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { VscKey } from "react-icons/vsc";
 import { FiUser } from "react-icons/fi";
 import { MainContainer } from "~/components/MainContainer";
@@ -16,11 +16,12 @@ import { userDataAtom } from "./userData";
 import { judetDupaCod } from "~/data/coduriJudete";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
 import { LinkText } from "~/components/LinkText";
-import { FaCamera, FaPlus } from "react-icons/fa6";
+import { FaCamera, FaMagnifyingGlass, FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { BeatLoader } from "react-spinners";
 import { Table } from "~/components/Table";
+import { unidecode } from "~/data/unidecode";
 
 export default function Admin() {
   const [jwt] = useAtom(userDataAtom);
@@ -267,12 +268,41 @@ function Institutie({
   );
 }
 
+function obtainKey(s: string) {
+  return unidecode(s)
+    .toLowerCase()
+    .replace(/[^\w\d]/g, "");
+}
+
 function Dashboard() {
   const stats = trpc.stats.useQuery();
   const data = trpc.sigle.institutii.useQuery(undefined, {
     staleTime: Infinity,
   });
   const [page, setPage] = useState<"lipsa" | "complet">("lipsa");
+
+  const [filter, setFilter] = useState<string>("");
+
+  const dataWithKey = useMemo(
+    () =>
+      data.data &&
+      data.data.map((i) => ({
+        ...i,
+        filterKey: obtainKey(i.nume),
+      })),
+    [data.data]
+  );
+
+  const onFilterChange = (value: string) => {
+    setFilter(obtainKey(value));
+    console.log(value, obtainKey(value));
+  };
+
+  const filteredData = useMemo(
+    () =>
+      dataWithKey && dataWithKey.filter((i) => i.filterKey.includes(filter)),
+    [dataWithKey, filter]
+  );
 
   return (
     <MainContainer>
@@ -334,8 +364,25 @@ function Dashboard() {
         </div>
       </div>
 
-      {data.data ? (
-        (page == "lipsa" ? data.data.lipsa : data.data.complet)
+      <TextInput
+        placeHolder={"Caută instituție"}
+        onChange={onFilterChange}
+        Icon={FaMagnifyingGlass}
+      />
+
+      {filteredData ? (
+        (page == "lipsa"
+          ? filteredData
+              .filter((i) => !i.sigla_lipsa && !i.sigla_lg)
+              .sort(
+                (a, b) =>
+                  (a.rankLiceu ?? (a.rankGimnaziu ?? 100000) * 5) -
+                  (b.rankLiceu ?? (b.rankGimnaziu ?? 100000) * 5)
+              )
+          : filteredData
+              .filter((i) => i.sigla_lg || i.sigla_lipsa)
+              .sort((a, b) => b.ultima_modificare - a.ultima_modificare)
+        )
           .slice(0, 100)
           .map((i) => (
             <Institutie
@@ -343,7 +390,7 @@ function Dashboard() {
               id={i.id}
               cod_judet={i.cod_judet}
               nume={i.nume}
-              rank={i.rank}
+              rank={i.rankLiceu ?? i.rankGimnaziu}
               website={i.website}
               sigla={i.sigla}
               sigla_xs={i.sigla_xs}
