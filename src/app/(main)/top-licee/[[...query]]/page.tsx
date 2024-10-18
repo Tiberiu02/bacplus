@@ -16,6 +16,7 @@ import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { createStaticData } from "~/static-data/createStaticData";
+import { beautifyNameNullable } from "~/data/institutie/beautifyName";
 
 export function generateMetadata({
   params,
@@ -168,8 +169,8 @@ function getLicee(an: number, judet?: string) {
       licee[id] = {
         numeLiceu:
           result.data?.nume ??
-          result.siiirData?.denumire_lunga_unitate ??
-          result.unitate_nume ??
+          beautifyNameNullable(result.siiirData?.denumire_lunga_unitate) ??
+          beautifyNameNullable(result.unitate_nume) ??
           "",
         siiir: result.unitate_siiir ?? undefined,
         icon: result.data?.sigla_xs ?? false,

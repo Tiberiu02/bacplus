@@ -35,7 +35,8 @@ export function TabelLicee({
           type: "text",
           header: "Nume liceu",
           value: (rowData) => rowData.numeLiceu,
-          href: (rowData) => (rowData.urlId ? `/i/${rowData.urlId}` : ""),
+          href: (rowData) =>
+            rowData.urlId ? `/i/${rowData.urlId}` : undefined,
           widthGrow: true,
           searchable: true,
           textAlign: "left",

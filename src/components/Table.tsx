@@ -21,7 +21,7 @@ type ColumnType<T> =
       | {
           type: "text";
           value: (rowData: T, rowIndex: number) => string | undefined;
-          href?: (rowData: T, rowIndex: number) => string;
+          href?: (rowData: T, rowIndex: number) => string | undefined;
           searchable?: boolean;
         }
       | {
@@ -215,71 +215,76 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
             </tr>
           </thead>
           <tbody
-            className={twMerge(
-              "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-3 [&>*]:bg-white",
-              href
-                ? "[&>*>*]:transition-all [&>*>*]:duration-200 [&>*]:cursor-pointer"
-                : undefined
-            )}
+            className={
+              "text-center [&>*>*:first-child]:pr-3 [&>*>*]:border-b-[1px] [&>*>*]:border-gray-200 [&>*>*]:py-3 [&>*>*]:pl-3 [&>*>*]:pr-3 [&>*]:bg-white"
+            }
           >
-            {filteredData.slice(0, showRows).map((row, rIx) => (
-              <tr
-                key={keyFn ? keyFn(row) : row._rowIndex ? row._rowIndex : rIx}
-                onClick={
-                  href
-                    ? (e) => {
-                        const url = href(row, rIx);
-                        if (!url) return;
-                        e.preventDefault();
-                        window.open(href(row, rIx), "_blank");
-                      }
-                    : undefined
-                }
-              >
-                {columns.map((column, cIx) => (
-                  <td
-                    key={cIx}
-                    className={twMerge(
-                      column.tdClassName,
-                      column.textAlign == "left"
-                        ? "text-left"
-                        : column.textAlign == "right"
-                        ? "text-right"
-                        : "",
-                      column.type == "number" &&
-                        sortColumnIx == cIx &&
-                        "font-medium",
-                      column.sortable && "!pr-8"
-                    )}
-                  >
-                    {column.type == "text" ? (
-                      column.href ? (
-                        <Link href={column.href(row, rIx)} target="_blank">
-                          {(column.customRender ?? column.value)(
+            {filteredData.slice(0, showRows).map((row, rIx) => {
+              const url = href ? href(row, rIx) : undefined;
+
+              return (
+                <tr
+                  key={keyFn ? keyFn(row) : row._rowIndex ? row._rowIndex : rIx}
+                  onClick={
+                    url
+                      ? (e) => {
+                          if (e.button != 0 || e.ctrlKey || e.metaKey) return;
+                          e.preventDefault();
+                          window.open(url, "_blank");
+                        }
+                      : undefined
+                  }
+                  className={
+                    url
+                      ? "[&>*>*]:duration-200 [&>*]:cursor-pointer"
+                      : undefined
+                  }
+                >
+                  {columns.map((column, cIx) => (
+                    <td
+                      key={cIx}
+                      className={twMerge(
+                        column.tdClassName,
+                        column.textAlign == "left"
+                          ? "text-left"
+                          : column.textAlign == "right"
+                          ? "text-right"
+                          : "",
+                        column.type == "number" &&
+                          sortColumnIx == cIx &&
+                          "font-medium",
+                        column.sortable && "!pr-8"
+                      )}
+                    >
+                      {column.type == "text" ? (
+                        url ? (
+                          <Link href={url} target="_blank">
+                            {(column.customRender ?? column.value)(
+                              row,
+                              row._rowIndex
+                            )}
+                          </Link>
+                        ) : (
+                          (column.customRender ?? column.value)(
                             row,
                             row._rowIndex
-                          )}
-                        </Link>
-                      ) : (
-                        (column.customRender ?? column.value)(
-                          row,
-                          row._rowIndex
+                          )
                         )
-                      )
-                    ) : column.type == "number" ? (
-                      formtaNumber(
-                        column.value(row, row._rowIndex),
-                        column.decimals
-                      )
-                    ) : column.type == "percentage" ? (
-                      <PercentageBar
-                        value={column.value(row, row._rowIndex) ?? 0}
-                      />
-                    ) : null}
-                  </td>
-                ))}
-              </tr>
-            ))}
+                      ) : column.type == "number" ? (
+                        formtaNumber(
+                          column.value(row, row._rowIndex),
+                          column.decimals
+                        )
+                      ) : column.type == "percentage" ? (
+                        <PercentageBar
+                          value={column.value(row, row._rowIndex) ?? 0}
+                        />
+                      ) : null}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
