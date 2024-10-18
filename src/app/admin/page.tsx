@@ -101,12 +101,18 @@ function Institutie({
 
   async function upload(dataUrl: string) {
     setIsLoading(true);
-    const x = await siglaMutation.mutateAsync({
-      id,
-      dataUrl: dataUrl || "",
-    });
-    setIsLoading(false);
-    setUploaded(x);
+    try {
+      const x = await siglaMutation.mutateAsync({
+        id,
+        dataUrl: dataUrl || "",
+      });
+      setIsLoading(false);
+      setUploaded(x);
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
+      setImages([]);
+    }
   }
 
   const onChange = (
