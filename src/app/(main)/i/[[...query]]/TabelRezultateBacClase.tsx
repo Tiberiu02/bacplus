@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Table } from "../Table";
-import { Select } from "../Select";
+import { Table } from "~/components/Table";
+import { Select } from "~/components/Select";
 
 export type RezultateBacClase = {
   [an: number]: {

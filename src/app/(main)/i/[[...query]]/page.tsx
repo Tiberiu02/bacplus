@@ -16,20 +16,20 @@ import { env } from "~/env.js";
 import { notFound } from "next/navigation";
 import { Announcements } from "~/components/Announcements";
 import Link from "next/link";
-import { TabelSpecializari } from "~/components/tables/TabelSpecializari";
-import { TabelDisciplineBac } from "~/components/tables/TabelDisciplineBac";
+import { TabelSpecializari } from "./TabelSpecializari";
+import { TabelDisciplineBac } from "./TabelDisciplineBac";
 import { twMerge } from "tailwind-merge";
-import { TabelDateIstoriceLiceu } from "~/components/tables/TabelDateIstoriceLiceu";
+import { TabelDateIstoriceLiceu } from "~/app/(main)/i/[[...query]]/TabelDateIstoriceLiceu";
 import { ierarhieLicee, ierarhieScoli } from "~/data/ierarhie";
 import { nonBreakableName } from "~/data/nonBreakableName";
 import { getIdFromUrl, getUrlFromId } from "~/data/institutie/urlFromId";
-import { TabelDateIstoriceScoala } from "~/components/tables/TabelDateIstoriceScoala";
+import { TabelDateIstoriceScoala } from "~/app/(main)/i/[[...query]]/TabelDateIstoriceScoala";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { capitalize } from "~/data/capitalize";
 import {
   type RezultateBacClase,
   TabelRezultateBacClase,
-} from "~/components/tables/TabelRezultateBacClase";
+} from "./TabelRezultateBacClase";
 
 export function generateStaticParams() {
   return [];
