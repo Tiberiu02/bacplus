@@ -206,15 +206,8 @@ export const appRouter = router({
       .input(z.object({ id: z.string(), dataUrl: z.string() }))
       .mutation(async ({ input, ctx }) => {
         console.log("received data URL for id", input.id);
-        const regex = /^data:.+\/(.+);base64,(.*)$/;
 
-        const matches = input.dataUrl.match(regex);
-        const ext = matches?.[1];
-        const data = matches?.[2];
-        if (!ext || !data) {
-          throw new Error("Invalid data URL");
-        }
-        const buffer = Buffer.from(data, "base64");
+        const { ext, buffer } = parseImageBase64DataUrl(input.dataUrl);
 
         const hash = await computeHash(buffer);
         const fileName = `${hash}.${ext}`;
@@ -225,6 +218,7 @@ export const appRouter = router({
         const LG_MIN_SIZE = 96;
         const XS_SIZE = 32;
 
+        console.log("processing image", input.id);
         const imageLg = await processImage(image, LG_SIZE, LG_MIN_SIZE);
         const imageXs = await processImage(image, XS_SIZE);
 
@@ -233,18 +227,6 @@ export const appRouter = router({
         if (!assetsStorageZone) {
           throw new Error("No storage zone found");
         }
-
-        console.log("processed image", input.id);
-
-        console.log("uploading original");
-        // await uploadFile(
-        //   `institutii/${input.id}/sigla.${ext}`,
-        //   buffer,
-        //   assetsStorageZone
-        // );
-        // await purgeUrl(
-        //   `https://bacplus-assets.b-cdn.net/institutii/${input.id}/sigla.${ext}`
-        // );
 
         // Find old sigla file name
         const oldSigla = await ctx.prisma.institutii.findUnique({
@@ -456,4 +438,27 @@ async function processImage(
 
   // Save the image
   return await newImage.webp().toBuffer();
+}
+
+function parseImageBase64DataUrl(dataUrl: string) {
+  // const regex = /^data:.+\/(.+);base64,(.*)$/;
+
+  const [header, data, other] = dataUrl.split(",");
+
+  if (other !== undefined || data === undefined || header === undefined) {
+    throw new Error("Invalid data URL: failed to split");
+  }
+
+  const [_, ext] = header.match(/^data:image\/(.*?);base64/) ?? [];
+
+  if (!ext) {
+    throw new Error("Invalid data URL: header failed regex match");
+  }
+
+  const buffer = Buffer.from(data, "base64");
+
+  return {
+    ext,
+    buffer,
+  };
 }
