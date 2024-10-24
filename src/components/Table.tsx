@@ -277,7 +277,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                         )
                       ) : column.type == "percentage" ? (
                         <PercentageBar
-                          value={column.value(row, row._rowIndex) ?? 0}
+                          value={column.value(row, row._rowIndex)}
                         />
                       ) : null}
                     </td>

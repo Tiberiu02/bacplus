@@ -76,28 +76,26 @@ model users {
 }
 
 model institutii {
-  id_legacy              String?
-  nume                   String
-  adresa                 String?
-  website                String?
-  email                  String?
-  telefon                String?
-  wikipedia              String?
-  facebook               String?
-  instagram              String?
-  youtube                String?
-  cod_siiir              String  @id
-  cod_fiscal             String?
-  latlong                String?
-  last_updated           BigInt?
-  last_author            String?
-  sigla_lipsa            Boolean @default(false)
-  sigla_legacy           Boolean @default(false)
-  sigla_file_type_legacy String?
-  sigla_lg               Boolean @default(false)
-  sigla_xs               Boolean @default(false)
-  cod_judet              String
-  sigla                  String?
+  id_legacy    String?
+  nume         String
+  adresa       String?
+  website      String?
+  email        String?
+  telefon      String?
+  wikipedia    String?
+  facebook     String?
+  instagram    String?
+  youtube      String?
+  cod_siiir    String  @id
+  cod_fiscal   String?
+  latlong      String?
+  last_updated BigInt?
+  last_author  String?
+  sigla_lipsa  Boolean @default(false)
+  sigla_lg     Boolean @default(false)
+  sigla_xs     Boolean @default(false)
+  cod_judet    String
+  sigla        String?
 }
 
 model siiir {
