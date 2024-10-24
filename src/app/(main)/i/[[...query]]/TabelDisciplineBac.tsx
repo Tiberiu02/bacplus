@@ -22,7 +22,7 @@ export function TabelDisciplineBac({
   return (
     <div className="flex w-full max-w-3xl flex-col items-center gap-4">
       <div className="relative max-w-full flex-col items-center justify-between gap-4">
-        <div className="text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
+        <div className="mb-1 text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
           Rezultate Bacalaureat pe discipline
         </div>
         <Select

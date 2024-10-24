@@ -5,12 +5,49 @@ import Link from "next/link";
 import { FaLock } from "react-icons/fa";
 import { trpc } from "~/utils/trpc";
 import { FiUser } from "react-icons/fi";
-import { useAtom } from "jotai";
-import { userDataAtom } from "./userData";
+import { useUserData } from "./userData";
 import { PiSignOutBold } from "react-icons/pi";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import { twMerge } from "tailwind-merge";
+import { LinkSelect } from "~/components/LinkSelect";
+
+const PAGES = {
+  sigle: {
+    name: "Sigle",
+    path: "/admin/sigle",
+  },
+  imagini: {
+    name: "Imagini",
+    path: "/admin/images",
+  },
+  contributii: {
+    name: "Contribuții",
+    path: "/admin/stats",
+  },
+} as { [key: string]: { name: string; path: string } };
 
 function RootLayout({ children }: { children: React.ReactNode }) {
-  const [userData, setUserData] = useAtom(userDataAtom);
+  const [userData, setUserData, isLoading] = useUserData();
+  const pathname = usePathname();
+
+  if (isLoading) return null;
+
+  const isLoginPage = pathname === "/admin/login";
+
+  if (!isLoginPage && !userData) {
+    redirect("/admin/login");
+  }
+
+  const activePage = Object.entries(PAGES).find(
+    ([_, { path }]) => path == pathname
+  )?.[0];
+
+  console.log("activePage", activePage);
+
+  // if (!activePage) {
+  //   redirect("/admin/sigle");
+  // }
+
   return (
     <div className="flex min-h-[100dvh] flex-col text-lg">
       <div className="flex w-full max-w-6xl flex-col self-center bg-transparent px-5 py-5 text-base">
@@ -29,17 +66,25 @@ function RootLayout({ children }: { children: React.ReactNode }) {
             />
           </Link>
           <div className="hidden flex-row gap-8 sm:flex">
-            {userData ? (
+            {!isLoginPage && userData ? (
               <>
-                <div className="border-b-2 border-black border-opacity-0">
-                  <FiUser className="mr-2 mt-[-4px] inline" />
+                <LinkSelect
+                  defaultValue={activePage || "sigle"}
+                  options={Object.entries(PAGES).map(
+                    ([key, { name, path }]) => ({
+                      value: key,
+                      label: name,
+                      link: path,
+                    })
+                  )}
+                  className=""
+                />
+                <div className="flex items-center ">
+                  <FiUser className="mr-2 mt-[-0px] inline" />
                   {userData.name}
                 </div>
-                <button
-                  className="border-b-2 border-black border-opacity-0"
-                  onClick={() => setUserData(null)}
-                >
-                  <PiSignOutBold className="mr-2 mt-[-4px] inline" />
+                <button className="" onClick={() => setUserData(null)}>
+                  <PiSignOutBold className="mr-2 mt-[-2px] inline" />
                   Deconectare
                 </button>
               </>

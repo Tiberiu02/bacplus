@@ -136,13 +136,13 @@ export default function Page({ params }: { params: { query: string[] } }) {
             defaultValue={judet?.nume ?? ""}
             options={optionsJudete}
             ariaLabel="Selectează județul"
-            className="w-48 flex-shrink-0 max-md:flex-grow-[2]"
+            className="flex-shrink-0"
           />
           <LinkSelect
             defaultValue={an}
             options={optionsAni}
             ariaLabel="Selectează anul"
-            className="shrink-0 max-md:flex-1"
+            className="shrink-0"
           />
         </div>
 

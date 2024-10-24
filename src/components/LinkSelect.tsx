@@ -50,7 +50,7 @@ export function LinkSelect({
   return (
     <button
       className={twMerge(
-        "relative flex h-10 items-center rounded px-2 text-base hover:bg-blue-50",
+        "relative flex h-8 items-center rounded pl-3 pr-4 text-base hover:bg-blue-50",
         className
       )}
       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -65,7 +65,7 @@ export function LinkSelect({
       {selectedOption.label}
       <div
         className={twMerge(
-          "absolute left-0 top-full z-50 mt-1 flex max-h-64 w-full flex-col overflow-auto rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
+          "absolute left-0 top-full z-50 mt-1 flex max-h-64 w-fit min-w-full flex-col overflow-auto whitespace-nowrap rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
           !isDropdownOpen && "hidden"
         )}
       >

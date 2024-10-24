@@ -21,6 +21,9 @@ export function Select<T extends string | number>({
   onChange: (value: T) => void;
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [popupMaxWidth, setPopupMaxWidth] = useState(
+    undefined as string | undefined
+  );
 
   const inputRef = useRef<HTMLButtonElement>(null);
 
@@ -47,10 +50,19 @@ export function Select<T extends string | number>({
   return (
     <button
       className={twMerge(
-        "relative flex min-h-[2.5rem] items-center  rounded px-2 text-left text-base [text-wrap:balance] hover:bg-blue-50",
+        "relative flex min-h-[2rem] flex-shrink grow-0 items-center rounded-md pl-3 pr-4 text-left text-base [text-wrap:balance] hover:bg-blue-50",
         className
       )}
-      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+      onClick={() => {
+        setIsDropdownOpen(!isDropdownOpen);
+        const input = inputRef.current;
+        if (input) {
+          const rect = input.getBoundingClientRect();
+          const x = rect.left;
+          const maxW = window.innerWidth - x - 10;
+          setPopupMaxWidth(`${maxW}px`);
+        }
+      }}
       aria-label={ariaLabel}
       ref={inputRef}
     >
@@ -59,16 +71,21 @@ export function Select<T extends string | number>({
       >
         <PiCaretDownBold />
       </div>
-      {selectedOption.label}
+      <div className="flex-shrink overflow-hidden text-ellipsis whitespace-nowrap">
+        {selectedOption.label}
+      </div>
       <div
         className={twMerge(
           "absolute left-0 top-full z-50 mt-1 flex max-h-64 min-w-full flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap rounded border-[1px] border-gray-300 bg-white py-1 text-left shadow sm:max-h-96",
           !isDropdownOpen && "hidden"
         )}
+        style={{
+          maxWidth: popupMaxWidth,
+        }}
       >
         {options.map((o, ix) => (
           <span
-            className="px-3 py-1 hover:bg-gray-150"
+            className="shrink-0 overflow-hidden text-ellipsis px-3 py-1 hover:bg-gray-150"
             onClick={() => onChange(o.value)}
             key={ix}
           >

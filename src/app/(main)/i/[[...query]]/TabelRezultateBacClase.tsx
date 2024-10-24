@@ -59,8 +59,8 @@ export function TabelRezultateBacClase({
           options={discipline.map((e) => ({ value: e, label: e }))}
           value={disciplina}
           onChange={setDisciplina}
+          className="max-w-[calc(100%-6rem)]"
           ariaLabel="Disciplina rezultate clase"
-          className=""
         />
       </div>
       <Table
