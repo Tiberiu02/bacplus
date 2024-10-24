@@ -78,6 +78,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
     );
   }
 
+  if (query.aniEn.every((a) => a.an != an)) {
+    redirect("/top-scoli");
+  }
+
   const scoli = getScoli(an, judet?.id);
 
   const optionsAni = query.aniEn.map(({ an }) => ({

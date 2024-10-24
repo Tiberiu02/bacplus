@@ -95,7 +95,9 @@ export default function PaginaInstitutie({
 }) {
   const siiir = getIdFromUrl(idUrl);
 
-  if (!siiir) notFound();
+  if (!siiir) {
+    notFound();
+  }
 
   const institutie = institutii[siiir];
 

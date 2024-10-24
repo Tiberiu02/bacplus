@@ -66,6 +66,10 @@ export default function Page({ params }: { params: { query: string[] } }) {
     redirect("/top-licee" + (judet ? "/" + judet.nume : ""));
   }
 
+  if (query.aniBac.every((a) => a.an != an)) {
+    redirect("/top-licee");
+  }
+
   const { licee, anAdmitere } = getLicee(an, judet?.id);
 
   const optionsAni = query.aniBac.map(({ an }) => ({
