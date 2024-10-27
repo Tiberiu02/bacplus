@@ -347,7 +347,7 @@ export default function Dashboard() {
           )}
           onClick={() => {
             setPage("lipsa");
-            utils.sigle.institutii.reset();
+            void utils.sigle.institutii.reset();
           }}
         >
           Lipsă
@@ -359,7 +359,7 @@ export default function Dashboard() {
           )}
           onClick={() => {
             setPage("complet");
-            utils.sigle.institutii.reset();
+            void utils.sigle.institutii.reset();
           }}
         >
           Complet
