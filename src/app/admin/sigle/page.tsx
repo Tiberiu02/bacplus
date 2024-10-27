@@ -13,8 +13,6 @@ import { LinkText } from "~/components/LinkText";
 import { FaCamera, FaMagnifyingGlass, FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import { BeatLoader } from "react-spinners";
-import { Table } from "~/components/Table";
 import { unidecode } from "~/data/unidecode";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
@@ -245,13 +243,14 @@ function obtainKey(s: string) {
 }
 
 export default function Dashboard() {
-  const stats = trpc.stats.useQuery();
+  const utils = trpc.useUtils();
   const data = trpc.sigle.institutii.useQuery(undefined, {
     staleTime: Infinity,
   });
   const [page, setPage] = useState<"lipsa" | "complet">("lipsa");
 
-  const [filter, setFilter] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const filter = obtainKey(search);
 
   const dataWithKey = useMemo(
     () =>
@@ -263,11 +262,6 @@ export default function Dashboard() {
     [data.data]
   );
 
-  const onFilterChange = (value: string) => {
-    setFilter(obtainKey(value));
-    console.log(value, obtainKey(value));
-  };
-
   const filteredData = useMemo(
     () =>
       dataWithKey && dataWithKey.filter((i) => i.filterKey.includes(filter)),
@@ -275,7 +269,7 @@ export default function Dashboard() {
   );
 
   return (
-    <MainContainer>
+    <MainContainer className="mb-[100vh]">
       <Title>Ghid adăugare sigle</Title>
 
       <ol className="[&>li]:list-decimal">
@@ -351,7 +345,10 @@ export default function Dashboard() {
             "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
             page === "lipsa" ? "border-black" : "border-transparent"
           )}
-          onClick={() => setPage("lipsa")}
+          onClick={() => {
+            setPage("lipsa");
+            utils.sigle.institutii.reset();
+          }}
         >
           Lipsă
         </div>
@@ -360,7 +357,10 @@ export default function Dashboard() {
             "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
             page === "complet" ? "border-black" : "border-transparent"
           )}
-          onClick={() => setPage("complet")}
+          onClick={() => {
+            setPage("complet");
+            utils.sigle.institutii.reset();
+          }}
         >
           Complet
         </div>
@@ -370,7 +370,8 @@ export default function Dashboard() {
         <>
           <TextInput
             placeHolder={"Caută instituție"}
-            onChange={onFilterChange}
+            value={search || ""}
+            onChange={setSearch}
             Icon={FaMagnifyingGlass}
           />
           {(page == "lipsa"

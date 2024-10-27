@@ -119,32 +119,6 @@ export const appRouter = router({
       },
     });
 
-    const institutiiComplet = await ctx.prisma.institutii.aggregate({
-      _count: true,
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                sigla_lg: true,
-              },
-              {
-                sigla_lipsa: true,
-              },
-            ],
-          },
-        ],
-      },
-    });
-
-    const institutiiLipsa = await ctx.prisma.institutii.aggregate({
-      _count: true,
-      where: {
-        sigla_lipsa: false,
-        sigla_lg: false,
-      },
-    });
-
     return {
       leaderboard: contributii
         .map((c) => ({
@@ -152,8 +126,6 @@ export const appRouter = router({
           count: c._count.author_id,
         }))
         .sort((a, b) => b.count - a.count),
-      lipsa: institutiiLipsa._count,
-      complet: institutiiComplet._count,
     };
   }),
 
