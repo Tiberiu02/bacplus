@@ -391,6 +391,16 @@ export default function Dashboard() {
           </LinkText>
           .
         </li>
+        <li>
+          Dacă găsești sigla într-un document PDF, o poți extrage folosind un{" "}
+          <LinkText
+            href="https://tools.pdf24.org/en/extract-images"
+            target="_blank"
+          >
+            pdf image extractor
+          </LinkText>
+          .
+        </li>
         <li>Încarcă sigla folosing drag-and-drop.</li>
         <li>
           Dacă nu ai găsit o siglă satisfăcătoare, marchează acest lucru
