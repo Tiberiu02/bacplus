@@ -1,5 +1,6 @@
 import { prisma } from "~/server/prisma";
 import { computeAllQueries } from "~/data/cacheQuery";
+import { groupBy } from "./groupBy";
 
 const queryFunctions = {
   bac: () =>
@@ -283,9 +284,12 @@ const queryFunctions = {
       orderBy: { an: "desc" },
     }),
   siiir: () => prisma.siiir.findMany(),
+  photos: () => prisma.photos.findMany(),
 };
 
 export const query = await computeAllQueries(queryFunctions);
+
+export const photosBySchool = groupBy(query.photos, (p) => p.school_code);
 
 if (!query.aniBac[0]) {
   throw new Error("No data found in BAC table");

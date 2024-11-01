@@ -5,6 +5,7 @@ import {
   institutiiBac,
   institutiiEn,
   licee,
+  photosBySchool,
   query,
 } from "~/data/dbQuery";
 import { formtaNumber } from "~/data/formatNumber";
@@ -30,6 +31,7 @@ import {
   type RezultateBacClase,
   TabelRezultateBacClase,
 } from "./TabelRezultateBacClase";
+import { getPhotoUrl } from "~/utils/asset-urls";
 
 export function generateStaticParams() {
   return [];
@@ -194,7 +196,7 @@ export default function PaginaInstitutie({
 }
 
 function PaginaGimnaziu({ id }: { id: string }) {
-  const { numeScoala, rezultateEn, genderData } = getInfoScoala(id);
+  const { numeScoala, rezultateEn, genderData, photos } = getInfoScoala(id);
 
   const data = Object.entries(rezultateEn).at(-1);
 
@@ -325,6 +327,8 @@ function getInfoScoala(siiir: string) {
         }
       : undefined;
 
+  const photos = photosBySchool[siiir] || [];
+
   return {
     liceu: institutiiBac.has(siiir),
     rezultateEn,
@@ -332,6 +336,7 @@ function getInfoScoala(siiir: string) {
     website: scoala?.website,
     address: scoala?.adresa,
     genderData,
+    photos,
   };
 }
 
@@ -344,6 +349,7 @@ function PaginaLiceu({ id }: { id: string }) {
     specializari,
     disciplineBac,
     rezultateClase,
+    photos,
   } = getInfoLiceu(id);
 
   const dataBac = Object.entries(rezultateBac).at(-1);
@@ -384,6 +390,41 @@ function PaginaLiceu({ id }: { id: string }) {
         admitere={admitere}
         ierarhie={ierarhieLicee[id] ?? {}}
       />
+
+      {photos.length > 0 && (
+        <div className="flex flex-col">
+          <div className="mb-1 text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
+            Imagini
+          </div>
+          <div className="mb-4 mt-8 text-center [text-wrap:balance]">
+            {photos
+              .sort((a, b) => a.order_priority - b.order_priority)
+              .map((photo) => (
+                <Link
+                  key={photo.id}
+                  href={getPhotoUrl(photo.id, "lg")}
+                  target="_blank"
+                  className="inline-block"
+                >
+                  <img
+                    className="mx-1 my-1 inline-block h-20 rounded bg-gray-200 sm:h-32"
+                    style={{
+                      aspectRatio: `${photo.width}/${photo.height}`,
+                    }}
+                    src={getPhotoUrl(photo.id, "xs")}
+                    alt={numeLiceu}
+                  />
+                </Link>
+              ))}
+          </div>
+          <div className="max-w-sm self-center text-center text-sm text-gray-500 [text-wrap:balance]">
+            <span className="font-medium">Sursă imagini: </span>
+            {Array.from(new Set(photos.map((p) => p.source)))
+              .map((s) => s || numeLiceu.replaceAll(/[,„”]/g, ""))
+              .join("; ")}
+          </div>
+        </div>
+      )}
 
       <TabelSpecializari specializari={specializari} />
 
@@ -730,6 +771,8 @@ function getInfoLiceu(siiir: string) {
       };
     });
 
+  const photos = photosBySchool[siiir] || [];
+
   return {
     numeLiceu,
     gimnaziu: !!gimnaziu,
@@ -741,5 +784,6 @@ function getInfoLiceu(siiir: string) {
     specializari,
     disciplineBac,
     rezultateClase,
+    photos,
   };
 }

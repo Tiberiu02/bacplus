@@ -7,8 +7,7 @@ import { trpc } from "~/utils/trpc";
 import { FiUser } from "react-icons/fi";
 import { useUserData } from "./userData";
 import { PiSignOutBold } from "react-icons/pi";
-import { redirect, usePathname, useRouter } from "next/navigation";
-import { twMerge } from "tailwind-merge";
+import { redirect, usePathname } from "next/navigation";
 import { LinkSelect } from "~/components/LinkSelect";
 
 const PAGES = {
@@ -18,7 +17,7 @@ const PAGES = {
   },
   imagini: {
     name: "Imagini",
-    path: "/admin/images",
+    path: "/admin/photos",
   },
   contributii: {
     name: "Contribuții",

@@ -10,7 +10,12 @@ import { twMerge } from "tailwind-merge";
 import { judetDupaCod } from "~/data/coduriJudete";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
 import { LinkText } from "~/components/LinkText";
-import { FaCamera, FaMagnifyingGlass, FaPlus } from "react-icons/fa6";
+import {
+  FaCamera,
+  FaMagnifyingGlass,
+  FaPlus,
+  FaRegPaste,
+} from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { unidecode } from "~/data/unidecode";
@@ -114,7 +119,8 @@ function Institutie({
           <div className="flex select-none flex-col gap-1">
             <div
               className={twMerge(
-                "relative flex h-48 w-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-1 [&>*]:pointer-events-none",
+                "relative flex h-48 w-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 p-1",
+                isDragging && " [&>*]:pointer-events-none",
                 !image && !isLoading && "cursor-pointer"
               )}
               onClick={!image && !isLoading ? onImageUpload : undefined}
@@ -133,10 +139,64 @@ function Institutie({
                 </>
               ) : (
                 <>
-                  <FaPlus className="mb-2 text-2xl text-gray-500" />
-                  <span className="text-center  text-gray-600 [text-wrap:balance]">
+                  <FaPlus className="mt-1 text-2xl text-gray-500" />
+                  <span className="text-center  font-medium text-gray-500 [text-wrap:balance]">
                     Adaugă sigla
                   </span>
+
+                  <button
+                    className="absolute bottom-2 flex items-center justify-center gap-1 rounded px-2 py-1 text-base font-semibold text-blue-500 hover:bg-black/10"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+
+                      void (async () => {
+                        try {
+                          const clipboardItems =
+                            await navigator.clipboard.read();
+                          console.log("clipboardItems", clipboardItems);
+                          for (const clipboardItem of clipboardItems) {
+                            const imageTypes =
+                              clipboardItem.types.filter((type) =>
+                                type.startsWith("image/")
+                              ) || [];
+
+                            let found = false;
+                            for (const imageType of imageTypes) {
+                              const blob = await clipboardItem.getType(
+                                imageType
+                              );
+
+                              // Get the data URL representing the image.
+                              const fileReader = new FileReader();
+                              fileReader.onload = function () {
+                                const dataUrl = fileReader.result as string;
+                                setImages([
+                                  {
+                                    dataURL: dataUrl,
+                                  },
+                                ]);
+                                void upload(dataUrl);
+                              };
+                              fileReader.readAsDataURL(blob);
+
+                              found = true;
+                              break;
+                            }
+
+                            if (!found) {
+                              alert("Nu ați copiat nicio imagine.");
+                            }
+                          }
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      })();
+                    }}
+                  >
+                    <FaRegPaste className="text-lg" />
+                    Paste
+                  </button>
                 </>
               )}
             </div>
@@ -157,7 +217,8 @@ function Institutie({
       </ReactImageUploading>
       <div className="flex flex-col">
         <div className="mb-2 font-semibold">
-          {rank || "?"}. {nume}{" "}
+          {rank ? `${rank}. ` : ""}
+          {nume}{" "}
           <span className="font-normal">
             ({judet.numeIntreg}), {id}.
           </span>
@@ -291,7 +352,7 @@ export default function Dashboard() {
               Are o calitate cât mai bună (nu este blurată și nu are artefacte
               de compresie)
             </li>
-            <li>Preferabil cu fundal transparent</li>
+            <li>Are fundal alb, preferabil transparent</li>
             <li>Este perfect incadrată în imagine (nu are margini goale)</li>
           </ol>
         </li>
@@ -320,8 +381,8 @@ export default function Dashboard() {
           </ol>
         </li>
         <li>
-          Dacă sigla are un fundal de o altă culoare decât alb, îl poți elimina
-          mai rapid folosing un{" "}
+          Dacă sigla are un fundal de o altă culoare decât alb, acesta trebuie
+          eliminat! Poți folosi un{" "}
           <LinkText
             href="https://www.pixelcut.ai/background-remover/"
             target="_blank"
@@ -332,7 +393,7 @@ export default function Dashboard() {
         </li>
         <li>Încarcă sigla folosing drag-and-drop.</li>
         <li>
-          Dacă nu ai găsit o siglă satisfăcătoare, maechează acest lucru
+          Dacă nu ai găsit o siglă satisfăcătoare, marchează acest lucru
           folosind butonul &quot;Fără siglă&quot;.
         </li>
       </ol>

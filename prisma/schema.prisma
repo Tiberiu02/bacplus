@@ -155,6 +155,23 @@ model edit_logs {
   new_value      String?
   timestamp      DateTime               @db.Timestamptz(6)
   field_name     institution_field_name
+  photo_id       Int?
+}
+
+model photos {
+  id             Int      @id @default(autoincrement())
+  file_name      String
+  school_code    String
+  source         String?
+  created_by     String
+  created_date   DateTime @db.Timestamptz(6)
+  modified_by    String
+  modified_date  DateTime @db.Timestamptz(6)
+  width          Int
+  height         Int
+  order_priority Int
+
+  @@index([school_code])
 }
 
 enum institution_field_name {
@@ -167,4 +184,7 @@ enum institution_field_name {
   wikipedia
   tiktok
   youtube
+  photo
+  photo_source
+  photo_order_priority
 }
