@@ -323,7 +323,7 @@ function Institution({
         <LinkText
           href={
             "https://google.com/search?q=" +
-            encodeURIComponent(nume + " " + judet.numeIntreg + " foto")
+            encodeURIComponent(nume + " " + judet.numeIntreg)
           }
           target="_blank"
         >
