@@ -168,7 +168,7 @@ export default function Dashboard() {
       ) : (
         <LoadingSpinner className="mx-auto mt-8" />
       )}
-      <div className="h-screen"></div>
+      <div className="h-[50vh]"></div>
     </MainContainer>
   );
 }
@@ -331,7 +331,10 @@ function Institution({
           Caută imagini pe Google
         </LinkText>
         {website && (
-          <LinkText href={website} target="_blank">
+          <LinkText
+            href={website.replace("https://", "http://")}
+            target="_blank"
+          >
             <FaExternalLinkAlt className="mr-2 mt-[-2px] inline" />
             {website.replace(/https?:\/\//, "").replace(/\/$/, "")}
           </LinkText>
@@ -376,6 +379,55 @@ function Institution({
                   <span className="text-center  font-medium text-gray-500 [text-wrap:balance]">
                     Adaugă imagini
                   </span>
+
+                  <button
+                    className="absolute bottom-2 right-2 flex items-center justify-center gap-1 rounded px-2 py-1 text-base font-semibold text-blue-500 hover:bg-black/10"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+
+                      void (async () => {
+                        try {
+                          const clipboardItems =
+                            await navigator.clipboard.read();
+                          console.log("clipboardItems", clipboardItems);
+                          for (const clipboardItem of clipboardItems) {
+                            const imageTypes =
+                              clipboardItem.types.filter((type) =>
+                                type.startsWith("image/")
+                              ) || [];
+
+                            let found = false;
+                            for (const imageType of imageTypes) {
+                              const blob = await clipboardItem.getType(
+                                imageType
+                              );
+
+                              // Get the data URL representing the image.
+                              const fileReader = new FileReader();
+                              fileReader.onload = function () {
+                                const dataUrl = fileReader.result as string;
+                                void upload(dataUrl);
+                              };
+                              fileReader.readAsDataURL(blob);
+
+                              found = true;
+                              break;
+                            }
+
+                            if (!found) {
+                              alert("Nu ați copiat nicio imagine.");
+                            }
+                          }
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      })();
+                    }}
+                  >
+                    <FaRegPaste className="text-lg" />
+                    Paste
+                  </button>
                 </>
               )}
             </div>

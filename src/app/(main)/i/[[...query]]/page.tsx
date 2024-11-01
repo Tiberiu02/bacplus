@@ -106,7 +106,10 @@ export default function PaginaInstitutie({
           {(institutie.website || institutie.adresa) && (
             <div className="flex flex-col items-center gap-1">
               {institutie.website && (
-                <LinkText href={institutie.website} target="_blank">
+                <LinkText
+                  href={institutie.website.replace("https://", "http://")}
+                  target="_blank"
+                >
                   {new URL(institutie.website).hostname}
                 </LinkText>
               )}
