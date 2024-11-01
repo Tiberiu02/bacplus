@@ -19,27 +19,31 @@ export default function Dashboard() {
           <Table
             columns={[
               {
-                header: "Loc",
-                type: "number",
-                value: (rowData, rowIndex) => rowIndex + 1,
-                decimals: 0,
-              },
-              {
                 header: "Nume",
                 type: "text",
+                // textAlign: "left",
                 value: (rowData) => rowData.name,
               },
               {
                 header: "Sigle",
                 type: "number",
-                value: (rowData) => rowData.count,
+                value: (rowData) => rowData.sigle,
                 decimals: 0,
                 sortable: true,
                 primarySortOrder: "DESC",
-                defaultSortingColumn: true,
+                // defaultSortingColumn: true,
+              },
+              {
+                header: "Imagini",
+                type: "number",
+                value: (rowData) => rowData.imagini,
+                decimals: 0,
+                sortable: true,
+                primarySortOrder: "DESC",
+                // defaultSortingColumn: true,
               },
             ]}
-            data={stats.data.leaderboard}
+            data={stats.data}
             searchable={false}
           />
         ) : (

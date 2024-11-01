@@ -2,7 +2,13 @@
 
 import { useMemo, useRef, useState } from "react";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
-import { FaCamera, FaEarthAmericas, FaPlus, FaRegPaste } from "react-icons/fa6";
+import {
+  FaCamera,
+  FaEarthAmericas,
+  FaMagnifyingGlass,
+  FaPlus,
+  FaRegPaste,
+} from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { twMerge } from "tailwind-merge";
@@ -34,30 +40,135 @@ import {
 } from "@dnd-kit/sortable";
 import { LinkText } from "~/components/LinkText";
 import { judetDupaCod } from "~/data/coduriJudete";
+import { unidecode } from "~/data/unidecode";
+
+function obtainKey(s: string) {
+  return unidecode(s)
+    .toLowerCase()
+    .replace(/[^\w\d]/g, "");
+}
 
 export default function Dashboard() {
+  const [page, setPage] = useState<"lipsa" | "complet">("lipsa");
+
   const data = trpc.photos.institutii.useQuery(undefined, {
     staleTime: Infinity,
   });
+  const utils = trpc.useUtils();
 
-  const schools = useMemo(() => {
+  const [search, setSearch] = useState<string>("");
+  const filter = obtainKey(search);
+
+  const schoolsComplete = useMemo(() => {
     return data.data
-      ?.sort(
+      ?.filter((s) => s.photos.length > 0)
+      .sort((a, b) => a.ultima_modificare - b.ultima_modificare);
+  }, [data.data]);
+
+  const schoolsMissing = useMemo(() => {
+    return data.data
+      ?.filter((s) => s.photos.length == 0)
+      .sort(
         (a, b) =>
           (a.rankLiceu ?? (a.rankGimnaziu ?? 100000) * 5) -
           (b.rankLiceu ?? (b.rankGimnaziu ?? 100000) * 5)
-      )
-      .slice(0, 10);
+      );
   }, [data.data]);
+
+  const schools = page === "lipsa" ? schoolsMissing : schoolsComplete;
+
+  const filteredSchools = useMemo(
+    () => schools && schools.filter((s) => obtainKey(s.nume).includes(filter)),
+    [schools, filter]
+  );
 
   return (
     <MainContainer>
-      <Title>Imagini</Title>
-      {schools ? (
-        schools.map((school) => <Institution key={school.id} {...school} />)
+      <Title>Ghid adăugare imagini</Title>
+
+      <ol className="[&>li]:list-decimal">
+        <li className="">
+          Exista trei moduri de a găsi imagini cu o școală: pe Google Images, pe
+          Google Maps sau pe site-ul școlii.
+        </li>
+        <li>
+          Trebuie să cauți imagini care:
+          <ol type="a" className="ml-8 [&>li]:list-[lower-alpha]">
+            <li>Sunt reprezentative pentru liceu</li>
+            <li>
+              Au o rezoluție cât mai bună (nu sunt blurate și nu au artefacte de
+              compresie)
+            </li>
+            <li>Nu conțin logo-uri, sigle, watermarks, etc.</li>
+          </ol>
+        </li>
+        <li>
+          Încerca să adaugi 3-10 imagini unice și diverse. Nu adăuga mai multe
+          imagini identice sau extrem de similare. Adaugă care să prezinte
+          diferite elemente ale școlii.
+        </li>
+        <li>
+          Dacă imaginea provine dintr-o altă sursă decât direct de la școală,
+          menționează sursa imaginii. Sursa nu trebuie menționată dacă imaginea
+          provine direct de la școală (site, facebook, etc.). Pentru imaginile
+          preluate de pe Google Maps, sursa este persoana care a adăugat
+          imaginea, nu Google!
+        </li>
+        <li>
+          Poți face crop la imagine pentru a elimina elemente nedorite sau a
+          pune accent pe școală.
+        </li>
+        <li>
+          Ordonează imaginile în funcție de calitate și relevanță, așa cum vor
+          fi afișate pe site.
+        </li>
+      </ol>
+
+      <Title>Adăugare imagini</Title>
+
+      <div className="flex w-full select-none justify-center gap-4 pb-8">
+        <div
+          className={twMerge(
+            "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
+            page === "lipsa" ? "border-black" : "border-transparent"
+          )}
+          onClick={() => {
+            setPage("lipsa");
+            void utils.photos.institutii.reset();
+          }}
+        >
+          Lipsă
+        </div>
+        <div
+          className={twMerge(
+            "border-collapse cursor-pointer border-b-2 px-1 pb-2 text-center font-semibold",
+            page === "complet" ? "border-black" : "border-transparent"
+          )}
+          onClick={() => {
+            setPage("complet");
+            void utils.photos.institutii.reset();
+          }}
+        >
+          Complet
+        </div>
+      </div>
+
+      {filteredSchools ? (
+        <>
+          <TextInput
+            placeHolder={"Caută instituție"}
+            value={search || ""}
+            onChange={setSearch}
+            Icon={FaMagnifyingGlass}
+          />
+          {filteredSchools.slice(0, 20).map((school) => (
+            <Institution key={school.id} {...school} />
+          ))}
+        </>
       ) : (
-        <LoadingSpinner className="mx-auto" />
+        <LoadingSpinner className="mx-auto mt-8" />
       )}
+      <div className="h-screen"></div>
     </MainContainer>
   );
 }

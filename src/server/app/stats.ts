@@ -2,7 +2,7 @@ import { protectedProcedure } from "../trpc";
 
 export const statsRouter = protectedProcedure.query(async ({ ctx }) => {
   const users = await ctx.prisma.users.findMany();
-  const contributii = await ctx.prisma.edit_logs.groupBy({
+  const contributiiSigle = await ctx.prisma.edit_logs.groupBy({
     by: ["author_id"],
     _count: {
       author_id: true,
@@ -14,13 +14,26 @@ export const statsRouter = protectedProcedure.query(async ({ ctx }) => {
       field_name: "sigla",
     },
   });
+  const contributiiImagini = await ctx.prisma.edit_logs.groupBy({
+    by: ["author_id"],
+    _count: {
+      author_id: true,
+    },
+    where: {
+      author_id: {
+        not: null,
+      },
+      field_name: "photo",
+    },
+  });
 
-  return {
-    leaderboard: contributii
-      .map((c) => ({
-        name: users.find((u) => u.id === c.author_id)?.name,
-        count: c._count.author_id,
-      }))
-      .sort((a, b) => b.count - a.count),
-  };
+  return users.map((user) => ({
+    name: user.name,
+    sigle:
+      contributiiSigle.find((c) => c.author_id === user.id)?._count.author_id ||
+      0,
+    imagini:
+      contributiiImagini.find((c) => c.author_id === user.id)?._count
+        .author_id || 0,
+  }));
 });

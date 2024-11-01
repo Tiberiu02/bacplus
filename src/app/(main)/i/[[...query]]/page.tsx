@@ -35,22 +35,6 @@ import { getPhotoUrl } from "~/utils/asset-urls";
 
 export function generateStaticParams() {
   return [];
-  return query.institutii.flatMap((i) =>
-    institutiiBac.has(i.cod_siiir) && institutiiEn.has(i.cod_siiir)
-      ? [
-          {
-            query: [getUrlFromId(i.cod_siiir)],
-          },
-          {
-            query: [getUrlFromId(i.cod_siiir), "gimnaziu"],
-          },
-        ]
-      : [
-          {
-            query: [getUrlFromId(i.cod_siiir)],
-          },
-        ]
-  );
 }
 
 export function generateMetadata({
@@ -228,6 +212,8 @@ function PaginaGimnaziu({ id }: { id: string }) {
         ierarhie={ierarhieScoli[id] ?? {}}
       />
 
+      <Photos photos={photos} numeInstitutie={numeScoala} />
+
       <div className="flex flex-col items-center justify-center gap-16 sm:flex-row">
         {(Object.keys(data[1].limbiMaterne).length > 1 ||
           (Object.keys(data[1].limbiMaterne).length == 1 &&
@@ -391,40 +377,7 @@ function PaginaLiceu({ id }: { id: string }) {
         ierarhie={ierarhieLicee[id] ?? {}}
       />
 
-      {photos.length > 0 && (
-        <div className="flex flex-col">
-          <div className="mb-1 text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
-            Imagini
-          </div>
-          <div className="mb-4 mt-8 text-center [text-wrap:balance]">
-            {photos
-              .sort((a, b) => a.order_priority - b.order_priority)
-              .map((photo) => (
-                <Link
-                  key={photo.id}
-                  href={getPhotoUrl(photo.id, "lg")}
-                  target="_blank"
-                  className="inline-block"
-                >
-                  <img
-                    className="mx-1 my-1 inline-block h-20 rounded bg-gray-200 sm:h-32"
-                    style={{
-                      aspectRatio: `${photo.width}/${photo.height}`,
-                    }}
-                    src={getPhotoUrl(photo.id, "xs")}
-                    alt={numeLiceu}
-                  />
-                </Link>
-              ))}
-          </div>
-          <div className="max-w-sm self-center text-center text-sm text-gray-500 [text-wrap:balance]">
-            <span className="font-medium">Sursă imagini: </span>
-            {Array.from(new Set(photos.map((p) => p.source)))
-              .map((s) => s || numeLiceu.replaceAll(/[,„”]/g, ""))
-              .join("; ")}
-          </div>
-        </div>
-      )}
+      <Photos photos={photos} numeInstitutie={numeLiceu} />
 
       <TabelSpecializari specializari={specializari} />
 
@@ -483,6 +436,57 @@ function PaginaLiceu({ id }: { id: string }) {
 
       <TabelRezultateBacClase rezultate={rezultateClase} />
     </>
+  );
+}
+
+function Photos({
+  photos,
+  numeInstitutie,
+}: {
+  photos: {
+    id: number;
+    source: string | null;
+    order_priority: number;
+    width: number;
+    height: number;
+  }[];
+  numeInstitutie: string;
+}) {
+  return (
+    photos.length > 0 && (
+      <div className="flex flex-col">
+        <div className="mb-1 text-center text-2xl font-semibold opacity-90 [text-wrap:balance] sm:text-3xl">
+          Imagini
+        </div>
+        <div className="mb-4 mt-8 text-center [text-wrap:balance]">
+          {photos
+            .sort((a, b) => a.order_priority - b.order_priority)
+            .map((photo) => (
+              <Link
+                key={photo.id}
+                href={getPhotoUrl(photo.id, "lg")}
+                target="_blank"
+                className="inline-block"
+              >
+                <img
+                  className="mx-1 my-1 inline-block h-20 rounded bg-gray-200 sm:h-32"
+                  style={{
+                    aspectRatio: `${photo.width}/${photo.height}`,
+                  }}
+                  src={getPhotoUrl(photo.id, "xs")}
+                  alt={numeInstitutie}
+                />
+              </Link>
+            ))}
+        </div>
+        <div className="max-w-sm self-center text-center text-sm text-gray-500 [text-wrap:balance]">
+          <span className="font-medium">Sursă imagini: </span>
+          {Array.from(new Set(photos.map((p) => p.source)))
+            .map((s) => s || numeInstitutie.replaceAll(/[,„”]/g, ""))
+            .join("; ")}
+        </div>
+      </div>
+    )
   );
 }
 
