@@ -62,7 +62,7 @@ export default function Dashboard() {
   const schoolsComplete = useMemo(() => {
     return data.data
       ?.filter((s) => s.photos.length > 0)
-      .sort((a, b) => a.ultima_modificare - b.ultima_modificare);
+      .sort((a, b) => b.ultima_modificare - a.ultima_modificare);
   }, [data.data]);
 
   const schoolsMissing = useMemo(() => {
