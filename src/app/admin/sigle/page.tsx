@@ -222,7 +222,7 @@ function Institutie({
           <span className="font-normal">
             ({judet.numeIntreg}), {id}.
           </span>
-          {faraSigla || sigla_lg || uploaded ? (
+          {faraSigla || sigla_lg || uploaded == "lg" ? (
             <div className="ml-4 inline font-medium text-green-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
               {sigla_lg || uploaded == "lg"
@@ -231,7 +231,7 @@ function Institutie({
                 ? "Siglă mică"
                 : "Fără siglă"}
             </div>
-          ) : sigla_xs ? (
+          ) : sigla_xs || uploaded == "xs" ? (
             <div className="ml-4 inline font-medium text-orange-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
               Siglă prea mică
