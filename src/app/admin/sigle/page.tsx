@@ -401,6 +401,17 @@ export default function Dashboard() {
           </LinkText>
           .
         </li>
+        <li>
+          Dacă sigla cropată greșit (imaginea nu include toată sigla) și nu poți
+          să găsești sigla completă, o poți genera folosind{" "}
+          <LinkText
+            href="https://getimg.ai/features/outpainting"
+            target="_blank"
+          >
+            AI image outpainting
+          </LinkText>
+          .
+        </li>
         <li>Încarcă sigla folosing drag-and-drop.</li>
         <li>
           Dacă nu ai găsit o siglă satisfăcătoare, marchează acest lucru
