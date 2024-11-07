@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Table } from "~/components/Table";
 import { Select } from "~/components/Select";
+import { capitalize } from "~/data/capitalize";
 
 export type RezultateBacClase = {
   [an: number]: {
@@ -56,7 +57,7 @@ export function TabelRezultateBacClase({
           className=""
         />
         <Select
-          options={discipline.map((e) => ({ value: e, label: e }))}
+          options={discipline.map((e) => ({ value: e, label: capitalize(e) }))}
           value={disciplina}
           onChange={setDisciplina}
           className="max-w-[calc(100%-6rem)]"
