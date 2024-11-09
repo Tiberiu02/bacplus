@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FaDotCircle, FaExternalLinkAlt } from "react-icons/fa";
 import {
   FaCamera,
@@ -81,6 +81,11 @@ export default function Dashboard() {
     () => schools && schools.filter((s) => obtainKey(s.nume).includes(filter)),
     [schools, filter]
   );
+
+  // Purge cache on mount
+  useEffect(() => {
+    void utils.photos.institutii.reset();
+  }, []);
 
   return (
     <MainContainer>

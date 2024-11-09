@@ -334,6 +334,11 @@ export default function Dashboard() {
     [dataWithKey, filter]
   );
 
+  // Purge cache on mount
+  useEffect(() => {
+    void utils.sigle.institutii.reset();
+  }, []);
+
   return (
     <MainContainer className="mb-[100vh]">
       <Title>Ghid adăugare sigle</Title>
