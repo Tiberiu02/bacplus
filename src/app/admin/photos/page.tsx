@@ -153,20 +153,29 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <TextInput
+        placeHolder={"Caută instituție"}
+        value={search || ""}
+        onChange={(value) => {
+          if (
+            (value.length && !search.length) ||
+            (!value.length && search.length)
+          ) {
+            void utils.photos.institutii.reset();
+          }
+          setSearch(value);
+        }}
+        Icon={FaMagnifyingGlass}
+      />
+
       {filteredSchools ? (
         <>
-          <TextInput
-            placeHolder={"Caută instituție"}
-            value={search || ""}
-            onChange={setSearch}
-            Icon={FaMagnifyingGlass}
-          />
           {filteredSchools.slice(0, 20).map((school) => (
             <Institution key={school.id} {...school} />
           ))}
         </>
       ) : (
-        <LoadingSpinner className="mx-auto mt-8" />
+        <LoadingSpinner className="mx-auto mt-16" />
       )}
       <div className="h-[50vh]"></div>
     </MainContainer>

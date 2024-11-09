@@ -47,6 +47,9 @@ function Institutie({
   const judet = judetDupaCod(cod_judet);
   const [faraSigla, setFaraSigla] = useState(!!sigla_lipsa);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentImage, setCurrentImage] = useState<"xs" | "lg" | false>(
+    sigla_lg ? "lg" : sigla_xs ? "xs" : false
+  );
 
   const [images, setImages] = useState<ImageListType>(
     sigla
@@ -75,6 +78,7 @@ function Institutie({
       });
       setIsLoading(false);
       setUploaded(x);
+      setCurrentImage(x);
     } catch (e) {
       console.error(e);
       setIsLoading(false);
@@ -205,6 +209,7 @@ function Institutie({
                 className="flex items-center justify-center gap-1 text-base font-semibold text-red-500"
                 onClick={() => {
                   onImageRemoveAll();
+                  setCurrentImage(false);
                   stergeSigla.mutate({ id });
                 }}
               >
@@ -222,16 +227,16 @@ function Institutie({
           <span className="font-normal">
             ({judet.numeIntreg}), {id}.
           </span>
-          {faraSigla || sigla_lg || uploaded == "lg" ? (
+          {faraSigla || currentImage == "lg" ? (
             <div className="ml-4 inline font-medium text-green-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
-              {sigla_lg || uploaded == "lg"
+              {currentImage == "lg"
                 ? "Siglă mare"
-                : sigla_xs || uploaded == "xs"
+                : currentImage == "xs"
                 ? "Siglă mică"
                 : "Fără siglă"}
             </div>
-          ) : sigla_xs || uploaded == "xs" ? (
+          ) : currentImage == "xs" ? (
             <div className="ml-4 inline font-medium text-orange-500">
               <FaDotCircle className="mr-2 mt-[-2px] inline" />
               Siglă prea mică
@@ -285,7 +290,7 @@ function Institutie({
             checked={faraSigla}
             readOnly
           />
-          {sigla_xs ? "Fără siglă mai mare" : "Fără siglă"}
+          {currentImage == "xs" ? "Fără siglă mai mare" : "Fără siglă"}
         </button>
         {info_modificare && (
           <div className="mt-2 text-sm opacity-50">
@@ -448,14 +453,22 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <TextInput
+        placeHolder={"Caută instituție"}
+        value={search || ""}
+        onChange={(value) => {
+          if (
+            (value.length && !search.length) ||
+            (!value.length && search.length)
+          ) {
+            void utils.sigle.institutii.reset();
+          }
+          setSearch(value);
+        }}
+        Icon={FaMagnifyingGlass}
+      />
       {filteredData ? (
         <>
-          <TextInput
-            placeHolder={"Caută instituție"}
-            value={search || ""}
-            onChange={setSearch}
-            Icon={FaMagnifyingGlass}
-          />
           {(page == "lipsa"
             ? filteredData
                 .filter((i) => !i.sigla_lipsa && !i.sigla_lg)
@@ -486,7 +499,7 @@ export default function Dashboard() {
             ))}
         </>
       ) : (
-        <LoadingSpinner className="mx-auto" />
+        <LoadingSpinner className="mx-auto mt-16" />
       )}
     </MainContainer>
   );
