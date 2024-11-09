@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { ChangeEventHandler } from "react";
-import { formtaNumber } from "~/data/formatNumber";
+import { formatNumber } from "~/data/formatNumber";
 import { PercentageBar } from "./PercentageBar";
 import {
   FaMagnifyingGlass,
@@ -266,7 +266,7 @@ export function Table<CompressedRowType, RowType = CompressedRowType>({
                           )
                         )
                       ) : column.type == "number" ? (
-                        formtaNumber(
+                        formatNumber(
                           column.value(row, row._rowIndex),
                           column.decimals
                         )

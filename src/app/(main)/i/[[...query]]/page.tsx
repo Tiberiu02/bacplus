@@ -8,7 +8,7 @@ import {
   photosBySchool,
   query,
 } from "~/data/dbQuery";
-import { formtaNumber } from "~/data/formatNumber";
+import { formatNumber } from "~/data/formatNumber";
 import { LinkText } from "~/components/LinkText";
 import type { Metadata } from "next";
 import { PieChart } from "~/components/PieChart";
@@ -194,19 +194,19 @@ function PaginaGimnaziu({ id }: { id: string }) {
       <div className="mx-auto grid grid-cols-[8rem_8rem] items-center gap-x-4 gap-y-8 sm:grid-cols-[repeat(4,8rem)] sm:gap-x-8">
         <SnippetCard
           title={`Evaluare ${data[0]}`}
-          value={formtaNumber(data[1].medieEvaluareNationala, 2)}
+          value={formatNumber(data[1].medieEvaluareNationala, 2, 2, "-")}
         />
         <SnippetCard
           title={`Română ${data[0]}`}
-          value={formtaNumber(data[1].medieLimbaRomana, 2)}
+          value={formatNumber(data[1].medieLimbaRomana, 2, 2, "-")}
         />
         <SnippetCard
           title={`Matematică ${data[0]}`}
-          value={formtaNumber(data[1].medieMatematica, 2)}
+          value={formatNumber(data[1].medieMatematica, 2, 2, "-")}
         />
         <SnippetCard
           title={`Absolvenți ${data[0]}`}
-          value={formtaNumber(data[1].candidati, 0)}
+          value={formatNumber(data[1].candidati, 0)}
         />
       </div>
 
@@ -356,21 +356,21 @@ function PaginaLiceu({ id }: { id: string }) {
       >
         <SnippetCard
           title={`Medie Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].medie, 2)}
+          value={formatNumber(dataBac[1].medie, 2, 2, "-")}
         />
         {dataAdm && (
           <SnippetCard
             title={`Admitere ${dataAdm[0]}`}
-            value={formtaNumber(dataAdm[1], 2)}
+            value={formatNumber(dataAdm[1], 2)}
           />
         )}
         <SnippetCard
           title={`Promovare ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
+          value={formatNumber(dataBac[1].rataPromovare, 1, 0) + "%"}
         />
         <SnippetCard
           title={`Candidați Bac ${dataBac[0]}`}
-          value={formtaNumber(dataBac[1].candidati, 0)}
+          value={formatNumber(dataBac[1].candidati, 0)}
         />
       </div>
 

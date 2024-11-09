@@ -1,9 +1,10 @@
-export function formtaNumber(
+export function formatNumber(
   value: number | null | undefined,
   maxDecimals: number,
-  minDecimals?: number
+  minDecimals?: number,
+  fallback: string = ""
 ) {
-  if (value === undefined || value === null) return "";
+  if (value === undefined || value === null) return fallback;
 
   return value.toLocaleString("ro-RO", {
     maximumFractionDigits: maxDecimals,

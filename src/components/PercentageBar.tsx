@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { formtaNumber } from "~/data/formatNumber";
+import { formatNumber } from "~/data/formatNumber";
 
 type RGB = [number, number, number];
 
@@ -161,7 +161,7 @@ export function PercentageBar({
         percentage={value}
         className="h-4 w-4 shrink-0"
       />
-      <div>{formtaNumber(value, 1, 0)}%</div>
+      <div>{formatNumber(value, 1, 0)}%</div>
     </div>
   );
 }
