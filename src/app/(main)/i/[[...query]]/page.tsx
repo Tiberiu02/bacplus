@@ -494,7 +494,12 @@ function Photos({
 }
 
 function getInfoLiceu(siiir: string) {
-  const { nume: numeLiceu, website, adresa } = institutii[siiir] || {};
+  const {
+    nume: numeLiceu,
+    website,
+    adresa,
+    cod_judet,
+  } = institutii[siiir] || {};
 
   const gimnaziu = institutiiEn.has(siiir);
 
@@ -574,7 +579,12 @@ function getInfoLiceu(siiir: string) {
   );
 
   query.bac
-    .filter((result) => result.unitate_siiir == siiir)
+    .filter(
+      (result) =>
+        result.unitate_siiir == siiir &&
+        // Filter out invalid data
+        (!result.unitate_cod_judet || result.unitate_cod_judet == cod_judet)
+    )
     .forEach((result) => {
       rezultateBac[result.an] = {
         medie: result._avg.medie?.toNumber() || undefined,
@@ -588,7 +598,12 @@ function getInfoLiceu(siiir: string) {
     });
 
   query.promovatiBac
-    .filter((result) => result.unitate_siiir == siiir)
+    .filter(
+      (result) =>
+        result.unitate_siiir == siiir &&
+        // Filter out invalid data
+        (!result.unitate_cod_judet || result.unitate_cod_judet == cod_judet)
+    )
     .forEach((result) => {
       const d = rezultateBac[result.an];
 

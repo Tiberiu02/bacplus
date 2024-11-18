@@ -13,6 +13,9 @@ const queryFunctions = {
       _avg: {
         medie: true,
       },
+      where: {
+        promotie_anterioara: false,
+      },
     }),
   en: () =>
     prisma.en.groupBy({
@@ -50,6 +53,7 @@ const queryFunctions = {
       },
       where: {
         rezultat: "promovat",
+        promotie_anterioara: false,
       },
     }),
   limbiMaterneBac: () =>
@@ -57,6 +61,9 @@ const queryFunctions = {
       by: ["an", "unitate_siiir", "limba_materna"],
       _count: {
         _all: true,
+      },
+      where: {
+        promotie_anterioara: false,
       },
     }),
   limbiMaterneEn: () =>
@@ -72,12 +79,18 @@ const queryFunctions = {
       _count: {
         _all: true,
       },
+      where: {
+        promotie_anterioara: false,
+      },
     }),
   specializariBac: () =>
     prisma.bac.groupBy({
       by: ["an", "unitate_siiir", "specializare"],
       _count: {
         _all: true,
+      },
+      where: {
+        promotie_anterioara: false,
       },
     }),
   mediiAdmLicee: () =>
@@ -100,6 +113,7 @@ const queryFunctions = {
         lr_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacLimbaMaterna: () =>
@@ -118,6 +132,7 @@ const queryFunctions = {
         limba_materna: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacDisciplineObligatorii: () =>
@@ -133,6 +148,7 @@ const queryFunctions = {
         do_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacDisciplineAlegere: () =>
@@ -148,6 +164,7 @@ const queryFunctions = {
         da_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacMedieClase: () =>
@@ -158,6 +175,9 @@ const queryFunctions = {
       },
       _count: {
         _all: true,
+      },
+      where: {
+        promotie_anterioara: false,
       },
     }),
   bacRomanaClase: () =>
@@ -173,6 +193,7 @@ const queryFunctions = {
         lr_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacLimbaMaternaClase: () =>
@@ -191,6 +212,7 @@ const queryFunctions = {
         limba_materna: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacDisciplineObligatoriiClase: () =>
@@ -206,6 +228,7 @@ const queryFunctions = {
         do_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   bacDisciplineAlegereClase: () =>
@@ -221,6 +244,7 @@ const queryFunctions = {
         da_final: {
           not: null,
         },
+        promotie_anterioara: false,
       },
     }),
   institutii: () => prisma.institutii.findMany(),

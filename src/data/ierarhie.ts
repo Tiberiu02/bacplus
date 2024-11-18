@@ -1,10 +1,18 @@
-import { query } from "./dbQuery";
+import { institutii, query } from "./dbQuery";
 
 export const ierarhieLicee = {} as Record<string, Record<number, number>>;
 
 for (const an of query.aniBac) {
   const liceeSortate = query.bac
-    .filter((b) => b.an === an.an)
+    .filter(
+      (b) =>
+        b.an === an.an &&
+        // Filter out invalid data
+        (!b.unitate_cod_judet ||
+          !b.unitate_siiir ||
+          !institutii[b.unitate_siiir] ||
+          institutii[b.unitate_siiir]?.cod_judet === b.unitate_cod_judet)
+    )
     .sort((a, b) => {
       const aVal = a._avg.medie;
       const bVal = b._avg.medie;

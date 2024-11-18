@@ -161,6 +161,10 @@ function getLicee(an: number, judet?: string) {
     .filter(
       (result) =>
         result.an === an &&
+        // Filter out invalid data
+        (!result.siiirData ||
+          !result.unitate_cod_judet ||
+          result.unitate_cod_judet == result.siiirData.judet_pj) &&
         (judet === undefined ||
           result.unitate_cod_judet === judet ||
           result.siiirData?.judet_pj === judet)
@@ -190,7 +194,16 @@ function getLicee(an: number, judet?: string) {
     });
 
   query.promovatiBac
-    .filter((result) => result.an === an)
+    .filter(
+      (result) =>
+        result.an === an &&
+        // Filter out invalid data
+        (!result.unitate_siiir ||
+          !result.unitate_cod_judet ||
+          !institutii[result.unitate_siiir] ||
+          result.unitate_cod_judet ==
+            institutii[result.unitate_siiir]?.cod_judet)
+    )
     .forEach((result) => {
       const id =
         result.unitate_siiir ??
