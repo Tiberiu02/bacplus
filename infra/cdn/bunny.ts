@@ -149,7 +149,6 @@ export async function purgeUrl(url: string) {
   if (!url.startsWith("https://") || !url.includes(".b-cdn.net")) {
     // Please enter the exact CDN URL of an individual file. You can also
     // purge folders or wildcard files using * inside of the URL path.
-    //
     // Ex: https://pullzone.b-cdn.net/folder/* or https://pullzone.b-cdn.net/folder/file
     throw new Error("Invalid URL. Must be a BunnyCDN URL");
   }
