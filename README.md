@@ -1,6 +1,6 @@
 # BacPlus website
 
-Welcome to the bacplus.ro website!
+Welcome to the bacplus.ro website!!
 
 # Planning
 
