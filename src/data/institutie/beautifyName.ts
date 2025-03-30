@@ -59,7 +59,7 @@ export function beautifyName(name: string): string {
     wordsWithIndices.push({ word: match[0], index: match.index });
   }
 
-  wordsWithIndices.forEach(({ word, index }, wordPosition) => {
+  wordsWithIndices.forEach(({ word, index }) => {
     const originalWord = name.slice(index, index + word.length);
     const isLinkWord = linkWords.includes(word.toLowerCase());
 

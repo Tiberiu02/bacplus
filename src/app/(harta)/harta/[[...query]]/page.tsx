@@ -2,7 +2,6 @@ import { institutiiBac, institutiiEn, query } from "~/data/dbQuery";
 
 import type { Metadata, Viewport } from "next";
 import { env } from "~/env.js";
-import { parseParamsHarta } from "~/data/parseParams";
 import { Harta } from "./Harta";
 
 import "leaflet/dist/leaflet.css";
@@ -18,25 +17,10 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
-export function generateMetadata({
-  params,
-}: {
-  params: { query: string[] };
-}): Metadata {
-  const [judet, arata] = parseParamsHarta(params.query);
+export function generateMetadata(): Metadata {
+  const title = `Harta liceelor și gimnaziilor`;
 
-  const arataText =
-    arata === "licee"
-      ? "liceelor"
-      : arata === "gimnazii"
-      ? "gimnaziilor"
-      : "liceelor și gimnaziilor";
-
-  const title = `Harta ${arataText} din ${judet?.numeIntreg ?? "România"}`;
-
-  const description = `Descoperă harta ${arataText} din ${
-    judet?.numeIntreg ?? "România"
-  }`;
+  const description = `Descoperă harta liceelor și gimnaziilor din România.`;
 
   return {
     title,

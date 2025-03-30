@@ -1,6 +1,6 @@
 "use client";
-import { HTMLInputTypeAttribute } from "react";
-import { IconType } from "react-icons";
+import type { HTMLInputTypeAttribute } from "react";
+import type { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
 
 export function TextInput({

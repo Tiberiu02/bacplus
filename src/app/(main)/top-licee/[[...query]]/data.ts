@@ -1,6 +1,6 @@
 import { roundDecimals } from "~/data/roundDecimals";
 import {
-  CompressedUrlData,
+  type CompressedUrlData,
   getCompressedUrlData,
   getUrlFromCompressedData,
 } from "~/data/institutie/compressedUrl";

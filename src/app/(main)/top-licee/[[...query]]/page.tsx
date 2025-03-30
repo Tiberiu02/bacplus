@@ -4,7 +4,7 @@ import { bacData, institutii, query, ultimulAnBac } from "~/data/dbQuery";
 
 import { TabelLicee } from "~/app/(main)/top-licee/[[...query]]/TabelLicee";
 import {
-  Liceu,
+  type Liceu,
   liceuToDataArray,
 } from "~/app/(main)/top-licee/[[...query]]/data";
 import { MainContainer } from "~/components/MainContainer";
@@ -18,12 +18,13 @@ import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { createStaticData } from "~/static-data/createStaticData";
 import { beautifyNameNullable } from "~/data/institutie/beautifyName";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { query: string[] };
-}): Metadata {
-  const [an, judet] = parseParamsTop(params.query, ultimulAnBac);
+  params: Promise<{ query: string[] }>;
+}): Promise<Metadata> {
+  const { query: queryParams } = await params;
+  const [an, judet] = parseParamsTop(queryParams, ultimulAnBac);
   const anCurent = new Date().getFullYear();
 
   const numeJudet = judet?.numeIntreg ?? "România";
@@ -59,10 +60,15 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: { params: { query: string[] } }) {
-  const [an, judet] = parseParamsTop(params.query, ultimulAnBac);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ query: string[] }>;
+}) {
+  const { query: queryParams } = await params;
+  const [an, judet] = parseParamsTop(queryParams, ultimulAnBac);
 
-  if (params.query && params.query.includes(ultimulAnBac.toString())) {
+  if (queryParams && queryParams.includes(ultimulAnBac.toString())) {
     redirect("/top-licee" + (judet ? "/" + judet.nume : ""));
   }
 

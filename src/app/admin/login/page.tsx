@@ -2,7 +2,6 @@
 
 import { trpc } from "~/utils/trpc";
 import { FiUser } from "react-icons/fi";
-import { useAtom } from "jotai";
 import { useState } from "react";
 import { MainContainer } from "~/components/MainContainer";
 import { Title } from "~/components/Title";

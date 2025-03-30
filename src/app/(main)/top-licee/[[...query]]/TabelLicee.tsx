@@ -3,7 +3,7 @@
 import { Table } from "~/components/Table";
 import { nonBreakableName } from "~/data/nonBreakableName";
 import { type LiceuDataArray, liceuFromDataArray } from "./data";
-import { StaticData } from "~/static-data/staticData";
+import type { StaticData } from "~/static-data/staticData";
 import { useStaticData } from "~/static-data/useStaticData";
 
 export function TabelLicee({

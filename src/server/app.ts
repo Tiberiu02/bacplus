@@ -4,7 +4,7 @@ import { prisma } from "./prisma";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { env } from "../env.js"; // todo: fix TS paths is webpack bundler (deploy.ts)
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { sigleRouter } from "./app/sigle";
 import { loginRouter } from "./app/login";
 import { statsRouter } from "./app/stats";
@@ -25,7 +25,6 @@ export const JWT_SECRET = env.JWT_SECRET;
 
 export const createExpressContext = ({
   req,
-  res,
 }: CreateExpressContextOptions): Context => {
   const token = req.headers.authorization?.split(" ")[1];
 

@@ -4,7 +4,6 @@ import {
   institutii,
   institutiiBac,
   institutiiEn,
-  licee,
   photosBySchool,
   query,
 } from "~/data/dbQuery";
@@ -37,12 +36,13 @@ export function generateStaticParams() {
   return [];
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { query: [string, string?] };
-}): Metadata {
-  const [urlId, gimnaziu] = params.query;
+  params: Promise<{ query: [string, string?] }>;
+}): Promise<Metadata> {
+  const { query: queryParams } = await params;
+  const [urlId, gimnaziu] = queryParams;
   const id = getIdFromUrl(urlId);
 
   if (!id) return {};
@@ -72,13 +72,13 @@ export function generateMetadata({
   };
 }
 
-export default function PaginaInstitutie({
-  params: {
-    query: [idUrl, gimnaziu],
-  },
+export default async function PaginaInstitutie({
+  params,
 }: {
-  params: { query: [string, string?] };
+  params: Promise<{ query: [string, string?] }>;
 }) {
+  const { query: queryParams } = await params;
+  const [idUrl, gimnaziu] = queryParams;
   const siiir = getIdFromUrl(idUrl);
 
   if (!siiir) {

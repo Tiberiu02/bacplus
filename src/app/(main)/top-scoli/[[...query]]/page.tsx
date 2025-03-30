@@ -22,12 +22,13 @@ import { getUrlFromId } from "~/data/institutie/urlFromId";
 import { createStaticData } from "~/static-data/createStaticData";
 import { beautifyNameNullable } from "~/data/institutie/beautifyName";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { query: string[] };
-}): Metadata {
-  const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
+  params: Promise<{ query: string[] }>;
+}): Promise<Metadata> {
+  const { query: queryParams } = await params;
+  const [an, judet] = parseParamsTop(queryParams, ultimulAnEn);
   const anCurent = new Date().getFullYear();
 
   const numeJudet = judet?.numeIntreg ?? "România";
@@ -63,10 +64,15 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: { params: { query: string[] } }) {
-  const [an, judet, reversed] = parseParamsTop(params.query, ultimulAnEn);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ query: string[] }>;
+}) {
+  const { query: queryParams } = await params;
+  const [an, judet, reversed] = parseParamsTop(queryParams, ultimulAnEn);
 
-  if (params.query && params.query.includes(ultimulAnEn.toString())) {
+  if (queryParams && queryParams.includes(ultimulAnEn.toString())) {
     redirect("/top-scoli" + (judet ? "/" + judet.nume : ""));
   }
 

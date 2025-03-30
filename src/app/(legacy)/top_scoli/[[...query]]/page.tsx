@@ -6,12 +6,13 @@ import { env } from "~/env.js";
 import { parseParamsTop } from "~/data/parseParams";
 import { redirect } from "next/navigation";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { query: string[] };
-}): Metadata {
-  const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
+  params: Promise<{ query: string[] }>;
+}): Promise<Metadata> {
+  const { query: queryParams } = await params;
+  const [an, judet] = parseParamsTop(queryParams, ultimulAnEn);
 
   const title = judet?.numeIntreg
     ? `Top școli ${judet?.numeIntreg} ${an} la Evaluarea Națională`
@@ -49,8 +50,13 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: { params: { query: string[] } }) {
-  const [an, judet] = parseParamsTop(params.query, ultimulAnEn);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ query: string[] }>;
+}) {
+  const { query: queryParams } = await params;
+  const [an, judet] = parseParamsTop(queryParams, ultimulAnEn);
 
   redirect(
     "/top-scoli" +

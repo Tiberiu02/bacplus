@@ -1,6 +1,6 @@
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useEffect } from "react";
 
 type UserData = {
   email: string;

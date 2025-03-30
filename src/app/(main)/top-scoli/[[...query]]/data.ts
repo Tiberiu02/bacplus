@@ -1,10 +1,9 @@
 import {
-  CompressedUrlData,
+  type CompressedUrlData,
   getCompressedUrlData,
   getUrlFromCompressedData,
 } from "~/data/institutie/compressedUrl";
 import { roundDecimals } from "../../../../data/roundDecimals";
-import { getUrlFromName } from "~/data/institutie/urlFromName";
 
 export type Scoala = {
   numeScoala: string;

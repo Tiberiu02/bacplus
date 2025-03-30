@@ -11,14 +11,15 @@ export function generateStaticParams() {
   }));
 }
 
-export function GET(
+export async function GET(
   _request: NextRequest,
-  { params }: { params: { file: string } }
+  { params }: { params: Promise<{ file: string }> }
 ) {
-  if (params.file === "empty.json") {
+  const file = (await params).file;
+  if (file === "empty.json") {
     return NextResponse.json({});
   }
 
-  const data = fs.readFileSync(".next/static-data/" + params.file, "utf-8");
+  const data = fs.readFileSync(".next/static-data/" + file, "utf-8");
   return NextResponse.json(JSON.parse(data));
 }

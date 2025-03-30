@@ -88,7 +88,7 @@ export function parseImageBase64DataUrl(dataUrl: string) {
     throw new Error("Invalid data URL: failed to split");
   }
 
-  const [_, ext] = header.match(/^data:image\/(.*?);base64/) ?? [];
+  const [, ext] = header.match(/^data:image\/(.*?);base64/) ?? [];
 
   if (!ext) {
     throw new Error("Invalid data URL: header failed regex match");
